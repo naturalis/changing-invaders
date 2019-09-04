@@ -4,11 +4,9 @@ use warnings;
 use Getopt::Long;
 
 # process command line arguments
-my $files;
-my $data;
+my $files; # list of files
 GetOptions(
     'files=s' => \$files,
-    'data=s'  => \$data,
 );
 
 my @list;
@@ -19,14 +17,27 @@ while(<$fh>) {
 }
 
 for ( my $i = 0; $i < $#list - 1; $i += 2 ) {
-    my ( $in1, $in2 ) = @list[$i, $i+1];
-    system( "cp $in1 $in2 $data" );
-    $in1 =~ s/.*\//$data/;
-    $in2 =~ s/.*\//$data/;
+
+    # files are listed as read pairs, R1 and R2
+    my ( $in1,  $in2  ) = @list[$i, $i+1];
     my ( $out1, $out2 ) = ( $in1, $in2 );
-    my $log = $in1;
-    $log =~ s/_R1_.*/.log/;
+
+    # make outfile names
     $out1 =~ s/fastq/fastp.fastq/;
     $out2 =~ s/fastq/fastp.fastq/;
-    system( "fastp -i $in1 -I $in2 -o $out1 -O $out2 2> $log" );
+
+    # make file stem
+    my $stem = $in1;
+    $stem =~ s/_R1_.*//;
+
+    # make adaptor
+    my $adaptor;
+    if ( $stem =~ /_([AGCT]+)_L00/ ) {
+        $adaptor = $1;
+    }
+    else {
+        die $stem
+    }
+
+    system( "fastp -i $in1 -I $in2 -o $out1 -O $out2 -j ${stem}.json -h ${stem}.html -a $adaptor --verbose --dont_overwrite 2> ${stem}.log" );
 }
