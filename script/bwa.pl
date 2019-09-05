@@ -6,11 +6,11 @@ use My::ChangingInvaders::Config;
 use Bio::Phylo::Util::Logger ':simple';
 
 # process command line arguments
-my $reference;        # ./reference/Brassica_oleracea.v2.1.dna.toplevel.chromosomes.fa
-my $threads = 4;      # threads for BWA
-my $yaml;             # config file with data locations per sample
-my $verbosity = WARN; # verbosity
-my $outdir;           # directory where to write BAM files
+my $reference = 'Rnor_6.0';  # ./reference/Brassica_oleracea.v2.1.dna.toplevel.chromosomes.fa
+my $threads = 4;             # threads for BWA
+my $yaml;                    # config file with data locations per sample
+my $verbosity = WARN;        # verbosity
+my $outdir;                  # directory where to write BAM files
 GetOptions(
     'reference=s' => \$reference,
     'threads=i'   => \$threads,
@@ -45,7 +45,7 @@ for my $sample ( $config->samples ) {
         # do the mapping, include the @RG tag to identify samples when merging
         my $outfile = "${outdir}/${sample}-${run}";
         DEBUG "Going to run BWA-MEM for $outfile";
-        system("bwa mem -R $RG -t $threads $reference $r1 $r2 > ${outfile}.sam");
+        system("bwa mem -t $threads $ref_file $r1 $r2 > ${outfile}.sam");
 
          # convert to BAM
         DEBUG "Going to run samtools view (i.e. SAM => BAM) for $outfile";
