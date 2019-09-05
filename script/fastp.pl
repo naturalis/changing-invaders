@@ -2,6 +2,7 @@
 use strict;
 use warnings;
 use Getopt::Long;
+use YAML::Syck;
 
 # process command line arguments
 my $files; # list of files
@@ -10,10 +11,11 @@ GetOptions(
 );
 
 my @list;
-open my $fh, '<', $files;
-while(<$fh>) {
-    chomp;
-    push @list, $_ if -e $_;
+my $data = LoadFile($files);
+for my $sample ( keys %{ $data } ) {
+    for my $run ( keys %{ $data->{$sample} } ) {
+        push @list, @{ $data->{$sample}->{$run}->{'raw'} };
+    }
 }
 
 for ( my $i = 0; $i < $#list - 1; $i += 2 ) {
