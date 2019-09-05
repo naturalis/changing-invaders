@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-use YAML::Syck;
 use Getopt::Long;
+use My::ChangingInvaders::Config;
 use Bio::Phylo::Util::Logger ':simple';
 
 # process command line arguments
@@ -16,36 +16,54 @@ GetOptions(
     'threads=i'   => \$threads,
     'yaml=s'      => \$yaml,
     'verbose+'    => \$verbosity,
+    'outdir=s'    => \$outdir,
 );
 
 # setup services, data sources
-my $data = LoadFile($yaml);
-Bio::Phylo::Util::Logger->new( '-level' => $verbosity )
+my $config = My::ChangingInvaders::Config->new( '-file' => $yaml );
+Bio::Phylo::Util::Logger->new( '-level' => $verbosity );
 
 # index reference
-INFO "Going to index the reference genome with `bwa index $ref`";
-system( "bwa index $ref" );
+my $ref_file = $config->file_for_reference($reference);
+INFO "Going to index reference $reference with `bwa index $ref_file`";
+system( "bwa index $ref_file" );
 
-# do the mapping
-for my $sample ( keys %$data ) {
+# here we iterate over the samples, i.e. each iteration is an individual
+for my $sample ( $config->samples ) {
+    INFO "Going to start mapping sample $sample";
 
-	# do the mapping, include the @RG tag to identify samples when merging
-	# XXX this tag is important for the subsequent GATK operations and the R script
-	bwa mem \
-		-R "@RG\tID:NA\tSM:${SM}\tPL:ILLUMINA\tPI:NA" \
-		-t $threads \
-		$reference \
-		${SAMPLE}_R1.fastq.gz ${SAMPLE}_R2.fastq.gz \
-		> ${SAMPLE}_pe.sam
+    # XXX this tag is important for the subsequent GATK operations
+    my $RG = "\@RG\tID:NA\tSM:${sample}\tPL:ILLUMINA\tPI:NA";
+    my @bams_to_merge;
 
-	# convert to BAM
-	samtools view -S -b ${SAMPLE}_pe.sam > ${SAMPLE}_pe.bam
-	rm ${SAMPLE}_pe.sam
+    # they have been sequenced multiple times in different runs
+    for my $run ( $config->runs_for_sample($sample) ) {
 
-	# sort the reads in the BAM
-	samtools sort ${SAMPLE}_pe.bam -o ${SAMPLE}_pe.sorted.bam
-	rm ${SAMPLE}_pe.bam
+        # each run is paired end, so there is an R1 and an R2 file
+        my ( $r1, $r2 ) = $config->files_for_run( sample => $sample, run => $run, type => 'fastp' );
 
-	# index the BAM
-	samtools index ${SAMPLE}_pe.sorted.bam
+        # do the mapping, include the @RG tag to identify samples when merging
+        my $outfile = "${outdir}/${sample}-${run}";
+        DEBUG "Going to run BWA-MEM for $outfile";
+        system("bwa mem -R $RG -t $threads $reference $r1 $r2 > ${outfile}.sam");
+
+         # convert to BAM
+        DEBUG "Going to run samtools view (i.e. SAM => BAM) for $outfile";
+        system("samtools view -S -b ${outfile}.sam > ${outfile}.unsorted.bam");
+        unlink("${outfile}.sam");
+
+        # sort the reads in the BAM
+        DEBUG "Going to run samtools sort (i.e. for merging) for $outfile";
+        system("samtools sort ${outfile}.unsorted.bam -o ${outfile}.bam");
+        unlink "${outfile}.unsorted.bam";
+        push @bams_to_merge, "${outfile}.bam";
+        $config->files_for_run( sample => $sample, run => $run, type => 'bam', list => ["${outfile}.bam"] );
+    }
+
+    # now merge the files for this sample
+    INFO "Finalizing sample $sample by merging mapped runs: @bams_to_merge";
+    system("samtools merge -r $RG ${outdir}/${sample}.bam @bams_to_merge");
+    $config->runs_for_sample( sample => $sample, type => 'bam', list => [ "${outdir}/${sample}.bam" ] );
 }
+
+print $config->to_string;
