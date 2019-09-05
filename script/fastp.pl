@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 use Getopt::Long;
-use YAML::Syck;
+use My::ChangingInvaders::Config;
 
 # process command line arguments
 my $files; # list of files
@@ -10,13 +10,17 @@ GetOptions(
     'files=s' => \$files,
 );
 
+# collect files
+my $config = My::ChangingInvaders::Config->new( '-file' => $files );
 my @list;
-my $data = LoadFile($files);
-for my $sample ( keys %{ $data } ) {
-    for my $run ( keys %{ $data->{$sample} } ) {
-        push @list, @{ $data->{$sample}->{$run}->{'raw'} };
+for my $sample ( $config->samples ) {
+    for my $run ( $config->runs_for_sample($sample) ) {
+        push @list, $config->files_for_run( run => $run, sample => $sample, type => 'raw' );
     }
 }
+
+use Data::Dumper;
+die $config->to_string;
 
 for ( my $i = 0; $i < $#list - 1; $i += 2 ) {
 
