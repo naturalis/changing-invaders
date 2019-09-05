@@ -19,9 +19,6 @@ for my $sample ( $config->samples ) {
     }
 }
 
-use Data::Dumper;
-die $config->to_string;
-
 for ( my $i = 0; $i < $#list - 1; $i += 2 ) {
 
     # files are listed as read pairs, R1 and R2
