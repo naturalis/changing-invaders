@@ -34,8 +34,9 @@ Bio::Phylo::Util::Logger->new( '-level' => $verbosity );
 my $ref_file = $config->file_for_reference($reference);
 my $staged_ref_file = $ws->stage($ref_file);
 if ( $index ) {
-    INFO "Going to index reference $reference with `bwa index $staged_ref_file`";
-    system("bwa index -a bwtsw $staged_ref_file");
+    INFO "Going to index reference $reference";
+    #system("bwa index -a bwtsw $staged_ref_file");
+    system("minimap2 -d ${staged_ref_file}.mmi ${staged_ref_file}");
 }
 
 # here we iterate over the samples, i.e. each iteration is an individual
@@ -56,14 +57,10 @@ for my $sample ( $config->samples ) {
         # do the mapping, include the @RG tag to identify samples when merging
         my $final_stem = "${outdir}/${sample}-${run}";
         my $outfile = $ws->stage($final_stem);
-        DEBUG "Going to run BWA-MEM for $outfile";
-        system("bwa mem -M -v 2 -t $threads $staged_ref_file $staged_r1 $staged_r2 > ${outfile}.sam");
+        DEBUG "Going to map paired end reads for $outfile";
+        #system("bwa mem -M -v 2 -t $threads $staged_ref_file $staged_r1 $staged_r2 > ${outfile}.sam");
+        system("minimap2 -ax sr ${staged_ref_file} ${staged_r1} ${staged_r2} | samtools view -S -b > ${outfile}.unsorted.bam");
         unlink($staged_r1, $staged_r2);
-
-         # convert to BAM
-        DEBUG "Going to run samtools view (i.e. SAM => BAM) for $outfile";
-        system("samtools view -S -b ${outfile}.sam > ${outfile}.unsorted.bam");
-        unlink("${outfile}.sam");
 
         # sort the reads in the BAM
         DEBUG "Going to run samtools sort (i.e. for merging) for $outfile";
