@@ -1,6 +1,7 @@
 ---
 reference:
   Rnor_6.0: /Volumes/NGS/B19005-525/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa.gz
+  Rnor_6.0-filtered: /Volumes/NGS/B19005-525/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa.gz
 sample:
   C0910_41662:
     run:
