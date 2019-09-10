@@ -33,7 +33,7 @@ Bio::Phylo::Util::Logger->new( '-level' => $verbosity );
 # lookup reference file, possibly index
 my $ref_file = $config->file_for_reference($reference);
 my $staged_ref_file = $ws->stage($ref_file);
-if ( $index ) {
+if (defined $index) {
     my $index_command = "minimap2 -d ${staged_ref_file}.mmi -t ${threads} ${staged_ref_file}";
     INFO "Going to index reference with: '$index_command'";
     system($index_command);
@@ -53,33 +53,98 @@ for my $sample ( sort { $a cmp $b } $config->samples ) {
         my ( $r1, $r2 ) = $config->files_for_run( sample => $sample, run => $run, type => 'fastp' );
         my ( $staged_r1, $staged_r2 ) = map { $ws->stage($_) } $r1, $r2;
 
-        # minimap2 arguments: `-ax sr` (short reads), `-a` (out format BAM), `-t 4` (threads)
-        # mapping arguments for the template: 1=threads, 2=ref, 3=R1, 4=R2, 5=out
-        my $template    = "minimap2 -ax sr -a -t %i %s %s %s | samtools view -S -b - > %s.unsorted.bam";
+        # $final_stem is to deposit the final result (i.e. the merge across the samples) in storage
+        # $tmp_stem is for the intermediate steps, which are staged on faster media
         my $final_stem  = "${outdir}/${sample}-${run}";
-        my $outfile     = $ws->stage($final_stem);
-        my $map_command = sprintf( $template, $threads, $staged_ref_file, $staged_r1, $staged_r2, $outfile );
-        INFO "Going to map reads with: '$map_command'";
-        system($map_command);
-        unlink($staged_r1, $staged_r2);
+        my $tmp_stem    = $ws->stage($final_stem);
+        my $tmp_bam     = "${tmp_stem}.bam";
+        if ( not -e $tmp_bam ) {
 
-        # sort the reads in the BAM
-        my $sort_command = "samtools sort ${outfile}.unsorted.bam -o ${outfile}.bam";
-        INFO "Going to sort BAM file with: '$sort_command'";
-        system($sort_command);
-        unlink("${outfile}.unsorted.bam");
-        push @bams_to_merge, "${outfile}.bam";
+            # minimap2 arguments:
+            # -ax sr    short reads
+            # -a        out format SAM
+            # -t 4      threads
+            # REF R1 R2 > out.sam
+            my $mm2 = "minimap2 -ax sr -a -t $threads $staged_ref_file $staged_r1 $staged_r2 > ${tmp_stem}.sam";
+            INFO "Going to map reads with: '$mm2'";
+            system($mm2) == 0 or die $?;
+            unlink($staged_r1, $staged_r2);
+
+            # $infile gets re-assigned after every iteration
+            my $infile = "${tmp_stem}.sam";
+            for my $op ( qw(view fixmate sort markdup) ) {
+
+                # intermediate files become *.view.bam, *.fixmate.bam, *.sort.bam, *.markdup.bam
+                my $outfile = do_bam_thing(
+                    operation => $op,
+                    infile    => $infile,
+                    outfile   => "${tmp_stem}.${op}.bam",
+                );
+                unlink($infile);
+                $infile = $outfile;
+
+                # markdup is final iteration, rename outfile to add it to the merging pile
+                if ( $op eq 'markdup' ) {
+                    system( "mv $outfile $tmp_bam" );
+                    INFO "Done doing the BAM things, $tmp_bam goes on the merging pile";
+                }
+            }
+        }
+        else {
+            INFO "Already mapped $tmp_bam";
+        }
+        push @bams_to_merge, $tmp_bam;
     }
 
-    # XXX this will merge all the runs under a single 'read group' (i.e. sample)
+    # merge the files for this sample all under the same sample (SM) read group (RG)
     my $RG = "\@RG\tID:NA\tSM:${sample}\tPL:ILLUMINA\tPI:NA";
-
-    # now merge the files for this sample
-    my $merge_command = "samtools merge -r '$RG' ${outdir}/${sample}.bam @bams_to_merge";
+    my $merge_command = "samtools merge -r '$RG' -l 9 --threads ${threads} ${outdir}/${sample}.bam @bams_to_merge";
     INFO "Going to merge BAM files with '$merge_command'";
-    system($merge_command);
+    system($merge_command) == 0 or die $?;
     unlink(@bams_to_merge);
     $config->runs_for_sample( sample => $sample, type => 'bam', list => [ "${outdir}/${sample}.bam" ] );
 }
 
 print $config->to_string;
+
+sub do_bam_thing {
+    my %args = @_;
+    my ( $operation, $infile, $outfile ) = @args{qw[operation infile outfile]};
+
+    # command template, can use sprintf( $tmpl, $threads, $infile, $outfile ) on all of them
+    my %OI_ops = (
+        'view'    => 'samtools view -b -u -F 0x04 --threads %i -o %s %s', # 0 -b (bam) -u (uncompressed) -F 0x04 (filter unmapped)
+        'sort'    => 'samtools sort -l 0 -m 7G --threads %i %s -o %s',    # 2 -m 6G = mem per thread
+    );
+    my %IO_ops = (
+        'fixmate' => 'samtools fixmate -r -m  --threads %i %s %s',        # 1 -r    = rm unmapped reads and 2ary alignments
+        'markdup' => 'samtools markdup -r --threads %i %s %s',            # 3 -r    = rm duplicates
+    );
+
+    # only do the thing if there's no outfile yet
+    if ( not -e $outfile ) {
+
+        # create command
+        my $command;
+        if ( $OI_ops{$operation} ) {
+            $command = sprintf( $OI_ops{$operation}, $threads, $outfile, $infile );
+        }
+        elsif ( $IO_ops{$operation} ) {
+            $command = sprintf( $IO_ops{$operation}, $threads, $infile, $outfile );
+        }
+        else {
+            FATAL "No such operation known: $operation";
+        }
+
+        # do the thing
+        INFO "Going to $operation BAM file with: $command";
+        if (system($command) != 0) {
+            FATAL "'$command': $?";
+            die;
+        }
+    }
+    else {
+        WARN "Expected output file ($outfile) already exists, won't overwrite";
+    }
+    return $outfile;
+}
