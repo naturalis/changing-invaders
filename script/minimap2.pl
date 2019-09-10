@@ -114,7 +114,7 @@ sub do_bam_thing {
     # command template, can use sprintf( $tmpl, $threads, $infile, $outfile ) on all of them
     my %OI_ops = (
         'view'    => 'samtools view -b -u -F 0x04 --threads %i -o %s %s', # 0 -b (bam) -u (uncompressed) -F 0x04 (filter unmapped)
-        'sort'    => 'samtools sort -l 0 -m 7G --threads %i %s -o %s',    # 2 -m 6G = mem per thread
+        'sort'    => 'samtools sort -l 0 -m 7G --threads %i -o %s %s',    # 2 -m 6G = mem per thread
     );
     my %IO_ops = (
         'fixmate' => 'samtools fixmate -r -m  --threads %i %s %s',        # 1 -r    = rm unmapped reads and 2ary alignments
