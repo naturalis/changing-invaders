@@ -4,7 +4,7 @@
 #SBATCH --output=ci-merge.out
 
 DIR=~/fileserver/projects/B19005-525/Samples/
-SAMPLES=$(ls $DIR);
+SAMPLES=$(ls $DIR)
 for SAMPLE in $SAMPLES; do
   cd $DIR/$SAMPLE
     BAMS=$(ls *.bam)
