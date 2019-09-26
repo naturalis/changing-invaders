@@ -9,6 +9,6 @@ for SAMPLE in $SAMPLES; do
   cd $DIR/$SAMPLE
     export SAMPLE
     perl -e 'print printf("\@RG\tID:NA\tSM:%s\tPL:ILLUMINA\tPI:NA", $ENV{SAMPLE})' > rg.txt
-    samtools merge -rh rg.txt -l 9 --threads 48 ${SAMPLE}.bam *.bam
+    samtools merge -rh rg.txt -l 9 --threads 16 ${SAMPLE}.bam *.bam
   cd -
 done
