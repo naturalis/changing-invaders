@@ -7,7 +7,8 @@ DIR=/home/rutger.vos/fileserver/projects/B19005-525/Samples/
 SAMPLES=$(ls $DIR)
 for SAMPLE in $SAMPLES; do
   cd $DIR/$SAMPLE
-    echo "@RG\tID:NA\tSM:${SAMPLE}\tPL:ILLUMINA\tPI:NA" > rg.txt
+    export SAMPLE
+    perl -e 'print printf("\@RG\tID:NA\tSM:%s\tPL:ILLUMINA\tPI:NA", $ENV{SAMPLE})' > rg.txt
     samtools merge -rh rg.txt -l 9 --threads 48 ${SAMPLE}.bam *.bam
   cd -
 done
