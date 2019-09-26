@@ -3,7 +3,7 @@
 #SBATCH --job-name=ci-merge
 #SBATCH --output=ci-merge.out
 
-DIR=~/fileserver/projects/B19005-525/Samples/
+DIR=/home/rutger.vos/fileserver/projects/B19005-525/Samples/
 SAMPLES=$(ls $DIR)
 for SAMPLE in $SAMPLES; do
   cd $DIR/$SAMPLE
