@@ -2,6 +2,8 @@
 # dit script bewerkt het vcf bestand voor het wordt opgeslagen in een database
 # door David Noteborn
 # changing invaders
+# de afstand kolommen geven -1 aan als afstand niet bepaald kan worden
+# (geen andere snps meer op dat chromosoom)
 import sys
 if len(sys.argv) > 1:
 	vcf = sys.argv[1]
@@ -25,10 +27,14 @@ for regel in db:
 	else:
 		regel = [notperiod(x) for x in regel.split("\t")]
 		if semi_oud == "":
-			regel += "\t" + regel[1]
+			regel += "\t" + "-1"
 		else:
-			regel += [str(int(regel[1]) - int(semi_oud[1]))]
-			semi_oud += [str(int(regel[1]) - int(semi_oud[1]))]
+			if regel[0]==semi_oud[0]:
+				regel += [str(int(regel[1]) - int(semi_oud[1]))]
+				semi_oud += [str(int(regel[1]) - int(semi_oud[1]))]
+			else:
+				regel += ["-1"]
+				semi_oud += ["-1"]
 			print("\t".join(semi_oud))
 		semi_oud = regel[0:8] + regel[9].strip().split(':') + [str(max([len(x) for x in regel[4].split(',')]))] + [regel[-1]]
 
