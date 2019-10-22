@@ -14,6 +14,7 @@ def notperiod(x):
 	else:
 		return x
 
+semi_oud = ""
 for regel in db:
 	if regel[0:2] == "##":
 		pass
@@ -22,6 +23,14 @@ for regel in db:
 			regel = [notperiod(x) for x in regel.split("\t")]
 			print("\t".join(regel[0:8] + [regel[9].strip() + "_" + x for x in ['GT', 'AD', 'DP', 'GQ', 'PL']] + ['SNP_SIZE']))
 	else:
-		max([len(x) for x in regel[4].split(',')])
 		regel = [notperiod(x) for x in regel.split("\t")]
-		print("\t".join(regel[0:8] + regel[9].strip().split(':') + [str(max([len(x) for x in regel[4].split(',')]))]))
+		if semi_oud == "":
+			regel += "\t" + regel[1]
+		else:
+			regel += [str(int(regel[1]) - int(semi_oud[1]))]
+			semi_oud += [str(int(regel[1]) - int(semi_oud[1]))]
+			print("\t".join(semi_oud))
+		semi_oud = regel[0:8] + regel[9].strip().split(':') + [str(max([len(x) for x in regel[4].split(',')]))] + [regel[-1]]
+
+
+print("\t".join(semi_oud + ["-1"]))

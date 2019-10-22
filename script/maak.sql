@@ -20,7 +20,9 @@ CREATE TABLE EXULANS(
    -- DP:read diepte:
    -- GQ:conditionele genotype kwaliteit:
    -- PL:phred-geschaalde genotype likelihood, afgerond tot het dichtstbijzijnde getal
-   MAXSNPSIZE INT
+   MAXSNPSIZE INT,
+   DIST_P     INT, -- afstand tov vorige SNP
+   DIST_N     INT  -- afstand tov volgende SNP
 );
 .separator "\t"
 .import ctest1.g.ts.vcf EXULANS

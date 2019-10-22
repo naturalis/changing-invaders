@@ -20,7 +20,9 @@ CREATE TABLE EXULANS(
    -- GQ:conditionele genotype kwaliteit:
    -- MIN_DP:laagste read diepte:
    -- PL:phred-geschaalde genotype likelihood, afgerond tot het dichtstbijzijnde getal
-   MAXSNPSIZE INT
+   MAXSNPSIZE  INT,
+   DIST_P      INT,
+   DIST_N      INT
 );
 .separator "\t"
 .import ctest1.g.ts.vcf EXULANS
