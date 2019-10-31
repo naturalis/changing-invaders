@@ -18,9 +18,15 @@ def notperiod(x):
 
 def unconstruct(info, data):
 	if info[-1]=="SB":
-		return data
+		if info[-2]=="PL":
+			return data
+		else:
+			return data[0:4] + [data[-3], data[-1]] # physical phasing
 	else:
-		return [data[0]] + [''] + data[1:3] + [data[4]] + [""]
+		if info[-1]=="PS":
+			return [data[0], "", "", "", "", ""]
+		else:
+			return [data[0]] + [''] + data[1:3] + [data[4]] + [""]
 
 semi_oud = ""
 for regel in db:
@@ -41,9 +47,13 @@ for regel in db:
 			else:
 				regel += ["-1"]
 				semi_oud += ["-1"]
-			print("\t".join(semi_oud))
-		semi_oud = regel[0:8] + \
-		unconstruct(regel[8].split(":"), regel[9].strip().split(':')) + \
-			[str(max([len(x) for x in regel[4].split(',')]))] + [regel[-1]]
+			if len(semi_oud) > 2:
+				print("\t".join(semi_oud))
+		if len(regel[8].split(":")) > 1:
+			semi_oud = regel[0:8] + \
+			unconstruct(regel[8].split(":"), regel[9].strip().split(':')) + \
+				[str(max([len(x) for x in regel[4].split(',')]))] + [regel[-1]]
+		else:
+			semi_oud = ["", regel[1]]
 # print de laatste regel
 print("\t".join(semi_oud + ["-1"]))
