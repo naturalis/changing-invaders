@@ -16,6 +16,12 @@ def notperiod(x):
 	else:
 		return x
 
+def unconstruct(info, data):
+	if info[-1]=="SB":
+		return data
+	else:
+		return [data[0]] + [''] + data[1:3] + [data[4]] + [""]
+
 semi_oud = ""
 for regel in db:
 	if regel[0:2] == "##":
@@ -23,7 +29,7 @@ for regel in db:
 	elif regel[0:1] == "#":
 		if False:
 			regel = [notperiod(x) for x in regel.split("\t")]
-			print("\t".join(regel[0:8] + [regel[9].strip() + "_" + x for x in ['GT', 'AD', 'DP', 'GQ', 'PL']] + ['SNP_SIZE']))
+			print("\t".join(regel[0:8] + [regel[9].strip() + "_" + x for x in ['GT', 'AD', 'DP', 'GQ', 'PL', 'SB']] + ['SNP_SIZE']))
 	else:
 		regel = [notperiod(x) for x in regel.split("\t")]
 		if semi_oud == "":
@@ -36,7 +42,8 @@ for regel in db:
 				regel += ["-1"]
 				semi_oud += ["-1"]
 			print("\t".join(semi_oud))
-		semi_oud = regel[0:8] + regel[9].strip().split(':') + [str(max([len(x) for x in regel[4].split(',')]))] + [regel[-1]]
-
-
+		semi_oud = regel[0:8] + \
+		unconstruct(regel[8].split(":"), regel[9].strip().split(':')) + \
+			[str(max([len(x) for x in regel[4].split(',')]))] + [regel[-1]]
+# print de laatste regel
 print("\t".join(semi_oud + ["-1"]))
