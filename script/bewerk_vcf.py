@@ -47,7 +47,7 @@ for regel in db:
 			else:
 				regel += ["-1"]
 				semi_oud += ["-1"]
-			if len(semi_oud) > 2:
+			if len(semi_oud) > 3:
 				print("\t".join(semi_oud))
 		if len(regel[8].split(":")) > 1:
 			semi_oud = regel[0:8] + \
