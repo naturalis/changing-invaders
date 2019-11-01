@@ -7,12 +7,12 @@ CREATE TABLE EXULANS(
    QUAL       FLOAT,
    FILTER     TEXT,
    INFO       TEXT  NOT NULL,
-   EXUL1GT    TEXT,
-   EXUL1AD    TEXT,
-   EXUL1DP    INT,
-   EXUL1GQ    INT,
-   EXUL1PL    TEXT,
-   EXUL1SB    TEXT,
+   EXUL1GT    TEXT, -- genotype
+   EXUL1AD    TEXT, -- allele depth (totaal)
+   EXUL1DP    INT,  -- read diepte op deze positie
+   EXUL1GQ    INT,  -- conditionele genotype kwaliteit als phred
+   EXUL1PL    TEXT, -- phred-scaled genotype likelihoods afgerond
+   EXUL1SB    TEXT, -- strand bias statistiek
    -- voor iedere rat:
    -- GT:AD:DP:GQ:PL:SB
    --
@@ -27,6 +27,8 @@ CREATE TABLE EXULANS(
    DIST_N     INT  -- afstand tov volgende SNP
 );
 .separator "\t"
+UPDATE EXULANS set ID = NULL where ID = '';
+UPDATE EXULANS set FILTER = NULL where FILTER = '';
 .import C0910_41662.mod.g.vcf EXULANS
 -- de grootste combinatie afstand
 SELECT * FROM EXULANS ORDER BY DIST_N+DIST_P DESC LIMIT 10;
