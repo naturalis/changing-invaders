@@ -5,16 +5,18 @@
 # de afstand kolommen geven -1 aan als afstand niet bepaald kan worden
 # (geen andere snps meer op dat chromosoom)
 import sys
+import gzip
+
 if len(sys.argv) > 1:
 	vcf = sys.argv[1]
 else:
 	vcf = 'testdb.vcf'
 if len(sys.argv) > 2 and sys.argv[2]=="gzip":
-		gzipped = True
-		db = gzip.open(vcf, 'rb')
-	else:
-		gzipped = False
-		db = open(vcf, 'r')
+	gzipped = True
+	db = gzip.open(vcf, 'rb')
+else:
+	gzipped = False
+	db = open(vcf, 'r')
 def notperiod(x):
 	if x == ".":
 		return ""
@@ -22,16 +24,19 @@ def notperiod(x):
 		return x
 
 def unconstruct(info, data):
-	if info[-1]=="SB":
-		if info[-2]=="PL":
-			return data
+	try:
+		if info[-1]=="SB":
+			if info[-2]=="PL":
+				return data
+			else:
+				return data[0:4] + [data[-3], data[-1]] # physical phasing
 		else:
-			return data[0:4] + [data[-3], data[-1]] # physical phasing
-	else:
-		if info[-1]=="PS":
-			return [data[0], "", "", "", "", ""]
-		else:
-			return [data[0]] + [''] + data[1:3] + [data[4]] + [""]
+			if info[-1]=="PS" or len(info) == 3:
+				return [data[0], "", "", "", "", ""]
+			else:
+				return [data[0]] + [''] + data[1:3] + [data[4]] + [""]
+	except:
+		print(info)
 
 semi_oud = ""
 for regel in db:
