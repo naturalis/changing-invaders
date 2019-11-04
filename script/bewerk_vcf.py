@@ -9,7 +9,12 @@ if len(sys.argv) > 1:
 	vcf = sys.argv[1]
 else:
 	vcf = 'testdb.vcf'
-db = open(vcf, 'r')
+if len(sys.argv) > 2 and sys.argv[2]=="gzip":
+		gzipped = True
+		db = gzip.open(vcf, 'rb')
+	else:
+		gzipped = False
+		db = open(vcf, 'r')
 def notperiod(x):
 	if x == ".":
 		return ""
@@ -30,6 +35,8 @@ def unconstruct(info, data):
 
 semi_oud = ""
 for regel in db:
+	if gzipped:
+		regel = regel.decode('utf-8')
 	if regel[0:2] == "##":
 		pass
 	elif regel[0:1] == "#":

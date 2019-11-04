@@ -29,6 +29,6 @@ CREATE TABLE EXULANS(
 .separator "\t"
 UPDATE EXULANS set ID = NULL where ID = '';
 UPDATE EXULANS set FILTER = NULL where FILTER = '';
-.import C0910_41662.mod.g.vcf EXULANS
+.import /dev/stdin EXULANS
 -- de grootste combinatie afstand
-SELECT * FROM EXULANS ORDER BY DIST_N+DIST_P DESC LIMIT 10;
+-- SELECT * FROM EXULANS ORDER BY DIST_N+DIST_P DESC LIMIT 10;
