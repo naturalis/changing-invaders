@@ -11,3 +11,4 @@ _progress=$(sed 's/.$/.&/'<<<${_progress})
 printf "[${_fill// /\#}${_empty// /-}] ${_progress}%%\n"
 }
 ls /home/d*n*/gatk*/.queue/scatterGather/haplotypeCaller-1-sg/temp_*_of_16/*.sort.g.vcf.gz.out |xargs -L1 tail -1|sed -E 's/ +/ /g'|cut -d' ' -f11|sed 's/[%\\.]//g'|while read number;do ProgressBar ${number} 1000;done
+echo cat\(round\($(bcftools view GMI-4_41656.bcf|tail -1|sed -E 's/[ \t]+/ /g'|cut -d' ' -f2)/2719000000 \* 100, 2\), \"%\",sep=\'\'\)\;cat\(\'\\n\'\)|R --slave
