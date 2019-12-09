@@ -1,8 +1,8 @@
 [ $# -gt 0 ] && sample=$1 || sample=GMI-4_41656
-sbatch <<< '#!/bin/bash
-export R_TELEGRAM_BOT_invadersBot="939730741:AAHnRC-oDDSMJ_qjqmsxcrfcfWkJ6uaXm28"
+sbatch -D $PWD<<< '#!/bin/bash
 #SBATCH --job-name='$sample'
-cp ../rutger.vos/fileserver/projects/B19005-525/Samples/'$sample/$sample'.bam .
+b=/home/rutger.vos/fileserver/projects/B19005-525/Samples/'$sample/$sample'.bam
+[ $(ls -l $b |sed s/\ +/\ /g|cut -d\  -f5) -gt 100 ] && cp $b .
 samtools sort -o '$sample'.sort.bam '$sample'.bam
-rm '$sample.bam'
-Rscript telegramhowto.R "'$sample' is gesorteerd"'
+[ -e '$sample'.sort.bam ] && rm '$sample.bam' || rm '$sample'.sort.bam.*
+Rscript $HOME/telegramhowto.R "'$sample' is gesorteerd"'
