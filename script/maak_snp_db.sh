@@ -10,8 +10,8 @@
 sbatch -D $PWD <<< '#!/bin/bash
 #SBATCH --job-name=DB-seq
 database=zeven_of_meer.db
-shopt -s extglob
 
+shopt -s extglob
 getal='$getal'
 [ "$getal" = 1 ] && {
 	[ -e $database ] && rm $database
