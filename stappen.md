@@ -20,7 +20,7 @@
   - there is also a database created with only unique SNPs and the Genotype/Phred columns per sample
 * database
   - there is filtered on multiple ways:
-    - Is it homozygote, so is the SNP fully shared over all 8 organisms. If that is the case, the SNP will nut detect much.
+    - Is it homozygote, so is the SNP fully shared over all 8 organisms. If that is the case, the SNP will not detect much.
     - Is the general phred quality score higher than 99.
     - Is the number of reads on the position of the SNP (*coverage*) greater than 16 and smaller than 110?
     - Is there no other SNP 300 bases upstream or downstream?
