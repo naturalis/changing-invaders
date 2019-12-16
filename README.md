@@ -15,3 +15,7 @@ verklaring scripts/eplanation scripts:
 * maak_ander.sql: maak een database van de output van vorige bestand, roep aan dmv `sqlite3 onenucleotide.db < maak_ander.sql` andere maak*sql werken niet op de data van haplotype caller/create database of the output of the previous file
 * maak_database.sh: koppel bewerk_vcf aan maak_ander
 * snp_vinden.py: laat REF zien van alle SNPs in de database van vorige stap/show REF of all SNPs in the database of previous step
+
+vervolgens bcfindex.sh -> bcfmerge.sh
+* bcfindex.sh: indexeer het bcf bestand
+* bcfmerge.sh: combineer bcf bestanden tot een groter bestand
