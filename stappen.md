@@ -31,4 +31,5 @@
   - Consensus genomes of the rats are made by calling all types of variants for a bam file, and use these variants.
 * BLASTing
   - The sequence of 250 bases before, and after the SNP is collected from the reference genome(*R. Norvegicus*), and BLASTed against all the constructed consensus genomes of the 8 rats. The SNPs belonging to sequences which are matched more than one, or zero times, are rejected.
+
 [Filter steps image][https://raw.githubusercontent.com/naturalis/changing-invaders/master/filterStap.png?token=ANKL234X5VYRSAE4RBEXL6C6AXKGS]
