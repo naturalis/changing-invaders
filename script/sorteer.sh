@@ -9,4 +9,4 @@ b=/home/rutger.vos/fileserver/projects/B19005-525/Samples/"'"$sample/$sample"'".
 [ $(ls -l $b |sed s/\ +/\ /g|cut -d\  -f5) -gt 100 ] && cp $b .
 samtools sort -o '$sample'.sort.bam "'"$sample"'".bam
 [ -e "'"$sample"'".sort.bam ] && rm "'"$sample".bam'" || rm "'"$sample"'".sort.bam.*
-Rscript $HOME/telegramhowto.R "'"$sample"' is gesorteerd"'
+$HOME/telegramhowto.R "'"$sample"' is gesorteerd"'

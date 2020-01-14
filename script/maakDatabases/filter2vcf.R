@@ -1,7 +1,7 @@
 library(dplyr)
 library(RSQLite)
 posities <- read.csv("posities.csv", row.names = 1)
-if (!is.na(commandArgs(trailingOnly=TRUE)[1])) db = commandArgs(trailingOnly=TRUE)[1] else db = "/data/david.noteborn/zeven_of_meer.db"
+if (!is.na(commandArgs(trailingOnly=TRUE)[1])) db = commandArgs(trailingOnly=TRUE)[1] else db = "/data/david.noteborn/acht.db"
 eightnucleotide <- dbConnect(SQLite(), db)
 dbWriteTable(eightnucleotide, "FILTERED", posities, overwrite = TRUE)
 dbListTables(eightnucleotide)

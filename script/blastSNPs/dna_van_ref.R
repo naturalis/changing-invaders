@@ -5,7 +5,7 @@
 library("Biostrings")
 # lees het fasta basetand in.
 # dit duurt wel even
-s = readDNAStringSet("REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa")
+s = readDNAStringSet(paste0(Sys.getenv("HOME"), "/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa"))
 # bewerk de namen zodat het enkel het chromosoom nummer is
 names(s) <- mapply(`[`, strsplit(names(s), " "), 1)
 posities <- read.csv("/data/david.noteborn/filtered_snps.csv", row.names = 1)
