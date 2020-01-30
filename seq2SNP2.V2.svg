@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="131.573cm" height="69.465cm" viewBox="-39.416 -4.172 132.157 85.293"
+ xmlns="http://www.w3.org/2000/svg"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+<ellipse cx="13.562" cy="3.600" rx="7.353" ry="2.150" fill="#FFFFFF" stroke="none"  /><ellipse cx="13.562" cy="3.600" rx="7.353" ry="2.150" fill="none" stroke="#000000"  stroke-width="0.100" /><text x="13.562" y="3.394"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+8 R. Exulans genomes are</text>
+<text x="13.562" y="4.194"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+sequenced in 4 runs (paired end)</text>
+<rect x="8.070" y="7.650" width="10.988" height="2.700" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="8.070" y="7.650" width="10.988" height="2.700" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="13.564" y="9.194"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+trimmed using fastp (fastp.pl)</text>
+<line x1="13.562" y1="5.750" x2="13.563" y2="7.163" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="13.563,7.538 13.313,7.038 13.563,7.163 13.813,7.038 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="13.563,7.538 13.313,7.038 13.563,7.163 13.813,7.038 "/>
+<rect x="4.216" y="11.650" width="18.680" height="2.700" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="4.216" y="11.650" width="18.680" height="2.700" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="13.556" y="12.794"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+mapped to reference (R. Norvegicus)</text>
+<text x="13.556" y="13.594"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(paired reads combined) (individual runs) (minimap.pl)</text>
+<line x1="13.563" y1="10.350" x2="13.559" y2="11.163" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="13.556,11.538 13.309,11.037 13.559,11.163 13.809,11.040 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="13.556,11.538 13.309,11.037 13.559,11.163 13.809,11.040 "/>
+<rect x="4.871" y="15.089" width="17.358" height="1.900" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="4.871" y="15.089" width="17.358" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="13.550" y="16.233"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+4 runs are combined for each sample (merge.sh)</text>
+<line x1="13.556" y1="14.350" x2="13.554" y2="14.602" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="13.551,14.977 13.305,14.475 13.554,14.602 13.805,14.479 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="13.551,14.977 13.305,14.475 13.554,14.602 13.805,14.479 "/>
+<rect x="5.751" y="17.856" width="15.598" height="2.700" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="5.751" y="17.856" width="15.598" height="2.700" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="13.550" y="19.000"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="700">
+sample names are unified in the</text>
+<text x="13.550" y="19.800"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="700">
+resulting files (gelijke_sample_naam.sh)</text>
+<line x1="13.550" y1="16.989" x2="13.550" y2="17.369" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="13.550,17.744 13.300,17.244 13.550,17.369 13.800,17.244 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="13.550,17.744 13.300,17.244 13.550,17.369 13.800,17.244 "/>
+<rect x="5.310" y="21.646" width="16.483" height="4.300" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="5.310" y="21.646" width="16.483" height="4.300" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="13.551" y="22.790"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="700">
+the 8 files are sorted and indexed</text>
+<text x="13.551" y="23.590"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="700">
+(for every sample: indexeer.sh, sorteer.sh(</text>
+<text x="13.551" y="24.390"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="700">
+with variants: sorteer-alhier.sh and</text>
+<text x="13.551" y="25.190"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="700">
+sorteer-van-data.sh)) [sample.bam]</text>
+<line x1="13.550" y1="20.556" x2="13.551" y2="21.159" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="13.551,21.534 13.301,21.034 13.551,21.159 13.801,21.034 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="13.551,21.534 13.301,21.034 13.551,21.159 13.801,21.034 "/>
+<path stroke="none" fill="#FFFFFF" stroke-width="0.100" d="M 22.522,6.006 L 28.814,6.006 L 28.814,7.969 C 27.555,7.642 26.926,7.642 25.668,7.969 C 24.410,8.296 23.780,8.296 22.522,7.969 L 22.522,6.006 "/>
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M 22.522,6.006 L 28.814,6.006 L 28.814,7.969 C 27.555,7.642 26.926,7.642 25.668,7.969 C 24.410,8.296 23.780,8.296 22.522,7.969 L 22.522,6.006 "/>
+<text x="25.668" y="7.018"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+HaplotypeCaller</text>
+<line x1="21.793" y1="21.646" x2="25.535" y2="8.437" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="25.637,8.077 25.742,8.626 25.535,8.437 25.261,8.490 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="25.637,8.077 25.742,8.626 25.535,8.437 25.261,8.490 "/>
+<rect x="19.991" y="-4.079" width="13.008" height="2.247" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="19.991" y="-4.079" width="13.008" height="2.247" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="26.494" y="-2.762"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+paralell using spark or -nc (chrashes)</text>
+<rect x="13.050" y="-3.809" width="6.182" height="1.900" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="13.050" y="-3.809" width="6.182" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="16.142" y="-2.665"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+raw (too slow)</text>
+<rect x="5.375" y="26.962" width="16.350" height="1.900" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="5.375" y="26.962" width="16.350" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="13.550" y="28.106"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="700">
+bcftools bcfcaller (bcfcall.sh) [sample.bcf]</text>
+<rect x="1.931" y="29.917" width="23.240" height="1.900" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="1.931" y="29.917" width="23.240" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="13.551" y="31.061"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+make database of SNPs (all the scripts in maakDatabases on GitHub)</text>
+<rect x="33.680" y="-4.122" width="32.050" height="2.700" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="33.680" y="-4.122" width="32.050" height="2.700" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="49.705" y="-2.978"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+paralell using Queue (works but requires a lot of cores and still takes some days for one sample)</text>
+<text x="49.705" y="-2.178"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(hapcall-queue.sh (+ haplotypeCaller.scala)) [sample.bcf] (only for Cambodja)</text>
+<rect x="7.110" y="42.045" width="12.880" height="2.700" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="7.110" y="42.045" width="12.880" height="2.700" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="13.550" y="43.189"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+extract SNPs that are not filtered out</text>
+<text x="13.550" y="43.989"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(uniek-meer.R)[filtered_snps.csv]</text>
+<rect x="-2.860" y="45.774" width="32.828" height="2.700" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="-2.860" y="45.774" width="32.828" height="2.700" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="13.553" y="46.918"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+extract regions of 250 bases before and after the SNPs (dna_van_ref.R)[filtered_snps_seq.csv] and</text>
+<text x="13.553" y="47.718"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+convert to fasta to allow blasting (sed script in comment of dna_van_ref.R)[filtered_snps_seq.fasta]</text>
+<rect x="-4.502" y="50.056" width="36.100" height="5.900" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="-4.502" y="50.056" width="36.100" height="5.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="13.548" y="51.200"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+the regions before and after the SNP are BLASTed against the consensus genomes (blast_primers.sh),</text>
+<text x="13.548" y="52.000"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+which will result into a json file [filtered_snps_first part of sample name.json],</text>
+<text x="13.548" y="52.800"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+that will be converted to a file that will be used to test whether the region</text>
+<text x="13.548" y="53.600"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+appears 1 or (0 or multiple times)[numlines_first part of sample name.txt] at that consensus genome.</text>
+<text x="13.548" y="54.400"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+Using that file a new sequence file is created that only contains sequences that occur 1 time on the genome.</text>
+<text x="13.548" y="55.200"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+The numbers of resulting SNPs (/2 sequences) are logged.</text>
+<rect x="-4.790" y="62.418" width="36.668" height="2.825" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="-4.790" y="62.418" width="36.668" height="2.825" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="13.544" y="63.624"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+Extract 300 SNPs that are contrained to the filter conditions and most of them consist of more than 1 mutation</text>
+<text x="13.544" y="64.424"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(SNPstats.R)[SNP_V2.csv] and convert them to fasta (sed expression inside SNPstats.R)[SNP_V2.fasta]</text>
+<rect x="-39.366" y="31.751" width="20.043" height="4.300" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="-39.366" y="31.751" width="20.043" height="4.300" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="-29.345" y="32.895"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="700">
+consensus genomes are made by the use of bcftools</text>
+<text x="-29.345" y="33.695"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="700">
+(consensus.sh)[sample.cns.fa]</text>
+<text x="-29.345" y="34.495"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="700">
+whereafter they are indexed</text>
+<text x="-29.345" y="35.295"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="700">
+(index_consensus.sh) [sample.cns.fa.nin]</text>
+<line x1="24.095" y1="6.006" x2="17.364" y2="-1.496" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="17.114,-1.775 17.634,-1.570 17.364,-1.496 17.262,-1.236 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="17.114,-1.775 17.634,-1.570 17.364,-1.496 17.262,-1.236 "/>
+<line x1="25.668" y1="6.006" x2="26.443" y2="-1.348" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="26.483,-1.721 26.679,-1.197 26.443,-1.348 26.182,-1.250 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="26.483,-1.721 26.679,-1.197 26.443,-1.348 26.182,-1.250 "/>
+<line x1="27.241" y1="6.006" x2="33.361" y2="-1.054" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="33.607,-1.337 33.468,-0.796 33.361,-1.054 33.091,-1.123 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="33.607,-1.337 33.468,-0.796 33.361,-1.054 33.091,-1.123 "/>
+<line x1="13.551" y1="25.946" x2="13.551" y2="26.475" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="13.550,26.850 13.301,26.350 13.551,26.475 13.801,26.350 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="13.550,26.850 13.301,26.350 13.551,26.475 13.801,26.350 "/>
+<line x1="13.550" y1="28.862" x2="13.550" y2="29.430" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="13.551,29.805 13.300,29.305 13.550,29.430 13.800,29.305 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="13.551,29.805 13.300,29.305 13.550,29.430 13.800,29.305 "/>
+<line x1="13.551" y1="31.817" x2="13.550" y2="41.558" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="13.550,41.933 13.300,41.433 13.550,41.558 13.800,41.433 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="13.550,41.933 13.300,41.433 13.550,41.558 13.800,41.433 "/>
+<line x1="7.741" y1="31.817" x2="1.982" y2="35.707" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="1.671,35.917 1.945,35.430 1.982,35.707 2.225,35.844 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="1.671,35.917 1.945,35.430 1.982,35.707 2.225,35.844 "/>
+<line x1="13.550" y1="44.745" x2="13.552" y2="45.287" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="13.553,45.662 13.301,45.163 13.552,45.287 13.801,45.161 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="13.553,45.662 13.301,45.163 13.552,45.287 13.801,45.161 "/>
+<path stroke="#000000" fill="none" stroke-width="0.100"  d ="M 5.310,23.796 A 19.001,19.001 0 0,0 -29.062,31.221 "/>
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="-29.124,31.591 -29.297,31.059 -29.068,31.220 -28.802,31.134 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="-29.124,31.591 -29.297,31.059 -29.068,31.220 -28.802,31.134 "/>
+<path stroke="#000000" fill="none" stroke-width="0.100"  d ="M -29.345,36.051 A 18.635,18.635 0 0,0 -5.187,53.052 "/>
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="-4.830,52.937 -5.223,53.335 -5.185,53.058 -5.384,52.862 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="-4.830,52.937 -5.223,53.335 -5.185,53.058 -5.384,52.862 "/>
+<line x1="13.553" y1="48.474" x2="13.550" y2="49.569" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="13.548,49.944 13.300,49.444 13.550,49.569 13.800,49.445 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="13.548,49.944 13.300,49.444 13.550,49.569 13.800,49.445 "/>
+<rect x="-16.206" y="21.103" width="18.998" height="1.900" fill="#00FF00" stroke="none" stroke-width="0"/>
+<rect x="-16.206" y="21.103" width="18.998" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="-6.707" y="22.247"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+create database and fill with all SNPs (maak_snp_db.sh)</text>
+<rect x="-15.408" y="24.072" width="13.237" height="1.900" fill="#00FF00" stroke="none" stroke-width="0"/>
+<rect x="-15.408" y="24.072" width="13.237" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="-8.789" y="25.216"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+create table definition (maak_snp.sql)</text>
+<rect x="-18.395" y="27.217" width="12.515" height="2.700" fill="#00FF00" stroke="none" stroke-width="0"/>
+<rect x="-18.395" y="27.217" width="12.515" height="2.700" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="-12.138" y="28.361"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="700">
+append sample (bewerk_snp.py</text>
+<text x="-12.138" y="29.161"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="700">
+-&gt; voeg_bcf_toe.sql)</text>
+<rect x="-28.491" y="36.728" width="14.732" height="2.700" fill="#00FF00" stroke="none" stroke-width="0"/>
+<rect x="-28.491" y="36.728" width="14.732" height="2.700" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="-21.124" y="37.873"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+fill table with unique position chromosome</text>
+<text x="-21.124" y="38.673"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+pairs (UPOS) (vulupos.sql)</text>
+<rect x="-12.542" y="35.979" width="14.120" height="1.900" fill="#00FF00" stroke="none" stroke-width="0"/>
+<rect x="-12.542" y="35.979" width="14.120" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="-5.482" y="37.123"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+most used database [acht.db]</text>
+<line x1="-1.952" y1="35.979" x2="-1.958" y2="23.490" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="-1.958,23.115 -1.708,23.614 -1.958,23.490 -2.208,23.615 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="-1.958,23.115 -1.708,23.614 -1.958,23.490 -2.208,23.615 "/>
+<line x1="-5.482" y1="35.979" x2="-5.480" y2="26.458" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="-5.480,26.083 -5.230,26.583 -5.480,26.458 -5.730,26.583 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="-5.480,26.083 -5.230,26.583 -5.480,26.458 -5.730,26.583 "/>
+<line x1="-9.012" y1="35.979" x2="-9.009" y2="30.404" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="-9.009,30.029 -8.759,30.529 -9.009,30.404 -9.259,30.528 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="-9.009,30.029 -8.759,30.529 -9.009,30.404 -9.259,30.528 "/>
+<line x1="-12.542" y1="37.404" x2="-13.271" y2="37.404" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="-13.646,37.404 -13.146,37.154 -13.271,37.404 -13.147,37.654 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="-13.646,37.404 -13.146,37.154 -13.271,37.404 -13.147,37.654 "/>
+<polygon fill="#FFFFFF" stroke="none" stroke-width="0.100" points="-20.930,43.626 -9.902,43.626 -10.765,45.996 -21.792,45.996 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="-20.930,43.626 -9.902,43.626 -10.765,45.996 -21.792,45.996 "/>
+<text x="-15.847" y="44.647"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+sample-enum.csv is used as table to</text>
+<text x="-15.847" y="45.282"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+convert sample names to a number</text>
+<line x1="-10.676" y1="38.375" x2="-11.836" y2="43.027" stroke="#000000" stroke-width="0.100" />
+<rect x="25.717" y="23.435" width="14.825" height="3.500" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="25.717" y="23.435" width="14.825" height="3.500" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="33.129" y="24.579"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+combine bcf files of organisms to 1 with as</text>
+<text x="33.129" y="25.379"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+columns the genotype per organism</text>
+<text x="33.129" y="26.179"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(bcfmerge.sh)[merge&lt;number&gt;.bcf]</text>
+<line x1="21.725" y1="27.437" x2="25.505" y2="26.133" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="25.220,26.496 25.611,26.096 25.057,26.023 "/>
+<rect x="46.807" y="15.340" width="21.407" height="1.900" fill="#FF0000" stroke="none" stroke-width="0"/>
+<rect x="46.807" y="15.340" width="21.407" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="57.511" y="16.484"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+create database and fill with all SNPs (maak_acht_database.sh)</text>
+<rect x="47.763" y="17.873" width="13.492" height="1.900" fill="#FF0000" stroke="none" stroke-width="0"/>
+<rect x="47.763" y="17.873" width="13.492" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="54.510" y="19.017"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+create table definition (maak_acht.sql)</text>
+<rect x="47.257" y="20.068" width="20.320" height="1.900" fill="#FF0000" stroke="none" stroke-width="0"/>
+<rect x="47.257" y="20.068" width="20.320" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="57.417" y="21.212"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+insert bcf file (bewerk_acht.py)</text>
+<rect x="34.119" y="19.667" width="10.788" height="2.700" fill="#FF0000" stroke="none" stroke-width="0"/>
+<rect x="34.119" y="19.667" width="10.788" height="2.700" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="39.513" y="20.811"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+SNPs combined database with</text>
+<text x="39.513" y="21.611"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+all 8 [onenucleotide_acht.db]</text>
+<line x1="44.907" y1="19.667" x2="46.507" y2="17.623" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="46.738,17.328 46.627,17.876 46.507,17.623 46.233,17.567 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="46.738,17.328 46.627,17.876 46.507,17.623 46.233,17.567 "/>
+<line x1="44.907" y1="20.342" x2="47.333" y2="19.052" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="47.665,18.876 47.340,19.331 47.333,19.052 47.106,18.890 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="47.665,18.876 47.340,19.331 47.333,19.052 47.106,18.890 "/>
+<line x1="44.907" y1="21.017" x2="46.770" y2="21.018" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="47.145,21.018 46.645,21.268 46.770,21.018 46.646,20.768 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="47.145,21.018 46.645,21.268 46.770,21.018 46.646,20.768 "/>
+<line x1="36.836" y1="23.435" x2="36.820" y2="22.591" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="37.077,22.974 36.818,22.479 36.577,22.983 "/>
+<rect x="44.505" y="6.784" width="21.408" height="1.900" fill="#0000FF" stroke="none" stroke-width="0"/>
+<rect x="44.505" y="6.784" width="21.408" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="55.208" y="7.928"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+create database and fill with all SNPs (maak_drie_database.sh)</text>
+<rect x="45.460" y="9.318" width="13.492" height="1.900" fill="#0000FF" stroke="none" stroke-width="0"/>
+<rect x="45.460" y="9.318" width="13.492" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="52.207" y="10.462"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+create table definition (maak_drie.sql)</text>
+<rect x="44.955" y="11.820" width="20.320" height="1.900" fill="#0000FF" stroke="none" stroke-width="0"/>
+<rect x="44.955" y="11.820" width="20.320" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="55.115" y="12.964"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+insert bcf file (bewerk_bcf.py)</text>
+<rect x="30.022" y="11.371" width="12.360" height="2.700" fill="#0000FF" stroke="none" stroke-width="0"/>
+<rect x="30.022" y="11.371" width="12.360" height="2.700" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="36.202" y="12.515"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+SNPs combined database with</text>
+<text x="36.202" y="13.315"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+3 samples [onenucleotide_drie.db]</text>
+<line x1="42.382" y1="11.371" x2="44.203" y2="9.066" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="44.435,8.772 44.321,9.319 44.203,9.066 43.929,9.009 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="44.435,8.772 44.321,9.319 44.203,9.066 43.929,9.009 "/>
+<line x1="42.382" y1="12.046" x2="45.039" y2="10.511" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="45.364,10.324 45.056,10.790 45.039,10.511 44.806,10.357 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="45.364,10.324 45.056,10.790 45.039,10.511 44.806,10.357 "/>
+<line x1="42.382" y1="12.721" x2="44.468" y2="12.761" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#000000" stroke="none" stroke-width="0.100" points="44.843,12.768 44.338,13.008 44.468,12.761 44.348,12.508 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="44.843,12.768 44.338,13.008 44.468,12.761 44.348,12.508 "/>
+<line x1="33.129" y1="23.435" x2="33.112" y2="14.295" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="33.363,14.682 33.112,14.183 32.863,14.683 "/>
+<rect x="-5.778" y="41.477" width="11.838" height="3.500" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="-5.778" y="41.477" width="11.838" height="3.500" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="0.141" y="42.621"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+extract SNPs that do not has a</text>
+<text x="0.141" y="43.421"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+neighbour but are not filtered out</text>
+<text x="0.141" y="44.221"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(uniek-meer-geenbuur.R)</text>
+<line x1="7.741" y1="31.817" x2="0.279" y2="41.302" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="0.322,40.842 0.210,41.390 0.715,41.151 "/>
+<polygon fill="#FFFFFF" stroke="none" stroke-width="0.100" points="40.008,35.731 52.114,35.731 50.258,40.831 38.152,40.831 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="40.008,35.731 52.114,35.731 50.258,40.831 38.152,40.831 "/>
+<text x="45.133" y="36.875"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+determine coverage</text>
+<text x="45.133" y="37.675"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+of the SNPs (both summed</text>
+<text x="45.133" y="38.475"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+as average)(coverage_dist.R,</text>
+<text x="45.133" y="39.275"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+coverage_distribution.R)</text>
+<text x="45.133" y="40.075"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+[coverage.png, coverage.csv]</text>
+<line x1="38.152" y1="40.831" x2="21.511" y2="42.749" stroke="#000000" stroke-width="0.100" />
+<line x1="20.517" y1="42.863" x2="20.716" y2="42.840" stroke="#000000" stroke-width="0.100" />
+<line x1="20.848" y1="42.825" x2="21.047" y2="42.802" stroke="#000000" stroke-width="0.100" />
+<line x1="21.180" y1="42.787" x2="21.378" y2="42.764" stroke="#000000" stroke-width="0.100" />
+<line x1="25.171" y1="31.817" x2="39.792" y2="35.674" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="39.353,35.817 39.900,35.702 39.481,35.333 "/>
+<polygon fill="#FFFFFF" stroke="none" stroke-width="0.100" points="15.401,33.303 29.866,33.303 28.301,37.603 13.836,37.603 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="15.401,33.303 29.866,33.303 28.301,37.603 13.836,37.603 "/>
+<text x="21.851" y="34.447"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+determine phred quality</text>
+<text x="21.851" y="35.247"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+of the SNPs as average(quality_dist.R,</text>
+<text x="21.851" y="36.047"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+quality_distribution.R)</text>
+<text x="21.851" y="36.847"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+[kwaliteit.png, (...).csv]</text>
+<line x1="19.361" y1="31.817" x2="19.067" y2="33.085" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="18.911,32.650 19.042,33.194 19.398,32.763 "/>
+<line x1="23.716" y1="41.298" x2="21.401" y2="41.968" stroke="#000000" stroke-width="0.100" />
+<line x1="20.440" y1="42.246" x2="20.632" y2="42.191" stroke="#000000" stroke-width="0.100" />
+<line x1="20.760" y1="42.154" x2="20.953" y2="42.098" stroke="#000000" stroke-width="0.100" />
+<line x1="21.081" y1="42.061" x2="21.273" y2="42.005" stroke="#000000" stroke-width="0.100" />
+<polygon fill="#FFFFFF" stroke="none" stroke-width="0.100" points="16.381,38.598 33.016,38.598 32.033,41.298 15.398,41.298 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="16.381,38.598 33.016,38.598 32.033,41.298 15.398,41.298 "/>
+<text x="24.207" y="39.742"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+select limits on a quality plot and</text>
+<text x="24.207" y="40.542"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+show corresponding numeric value(limieten.R)</text>
+<line x1="24.684" y1="37.603" x2="24.695" y2="38.375" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="24.440,37.990 24.697,38.486 24.940,37.983 "/>
+<rect x="33.038" y="45.353" width="14.455" height="2.700" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="33.038" y="45.353" width="14.455" height="2.700" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="40.266" y="46.497"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+store unfiltered chromosome/position</text>
+<text x="40.266" y="47.297"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+pairs in database (filter2vcf.R) [FILTERED]</text>
+<line x1="19.990" y1="43.395" x2="32.828" y2="45.984" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="32.398,46.152 32.938,46.006 32.497,45.662 "/>
+<rect x="33.057" y="48.999" width="14.418" height="4.300" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="33.057" y="48.999" width="14.418" height="4.300" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="40.266" y="50.143"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+convert database rows of acht.db back to</text>
+<text x="40.266" y="50.943"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+bcf files (neem_terug.R, neem_terug.sh,</text>
+<text x="40.266" y="51.743"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+neem_terug.sql, neem_terug_v2.sql en</text>
+<text x="40.266" y="52.543"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+neem_terug_v3.sql)</text>
+<line x1="40.266" y1="48.053" x2="40.266" y2="48.775" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="40.016,48.387 40.266,48.887 40.516,48.387 "/>
+<path stroke="none" fill="#FFFFFF" stroke-width="0.100" d="M 27.510,27.282 L 35.607,27.282 C 34.392,27.822 33.987,28.092 33.987,28.632 C 33.987,29.172 34.392,29.442 35.607,29.982 L 27.510,29.982 C 26.295,29.442 25.891,29.172 25.891,28.632 C 25.891,28.092 26.295,27.822 27.510,27.282 "/>
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M 27.510,27.282 L 35.607,27.282 C 34.392,27.822 33.987,28.092 33.987,28.632 C 33.987,29.172 34.392,29.442 35.607,29.982 L 27.510,29.982 C 26.295,29.442 25.891,29.172 25.891,28.632 C 25.891,28.092 26.295,27.822 27.510,27.282 "/>
+<text x="30.749" y="28.026"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+index the bcf</text>
+<text x="30.749" y="28.826"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+files (bcfindex.sh)</text>
+<text x="30.749" y="29.626"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+[sample.bcf.csi]</text>
+<line x1="21.725" y1="28.387" x2="25.667" y2="28.619" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="25.265,28.846 25.779,28.626 25.295,28.347 "/>
+<rect x="-1.094" y="57.242" width="29.277" height="3.500" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="-1.094" y="57.242" width="29.277" height="3.500" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="13.545" y="58.386"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+convert last fasta chromosome/position pairs back to database[FILTERED_VALIDATE_FR]</text>
+<text x="13.545" y="59.186"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+and add a table containing the valid SNPs [EXULANS_VALID] (filter2db.R)</text>
+<text x="13.545" y="59.986"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+{gedeeltelijk overgenomen van maak_valid.sql}</text>
+<line x1="13.548" y1="55.956" x2="13.546" y2="57.019" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="13.296,56.630 13.545,57.130 13.796,56.631 "/>
+<line x1="13.545" y1="60.742" x2="13.544" y2="62.194" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="13.294,61.806 13.544,62.306 13.794,61.806 "/>
+<path stroke="none" fill="#FFFF00" stroke-width="0.100" d="M -3.207,-4.020 L 3.988,-4.020 L 3.988,-1.320 L 0.391,-0.645 L -3.207,-1.320 L -3.207,-4.020 "/>
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M -3.207,-4.020 L 3.988,-4.020 L 3.988,-1.320 L 0.391,-0.645 L -3.207,-1.320 L -3.207,-4.020 "/>
+<text x="0.391" y="-3.276"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+message intern when</text>
+<text x="0.391" y="-2.476"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+the job is done</text>
+<text x="0.391" y="-1.676"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(telegramhowto.R)</text>
+<path stroke="none" fill="#FFFF00" stroke-width="0.100" d="M -3.689,0.110 L 4.534,0.110 L 4.534,2.810 L 0.423,3.485 L -3.689,2.810 L -3.689,0.110 "/>
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M -3.689,0.110 L 4.534,0.110 L 4.534,2.810 L 0.423,3.485 L -3.689,2.810 L -3.689,0.110 "/>
+<text x="0.423" y="0.854"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+basically everything</text>
+<text x="0.423" y="1.654"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+starting with &apos;maak&apos; is to</text>
+<text x="0.423" y="2.454"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+create a database</text>
+<path stroke="none" fill="#FFFF00" stroke-width="0.100" d="M -4.248,4.944 L 4.905,4.944 L 4.905,10.044 L 0.329,11.319 L -4.248,10.044 L -4.248,4.944 "/>
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M -4.248,4.944 L 4.905,4.944 L 4.905,10.044 L 0.329,11.319 L -4.248,10.044 L -4.248,4.944 "/>
+<text x="0.329" y="5.688"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+if a bcf P0041 somehow</text>
+<text x="0.329" y="6.488"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+is lost for example by</text>
+<text x="0.329" y="7.288"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+copying, the script</text>
+<text x="0.329" y="8.088"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(P0041teurg.sh) will help to</text>
+<text x="0.329" y="8.888"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+extract it back</text>
+<text x="0.329" y="9.688"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+out of a merged bcf</text>
+<path stroke="none" fill="#FFFF00" stroke-width="0.100" d="M -1.124,17.179 L 7.458,17.179 L 7.458,19.079 L 3.167,19.554 L -1.124,19.079 L -1.124,17.179 "/>
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M -1.124,17.179 L 7.458,17.179 L 7.458,19.079 L 3.167,19.554 L -1.124,19.079 L -1.124,17.179 "/>
+<text x="3.167" y="17.923"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(merge-tak.sh) will merge</text>
+<text x="3.167" y="18.723"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+the Tak province back</text>
+<rect x="30.181" y="57.640" width="12.855" height="2.700" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="30.181" y="57.640" width="12.855" height="2.700" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="36.608" y="58.784"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+compare genotypes between</text>
+<text x="36.608" y="59.584"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+Laos samples (laos-gelijker.R)</text>
+<line x1="28.184" y1="58.992" x2="29.957" y2="58.990" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="29.569,59.241 30.069,58.990 29.569,58.741 "/>
+<polygon fill="#FFFFFF" stroke="none" stroke-width="0.100" points="36.471,28.711 47.208,28.711 45.643,33.011 34.906,33.011 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="36.471,28.711 47.208,28.711 45.643,33.011 34.906,33.011 "/>
+<text x="41.057" y="29.855"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+number of right SNPs</text>
+<text x="41.057" y="30.655"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+after non-distance and</text>
+<text x="41.057" y="31.455"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+homozygote filtering</text>
+<text x="41.057" y="32.255"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(hoeveel_SNPs_na_filter.R)</text>
+<line x1="25.171" y1="30.867" x2="35.465" y2="30.861" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="35.077,31.111 35.577,30.861 35.077,30.611 "/>
+<polygon fill="#FFFF00" stroke="none" stroke-width="0.100" points="-25.324,57.239 -3.433,57.239 -4.707,60.739 -26.598,60.739 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="-25.324,57.239 -3.433,57.239 -4.707,60.739 -26.598,60.739 "/>
+<text x="-15.016" y="58.383"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+show histogram of number of times hits are found</text>
+<text x="-15.016" y="59.183"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(hoeveel_hist.R)[/data/david.noteborn/filtered_snps_seq.blast]</text>
+<text x="-15.016" y="59.983"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+development only</text>
+<line x1="-2.094" y1="58.991" x2="-3.866" y2="58.989" stroke="#000000" stroke-width="0.100" />
+<line x1="-1.094" y1="58.992" x2="-1.294" y2="58.992" stroke="#000000" stroke-width="0.100" />
+<line x1="-1.427" y1="58.992" x2="-1.627" y2="58.992" stroke="#000000" stroke-width="0.100" />
+<line x1="-1.760" y1="58.992" x2="-1.960" y2="58.991" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="-3.478,58.740 -3.978,58.989 -3.479,59.240 "/>
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M 48.582,31.724 C 46.923,34.365 35.081,35.643 28.857,38.598 "/>
+<line x1="80.779" y1="35.596" x2="76.855" y2="35.596" stroke="#000000" stroke-width="0.100" />
+<line x1="71.428" y1="32.116" x2="71.424" y2="32.973" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="71.176,32.584 71.424,33.085 71.676,32.586 "/>
+<line x1="66.392" y1="35.228" x2="64.223" y2="35.234" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="64.610,34.983 64.111,35.234 64.612,35.483 "/>
+<line x1="71.423" y1="37.259" x2="71.369" y2="37.962" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="71.150,37.555 71.360,38.073 71.648,37.594 "/>
+<line x1="40.542" y1="25.185" x2="42.189" y2="25.168" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="41.804,25.422 42.301,25.167 41.799,24.922 "/>
+<line x1="59.791" y1="25.166" x2="61.134" y2="25.165" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="60.746,25.416 61.246,25.165 60.746,24.916 "/>
+<line x1="71.431" y1="27.315" x2="71.429" y2="28.626" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="71.179,28.237 71.428,28.738 71.679,28.238 "/>
+<line x1="46.061" y1="35.731" x2="50.569" y2="28.563" stroke="#000000" stroke-width="0.100" />
+<line x1="51.102" y1="27.716" x2="50.995" y2="27.885" stroke="#000000" stroke-width="0.100" />
+<line x1="50.924" y1="27.998" x2="50.818" y2="28.168" stroke="#000000" stroke-width="0.100" />
+<line x1="50.747" y1="28.280" x2="50.640" y2="28.450" stroke="#000000" stroke-width="0.100" />
+<line x1="55.297" y1="37.400" x2="55.457" y2="41.938" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="55.194,41.559 55.461,42.050 55.694,41.542 "/>
+<line x1="61.066" y1="37.400" x2="61.936" y2="46.838" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="61.652,46.474 61.947,46.949 62.150,46.428 "/>
+<line x1="66.573" y1="41.685" x2="68.670" y2="46.853" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="68.293,46.587 68.712,46.957 68.756,46.399 "/>
+<line x1="58.335" y1="45.662" x2="59.137" y2="46.282" stroke="#000000" stroke-width="0.100" />
+<path stroke="none" fill="#FFFFFF" stroke-width="0.100" d="M 59.533,46.588 C 59.456,46.686 59.281,46.709 59.182,46.632 C 59.083,46.556 59.061,46.381 59.137,46.282 C 59.213,46.183 59.389,46.160 59.488,46.237 C 59.587,46.313 59.609,46.489 59.533,46.588 "/>
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M 59.533,46.588 C 59.456,46.686 59.281,46.709 59.182,46.632 C 59.083,46.556 59.061,46.381 59.137,46.282 C 59.213,46.183 59.389,46.160 59.488,46.237 C 59.587,46.313 59.609,46.489 59.533,46.588 "/>
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M 58.181,37.400 C 59.094,47.593 81.033,38.793 80.882,44.306 "/>
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="80.643,43.911 80.879,44.417 81.143,43.924 "/>
+<line x1="80.909" y1="41.685" x2="80.878" y2="44.306" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="80.633,43.915 80.877,44.417 81.133,43.920 "/>
+<line x1="72.153" y1="48.810" x2="76.709" y2="47.042" stroke="#000000" stroke-width="0.100" />
+<path stroke="none" fill="#FFFFFF" stroke-width="0.100" d="M 77.175,46.861 C 77.220,46.978 77.149,47.139 77.032,47.185 C 76.916,47.230 76.754,47.159 76.709,47.042 C 76.664,46.925 76.735,46.764 76.851,46.718 C 76.968,46.673 77.130,46.745 77.175,46.861 "/>
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M 77.175,46.861 C 77.220,46.978 77.149,47.139 77.032,47.185 C 76.916,47.230 76.754,47.159 76.709,47.042 C 76.664,46.925 76.735,46.764 76.851,46.718 C 76.968,46.673 77.130,46.745 77.175,46.861 "/>
+<rect x="61.358" y="23.015" width="20.147" height="4.300" fill="#CCFFD0" stroke="none" stroke-width="0"/>
+<rect x="61.358" y="23.015" width="20.147" height="4.300" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="71.432" y="24.159"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+convert bcf-file to bed file to allow for</text>
+<text x="71.432" y="24.959"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+ADMIXTURE and fastSTRUCTURE searching</text>
+<text x="71.432" y="25.759"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(bcf2bed.sh) [merge&lt;number&gt;.bed,</text>
+<text x="71.432" y="26.559"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(...).fam, (...).bim]</text>
+<ellipse cx="71.423" cy="35.228" rx="5.032" ry="2.031" fill="#CCFFD0" stroke="none"  /><ellipse cx="71.423" cy="35.228" rx="5.032" ry="2.031" fill="none" stroke="#000000"  stroke-width="0.100" /><text x="71.423" y="34.305"  fill="#000000" text-anchor="middle" font-size="0.52" font-family="sans" font-style="normal" font-weight="400">
+determine population</text>
+<text x="71.423" y="34.830"  fill="#000000" text-anchor="middle" font-size="0.52" font-family="sans" font-style="normal" font-weight="400">
+structure (and rename</text>
+<text x="71.423" y="35.355"  fill="#000000" text-anchor="middle" font-size="0.52" font-family="sans" font-style="normal" font-weight="400">
+merge8.pruned</text>
+<text x="71.423" y="35.880"  fill="#000000" text-anchor="middle" font-size="0.52" font-family="sans" font-style="normal" font-weight="400">
+files to</text>
+<text x="71.423" y="36.405"  fill="#000000" text-anchor="middle" font-size="0.52" font-family="sans" font-style="normal" font-weight="400">
+simply pruned)</text>
+<rect x="52.413" y="33.100" width="11.538" height="4.300" fill="#CCFFD0" stroke="none" stroke-width="0"/>
+<rect x="52.413" y="33.100" width="11.538" height="4.300" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="58.181" y="34.244"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+Determine population structure</text>
+<text x="58.181" y="35.044"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+with ADMIXTURE (admixture.sh)</text>
+<text x="58.181" y="35.844"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+[name-admixt.&lt;#v&gt;.Q, (...).P,</text>
+<text x="58.181" y="36.644"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(...).Q_bias, (...).Q_se]</text>
+<rect x="61.794" y="38.185" width="19.115" height="3.500" fill="#CCFFD0" stroke="none" stroke-width="0"/>
+<rect x="61.794" y="38.185" width="19.115" height="3.500" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="71.351" y="39.329"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+Determine population structure</text>
+<text x="71.351" y="40.129"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+with fastSTRUCTURE (faststructure.sh)</text>
+<text x="71.351" y="40.929"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+[name-struct.&lt;#v&gt;.meanQ, name-struct.&lt;#v&gt;.meanP]</text>
+<rect x="42.413" y="22.616" width="17.377" height="5.100" fill="#CCFFD0" stroke="none" stroke-width="0"/>
+<rect x="42.413" y="22.616" width="17.377" height="5.100" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="51.102" y="23.760"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+filter out SNPs that do not comply to</text>
+<text x="51.102" y="24.560"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+quality and coverage threshold</text>
+<text x="51.102" y="25.360"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(combined_filter_qual_depth.py)</text>
+<text x="51.102" y="26.160"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+pipeline in (combined_filter_qual_depth.py) as well</text>
+<text x="51.102" y="26.960"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+[merge&lt;number.bcf&gt;]</text>
+<rect x="63.195" y="28.850" width="16.465" height="3.266" fill="#CCFFD0" stroke="none" stroke-width="0"/>
+<rect x="63.195" y="28.850" width="16.465" height="3.266" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="71.428" y="30.277"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+prune the number of SNPs</text>
+<text x="71.428" y="31.077"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+(thinmarker.sh) [merge&lt;number&gt;.pruned.bed]</text>
+<rect x="49.725" y="42.162" width="11.480" height="3.500" fill="#CCFFD0" stroke="none" stroke-width="0"/>
+<rect x="49.725" y="42.162" width="11.480" height="3.500" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="55.465" y="43.306"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+show population structure</text>
+<text x="55.465" y="44.106"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+as barplot (admixture-barplot.R)</text>
+<text x="55.465" y="44.906"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+[admixture_name.png]</text>
+<rect x="58.558" y="47.060" width="13.595" height="3.500" fill="#CCFFD0" stroke="none" stroke-width="0"/>
+<rect x="58.558" y="47.060" width="13.595" height="3.500" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="65.356" y="48.204"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+show population structure</text>
+<text x="65.356" y="49.004"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+as barplot (voorouder-barplot.R)</text>
+<text x="65.356" y="49.804"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+[{faststructure/admixture}_name.png]</text>
+<rect x="78.247" y="44.529" width="10.518" height="3.500" fill="#CCFFD0" stroke="none" stroke-width="0"/>
+<rect x="78.247" y="44.529" width="10.518" height="3.500" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="83.505" y="45.673"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+create map with population</text>
+<text x="83.505" y="46.473"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+structure (voorouder-kaart.R)</text>
+<text x="83.505" y="47.273"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+[name-kaart.png]</text>
+<polygon fill="#CCFFD0" stroke="none" stroke-width="0.100" points="81.829,34.281 92.107,34.281 91.124,36.981 80.847,36.981 "/>
+<polygon fill="none" stroke="#000000" stroke-width="0.100"  points="81.829,34.281 92.107,34.281 91.124,36.981 80.847,36.981 "/>
+<text x="86.477" y="35.425"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+#v refers to the number of</text>
+<text x="86.477" y="36.225"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+ancestor populations</text>
+<path stroke="none" fill="#CCFFD0" stroke-width="0.100" d="M 80.817,29.119 L 86.666,29.119 L 86.666,31.983 L 83.741,32.699 L 80.817,31.983 L 80.817,29.119 "/>
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M 80.817,29.119 L 86.666,29.119 L 86.666,31.983 L 83.741,32.699 L 80.817,31.983 L 80.817,29.119 "/>
+<text x="83.741" y="29.945"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+population</text>
+<text x="83.741" y="30.745"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+structure</text>
+<text x="83.741" y="31.545"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+analysis</text>
+</svg>
