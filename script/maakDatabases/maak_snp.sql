@@ -11,6 +11,7 @@ CREATE TABLE EXULANS(
    COVERAGE    INT NOT NULL,
    GENOTYPE    TEXT, -- genotype
    PL          TEXT, -- phred likelihoods afgerond ref
+   GENOTYPE_BP TEXT, -- genotype in basen
 
    DIST_P      INT, -- afstand tov vorige SNP
    DIST_N      INT, -- afstand tov volgende SNP

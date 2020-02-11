@@ -6,6 +6,7 @@ library(RSQLite)
 library(dplyr, warn.conflicts = FALSE)
 # sed -En '/>.*voor/s/.(.*) .*/\1/p' SNP_V3.fasta > SNPOUT
 # sed -En '1!s/,([^,]+).*/-\1/p' SNP_Vfinal.csv > SNPOUT
+# sed -En '1!s/,([^,]+).*/-\1/p' SNP.csv > SNPOUT
 SNPs <- read.table("SNP-files/SNPOUT", sep = "-", header = FALSE, col.names = c("CHR", "POS"))
 eightnucleotide <- dbConnect(SQLite(), "/home/david.noteborn/onenucleotide_acht.db")
 dbWriteTable(eightnucleotide, "CHOSEN", SNPs, overwrite = TRUE)

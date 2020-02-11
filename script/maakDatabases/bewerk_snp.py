@@ -14,9 +14,6 @@ def notperiod(x):
 
 def unconstruct(info, data):
 	try:
-		# w = []
-		# for b in data:
-		# 	w += b.split(",")
 		return data
 	except:
 		print(info)
@@ -52,9 +49,11 @@ for regel in sys.stdin:
 				print("\t".join(semi_oud))
 		if len(regel[8].split(":")) > 1:
 			# de info kolom is hier slechts de diepte
+			mogelijkheden = [regel[3]] + regel[4].split(",")
+			voor, na = regel[9].strip().split(':')[[idx for idx, s in enumerate(regel[8].split(":")) if 'GT' in s][0]].split("/")
 			semi_oud = regel[0:2] + regel[3:6] + \
 			[[s for s in regel[7].split(';') if "DP=" in s][0].split('=')[1]] + \
-			unconstruct(regel[8].split(":"), regel[9].strip().split(':')) + [regel[-1]]
+			unconstruct(regel[8].split(":"), regel[9].strip().split(':')) + [mogelijkheden[int(voor)] + "/" + mogelijkheden[int(na)], regel[-1]]
 		else:
 			semi_oud = ["", regel[1]]
 # print de laatste regel

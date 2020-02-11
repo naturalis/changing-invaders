@@ -9,13 +9,13 @@ if [ "" != "$bam" ];then
 sbatch -D $PWD<<< '#!/bin/bash
 #SBATCH --job-name=con"'"$sample"'"
 function fout() {
-	Rscript $HOME/telegramhowto.R "Iets fout gedaan tijdens het maken van '"$sample"' consensus sequentie"
+	$HOME/telegramhowto.R "Iets fout gedaan tijdens het maken van '"$sample"' consensus sequentie"
 	exit
 }
 bcftools mpileup -f $HOME/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa "'"$bam"'" | bcftools call -mv -Oz  -o "'"$sample"'".calls.vcf.gz || fout
 $HOME/tabix "'"$sample"'".calls.vcf.gz || fout
 bcftools consensus "'"$sample"'".calls.vcf.gz -f $HOME/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa > "'"$sample"'".cns.fa && {
- Rscript $HOME/telegramhowto.R "Van '"$sample"' is een consensus sequentie gemaakt"
+ $HOME/telegramhowto.R "Van '"$sample"' is een consensus sequentie gemaakt";true
 } || fout'
 else
  echo "$sample*".bam bestaat niet.

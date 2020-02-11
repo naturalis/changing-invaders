@@ -6,5 +6,5 @@
 sbatch -D $PWD <<< '#!/bin/bash
 #SBATCH --job-name=neem_terug
 sqlite3 acht.db < $HOME/neem_terug_v3.sql && \
-Rscript $HOME/telegramhowto.R "Gefilterde SNPs terug opgeslagen in los bestand" || \
-Rscript $HOME/telegramhowto.R "tijdens opslaan van gefilterde SNPs is een error opgetreden"'
+$HOME/telegramhowto.R "Gefilterde SNPs terug opgeslagen in los bestand" || \
+$HOME/telegramhowto.R "tijdens opslaan van gefilterde SNPs is een error opgetreden"'

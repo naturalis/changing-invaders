@@ -9,7 +9,7 @@ library(scatterpie)
 if (length(commandArgs(trailingOnly = TRUE)) == 0) {
 	Q.bestanden <- file.info(paste0(list.files(pattern = "\\.(mean)?Q$")))
 	Q.bestanden <- rownames(Q.bestanden[with(Q.bestanden, order(mtime, decreasing = TRUE)), ][1,])
-	Q.bestanden <- rownames(file.info(paste0(list.files(pattern = sub("(.[^.]+){2}$", "\\.[0-9]+.*Q", Q.bestanden)))))
+	Q.bestanden <- rownames(file.info(paste0(list.files(pattern = sub("(.[^.]+){2}$", "\\.[0-9]+.*Q$", Q.bestanden)))))
 } else Q.bestanden <- commandArgs(trailingOnly = TRUE)
 
 lijst <- "GMI-4 -> Great Mercuri Island, New Zealand North Island, lt -36.6155, long. 175.7938

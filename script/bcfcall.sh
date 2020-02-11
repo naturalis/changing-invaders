@@ -10,7 +10,7 @@ if [ "$sample*.bam" = "$(echo "$sample"*.bam)" ];then
 #SBATCH --job-name=bcf-"'"$sample"'"
 #SBATCH --output="'"$sample"'".bcf.out
 bcftools mpileup -I -Ou -f $HOME/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa "'"$sample"'"*.bam | bcftools call --threads '$threads' --skip-variants indels -mv -Ob  -P 1.1e-4 -o "'"$sample"'".bcf
-Rscript $HOME/telegramhowto.R "Varianten van '"$sample"' zijn geteld (dmv bcf)."'
+$HOME/telegramhowto.R "Varianten van '"$sample"' zijn geteld (dmv bcf)."'
 else
  echo "$sample*.bam" bestaat niet.
 fi
