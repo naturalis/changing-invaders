@@ -9,7 +9,7 @@ sbatch -D $PWD <<< '#!/bin/bash
 #SBATCH --job-name=bcf2bed
 #SBATCH --output=bcf2bed.out
 # --geno toegevoegd
-$HOME/plink $([ -e -e "'"$sample.bcf"'" ]&& echo --bcf "'"$sample"'".bcf||echo --vcf "'"$sample"'".vcf) --memory 5100 --geno --keep-allele-order --vcf-idspace-to _ --const-fid 0 --allow-extra-chr 0 --make-bed --out "'"$sample"'" && {
+$HOME/plink $([ -e -e "'"$sample.bcf"'" ]&& echo --bcf "'"$sample"'".bcf||echo --vcf "'"$sample"'".vcf) --memory 5100 --geno --keep-allele-order --const-fid 0 --allow-extra-chr 0 --make-bed --out "'"$sample"'" && {
  $HOME/telegramhowto.R "[vb]cf bestand is omgezet"
 } || {
  $HOME/telegramhowto.R "tijdens omzetten error"

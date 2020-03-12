@@ -23,6 +23,7 @@ backup <- gefiltert
 s = readDNAStringSet(paste0(Sys.getenv("HOME"), "/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa"))
 # bewerk de namen zodat het enkel het chromosoom nummer is
 names(s) <- mapply(`[`, strsplit(names(s), " "), 1)
+# gefiltert <- read.table("vanHIGHimpact.pos", col.names = c("chromosome", "position"))
 gefiltert <- gefiltert[gefiltert$chromosome!=0,]
 sequences <- apply(gefiltert, 1, function(x) {
   if (length(s[[x["chromosome"]]])>as.numeric(x["position"])+250&as.numeric(x["position"])-250>0)
@@ -34,7 +35,7 @@ gefiltert$na <- substr(sequences, 252, 501)
 gefiltert$ref <- substr(sequences, 251, 251)
 gefiltert <- gefiltert[!is.na(sequences),]
 # sla op
-setwd("/data/david.noteborn/")
+setwd("/data/david.noteborn/blast_output")
 write.csv(gefiltert, "filtered_snps.csv", quote = FALSE, row.names = FALSE)
 # maak er een fasta van
 system("sed -nE '1!{s/([0-9]+,[0-9]+),([^,]+),([^,]+),(.)/>\\1-\\4\\n\\2\\n>\\1-\\4\\n\\3/p}' filtered_snps.csv > filtered_snps.fasta")

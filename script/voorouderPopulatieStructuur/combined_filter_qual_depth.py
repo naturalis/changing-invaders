@@ -3,7 +3,7 @@
 # de uitvoer is het bewerkte bestand
 # door David
 # changing invaders
-# sbatch_do 'bcftools view /data/david.*/merge8.bcf | python3 $HOME/combined_filter_qual_depth.py | bcftools view -Ob > $HOME/merge8.bcf'
+# sbatch_do 'bcftools view /data/david.noteborn/merge8.bcf | python3 $HOME/combined_filter_qual_depth.py | bcftools view -Ob > $HOME/merge8.bcf'
 import sys
 
 nregels = 0

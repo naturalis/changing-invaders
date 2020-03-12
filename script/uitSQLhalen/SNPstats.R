@@ -8,44 +8,11 @@ library(dplyr, warn.conflicts = FALSE)
 library(telegram)
 library(ggplot2)
 library(Biostrings)
-haalDichtstBijzijnsteWeg <- function(afstand) {
-  weghalen <- data.frame(1)
-  while (nrow(afstand) != 100 & nrow(weghalen) != 0) {
-    weghalen <- afstand %>% group_by(CHROMOSOME) %>%
-      mutate(verschil_voor = POSITION - lag(POSITION, default = NA),
-             verschil_na = lead(POSITION, default = NA) - POSITION) %>%
-      #mutate(verschil_voor = if_else(verschil_voor > 0, verschil_voor, -verschil_voor),
-      #       verschil_voor = if_else(verschil_na > 0, verschil_na, -verschil_na)) %>%
-      filter(min(if_else(!is.na(verschil_voor), verschil_voor, 1000000000L)) == verschil_voor |
-               min(if_else(!is.na(verschil_na), verschil_na, 1000000000L)) == verschil_na) %>%
-      filter(min(if_else(min(verschil_voor) == verschil_voor, as.integer(NA), verschil_voor),
-                 if_else(min(verschil_na) == verschil_na, as.integer(NA), verschil_na), na.rm = TRUE) == verschil_voor |
-               min(if_else(min(verschil_voor) == verschil_voor, as.integer(NA), verschil_voor),
-                   if_else(min(verschil_na) == verschil_na, as.integer(NA), verschil_na), na.rm = TRUE) == verschil_na) %>%
-      ungroup() %>% filter(min(verschil_voor, verschil_na, na.rm = TRUE) == verschil_voor |
-                             min(verschil_voor, verschil_na, na.rm = TRUE) == verschil_na)
-    if (nrow(weghalen) != 0) afstand <- afstand[!(afstand$CHROMOSOME == weghalen$CHROMOSOME &
-                                                    afstand$POSITION == weghalen$POSITION),]
-  }
-    minste_afstand <- afstand %>% group_by(CHROMOSOME) %>%
-      mutate(verschil_voor = POSITION - lag(POSITION, default = NA),
-             verschil_na = lead(POSITION, default = NA) - POSITION) %>%
-      filter(min(if_else(!is.na(verschil_voor), verschil_voor, 1000000000L)) == verschil_voor |
-               min(if_else(!is.na(verschil_na), verschil_na, 1000000000L)) == verschil_na) %>%
-      filter(min(if_else(min(verschil_voor) == verschil_voor, as.integer(NA), verschil_voor),
-                 if_else(min(verschil_na) == verschil_na, as.integer(NA), verschil_na), na.rm = TRUE) == verschil_voor |
-               min(if_else(min(verschil_voor) == verschil_voor, as.integer(NA), verschil_voor),
-                   if_else(min(verschil_na) == verschil_na, as.integer(NA), verschil_na), na.rm = TRUE) == verschil_na) %>%
-      ungroup() %>% filter(min(verschil_voor, verschil_na, na.rm = TRUE) == verschil_voor |
-                             min(verschil_voor, verschil_na, na.rm = TRUE) == verschil_na)
-    message("De kortste afstand tussen 2 mutaties op hetzelfde chromosoom is ", min(minste_afstand$verschil_voor, minste_afstand$verschil_na))
-  return(afstand)
-}
-haalDichtstBijzijnsteWeg <- function(afstand) {
+haalDichtstBijzijnsteWeg <- function(afstand, overhouden = 100) {
   verlangend <- afstand %>% arrange(CHROMOSOME, POSITION) %>% group_by(CHROMOSOME) %>% filter(row_number() == 1 | row_number() == n())
   nogNiet <- afstand %>% arrange(CHROMOSOME, POSITION) %>% group_by(CHROMOSOME) %>% filter(!(row_number() == 1 | row_number() == n()))
   
-  while (nrow(verlangend) != 100 & nrow(nogNiet) != 0) {
+  while (nrow(verlangend) != overhouden & nrow(nogNiet) != 0) {
     q <- apply(nogNiet, 1, function(x) {
       chrw <- verlangend[verlangend$CHROMOSOME == as.numeric(x['CHROMOSOME']),]$POSITION
       curw <- as.numeric(x['POSITION'])
@@ -72,7 +39,7 @@ haalDichtstBijzijnsteWeg <- function(afstand) {
   return(verlangend)
 }
 Sys.time()
-setwd("/data/david.noteborn/blast_output/")
+setwd("/data/david.noteborn/blast_output/100arbitrair/")
 blasted <- file.info(paste0(list.files(pattern = "fasta")))
 fasta.bestand <- rownames(blasted[with(blasted, order(mtime, decreasing = TRUE)), ][1,])
 chrpos <- strsplit(sub("..$", "", unique(names(readDNAStringSet(fasta.bestand)))), ",")
@@ -88,7 +55,7 @@ exulans <- tbl(eightnucleotide, "EXULANS_VALID")
 # pak SNPs
 dieper <- exulans %>% collect()
 dieper$GENOTYPE.LEFT <- mapply(`[`, strsplit(dieper$GENOTYPE_BP, "/"), 1)
-dieper$GENOTYPE.RIGHT <- mapply(`[`, strsplit(dieper$GENOTYPE, "/"), 2)
+dieper$GENOTYPE.RIGHT <- mapply(`[`, strsplit(dieper$GENOTYPE_BP, "/"), 2)
 dieper$KEUZE <- paste(dieper$REFERENCE, dieper$ALTERNATIVE, sep = ",")
 dieper %>% group_by(CHROMOSOME, POSITION) %>% summarise(n()) %>% ungroup() %>% summarise(n())
 
@@ -109,22 +76,22 @@ geenzeven <- zoekterm %>% filter(verschillende == 2, !(max_genotype == 7 & versc
 zeven <- zoekterm %>% filter(verschillende > 1, (max_genotype == 7 & verschillende == 2)) %>% collect()
 
 # volledig <- rbind(geenzeven[sample(1:nrow(geenzeven), ifelse(100-nrow(heterozygote) > 0, 100-nrow(heterozygote), 0)),], heterozygote[if (nrow(heterozygote)<100) TRUE else 1:207,])
-volledig <- haalDichtstBijzijnsteWeg(rbind(heterozygote, geenzeven))
+volledig <- haalDichtstBijzijnsteWeg(rbind(heterozygote, geenzeven), 259)
 
 # volledig <- rbind(zeven[sample(1:nrow(zeven), ifelse(300-nrow(volledig) > 0, 300-nrow(volledig), 0)),], volledig[if (nrow(volledig)<300) TRUE else 1:300,])
 ggplot(diep, aes(verschillende, aantal)) + geom_col(aes(fill = `Meest
 voorkomende
 genotype`)) + xlab("Genotypen op SNP") + ylab("aantal")
 ggsave("temp.png")
-bot <- TGBot$new(token = "TOKEN")
+bot <- TGBot$new(token = "939730741:AAHnRC-oDDSMJ_qjqmsxcrfcfWkJ6uaXm28")
 bot$sendPhoto("temp.png", "Dit is de polyformiteit distributie van EXULANS", chat_id = 454771972)
 unlink("temp.png")
 zeven[sample(1:nrow(zeven), 1),]
 meta.data <- volledig %>% group_by(verschillende, max_genotype) %>% summarise(aantal = n())
 setwd("~/SNP-files/")
-write.csv(volledig, "PRIMER_DESIGNER_MAX.csv")
-dbWriteTable(eightnucleotide, "SELECTED", volledig[,c("CHROMOSOME", "POSITION")], overwrite = TRUE)
-selected <- tbl(eightnucleotide, "SELECTED")
+write.csv(volledig, "PRIMER_DESIGNER_opvullend.csv")
+dbWriteTable(eightnucleotide, "SELECTED_OPVULLEND", volledig[,c("CHROMOSOME", "POSITION")], overwrite = TRUE)
+selected <- tbl(eightnucleotide, "SELECTED_OPVULLEND")
 SNPs <- inner_join(exulans, selected, c(CHROMOSOME = "CHROMOSOME", POSITION = "POSITION")) %>% collect()
 dbDisconnect(eightnucleotide)
 
@@ -137,10 +104,10 @@ o2n <- o2n[!duplicated(o2n)]
 beterSNPs[,o2n] <- beterSNPs$REFERENCE
 beterSNPs$diff_gt <- mapply(function(x) paste0(unique(x), collapse = "/"), strsplit(beterSNPs$diff_gt, "/"))
 ggplot(data.frame(table(beterSNPs$CHROMOSOME)), aes(Var1, Freq)) + geom_col()
-ggsave("SNPchrom.png")
+ggsave("SNPchromOpvullend.png")
 invisible(apply(SNPs, 1, function(x) beterSNPs[beterSNPs$CHROMOSOME==as.numeric(x["CHROMOSOME"])&beterSNPs$POSITION==as.numeric(x["POSITION"]), o2n[as.numeric(x['ORGANISM'])]] <<- sub("(.)/\\1", "\\1", x["GENOTYPE"])))
 beterSNPs
-setwd("/data/david.noteborn/blast_output/")
+setwd("/data/david.noteborn/blast_output/100arbitrair/")
 # neem het nieuwste bestand
 blasted <- file.info(paste0(list.files(pattern = "fasta")))
 fasta.bestand <- rownames(blasted[with(blasted, order(mtime, decreasing = TRUE)), ][1,])
@@ -149,6 +116,7 @@ fasta <- readDNAStringSet(fasta.bestand)
 q <- apply(beterSNPs, 1, function(x) {
   sel <- grep(paste(as.numeric(x["CHROMOSOME"]), as.numeric(x["POSITION"]), sep = ","), names(fasta))
   if (length(sel)!=0) {
+    cat(sel)
     beterSNPs[as.numeric(x["CHROMOSOME"])==beterSNPs$CHROMOSOME&beterSNPs$POSITION==as.numeric(x["POSITION"]),"sequentie.voor"] <<- toString(fasta[sel[1]])
     beterSNPs[as.numeric(x["CHROMOSOME"])==beterSNPs$CHROMOSOME&beterSNPs$POSITION==as.numeric(x["POSITION"]),"sequentie.na"] <<- toString(fasta[sel[2]])
   }
@@ -156,19 +124,19 @@ q <- apply(beterSNPs, 1, function(x) {
 setwd(paste0(Sys.getenv("HOME"), "/SNP-files/"))
 beterSNPs <- beterSNPs[!is.na(beterSNPs$sequentie.voor),]
 ggplot(beterSNPs, aes(CHROMOSOME, POSITION)) + geom_violin() + geom_jitter(height = 0, width = 0.1) + ggtitle("Neurotransmitter")
-ggsave("neurotransmitter-verdeling-max.png")
+ggsave("neurotransmitter-verdeling-opvullend.png")
 ggplot(beterSNPs, aes(TRUE, POSITION)) + geom_violin() + geom_dotplot(binaxis='y', stackdir='center') + ggtitle("Verdeling over posities")
-ggsave("violin-verdeling-max.png")
+ggsave("violin-verdeling-opvullend.png")
 View(beterSNPs)
 # beterSNPs
-write.csv(beterSNPs, "SNP.csv", row.names = FALSE, quote = FALSE)
+write.csv(beterSNPs, "SNP-opvullend.csv", row.names = FALSE, quote = FALSE)
 combinaties <- combn(o2n, 2)
 rownames(combinaties) <- c("eerste", "tweede")
 colnames(combinaties) <- apply(combinaties, 2, function(x){
   paste0(head(beterSNPs[beterSNPs[,x['eerste']]!=beterSNPs[,x['tweede']]&!grepl("/", beterSNPs[,x['eerste']][[1]])&!grepl("/", beterSNPs[,x['tweede']][[1]]),c("CHROMOSOME", "POSITION")], 1), collapse = "-")
   })
 combinaties
-writeLines(paste0(beterSNPs$sequentie.voor, "{", beterSNPs$diff_gt, "}", beterSNPs$sequentie.na), "SNP.txt")
+writeLines(paste0("CHR", beterSNPs$CHROMOSOME, "_", beterSNPs$POSITION, "\t", beterSNPs$sequentie.voor, "{", beterSNPs$diff_gt, "}", beterSNPs$sequentie.na), "SNP-opvullend.txt")
 # write.table(beterSNPs[,c("CHROMOSOME", "POSITION")], "verwerkSNPpos.ssv", sep = ",", row.names = FALSE)
 # sed -nE '1!s/([0-9]+),([0-9]+),.*"([^"]+)","([^"]+)"/>\1-\2 voor\n\3\n>\1-\2 na\n\4/p' SNP_V1.csv > SNP_V1.fasta
 # sed -nE '1!s/([0-9]+),([0-9]+),.*,([^,]+),([^,]+)$/>\1-\2 voor\n\3\n>\1-\2 na\n\4/p' SNP_V2.csv > SNP_V2.fasta

@@ -16,6 +16,7 @@ getal='$getal'
 [ "$getal" = 1 ] && {
 	[ -e $database ] && rm $database
 	sqlite3 $database < $HOME/maak_snp.sql
+	[ -e sample-enum.csv ]&&rm sample-enum.csv
 	$HOME/telegramhowto.R "Database is aangemaakt (zonder nog echt inhoud)"
 }
 for sample in '$samples';do

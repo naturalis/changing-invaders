@@ -25,16 +25,16 @@ colnames(tabel) <- c("SAMPLE", "LOCATIE", "LATITUDE", "LONGDITUDE")
 rownames(tabel) <- tabel$SAMPLE
 tabel$LATITUDE <- as.numeric(tabel$LATITUDE)
 tabel$LONGDITUDE <- as.numeric(tabel$LONGDITUDE)
-if (file.exists("kaart.rdata")) load("kaart.rdata") else {
+if (file.exists("~/structuur/kaart.rdata")) load("~/structuur/kaart.rdata") else {
 	kaart <- get_stamenmap(c(min(tabel$LONGDITUDE) - 1, min(tabel$LATITUDE) - 1, max(tabel$LONGDITUDE) + 1, max(tabel$LATITUDE) + 1), 5)
-	save(kaart, file = "kaart.rdata")
+	save(kaart, file = "~/structuur/kaart.rdata")
 }
 for (Q.bestand in Q.bestanden) {
 	tbl_orig <- read.table(Q.bestand)
 	tbl <- round(tbl_orig, digits = 2)
-	rownames(tbl) <- sub("_.*", "", read.table("merge8.fam")$V2)
+	rownames(tbl) <- sub("_.*", "", read.table("~/structuur/merge8.fam")$V2)
 	colnames(tbl) <- as.character(1:ncol(tbl))
-	tbl$SAMPLE <- sub("_.*", "", read.table("merge8.fam")$V2)
+	tbl$SAMPLE <- sub("_.*", "", read.table("~/structuur/merge8.fam")$V2)
 	sub("(([1-9]+)[0-9]?\\b)", "(aanname: \\1 voorouders)", sub("(admixt|struct)", "\\1ure", gsub("\\.|-", " ", sub("\\.(mean)?Q$", "", Q.bestand))))
 	nvoorouders <- as.numeric(rev(strsplit(Q.bestand, "\\.")[[1]])[2])
 
