@@ -2,6 +2,7 @@
 # changing invaders
 # by david
 # barplot voorouder output
+# Als er geen bestand wordt gegeven, worden alle K waardes van het laatste opgeslagen Q bestand geplot
 if (length(commandArgs(trailingOnly=TRUE))==0) {
 	Q.bestanden <- file.info(paste0(list.files(pattern = "\\.(mean)?Q$")))
 	Q.bestanden <- rownames(Q.bestand[with(Q.bestand, order(mtime, decreasing = TRUE)), ][1,])

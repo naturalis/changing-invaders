@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 # changing invaders
-# by david
+# by renjong
 # barplot voorouder output
 library(ggmap, quietly = TRUE)
 library(ggrepel)
@@ -49,6 +49,6 @@ for (Q.bestand in Q.bestanden) {
 	# geef tbl meer eigenschappen
 	tbl <- full_join(tabel_v %>% select(LATITUDE, LONGDITUDE, SAMPLE, is_1), tbl, "SAMPLE")
 	# neem de kaart
-	ggmap(kaart) + geom_point(aes(LONGDITUDE, LATITUDE), data = tabel_v) + geom_scatterpie(aes(LONGDITUDE, ifelse(!is_1, LATITUDE, NA)), tbl, na.rm = TRUE, cols = as.character(1:(ncol(tbl) - 4))) + geom_label_repel(aes(LONGDITUDE, LATITUDE, label = SAMPLE, fill = ifelse(`is_1`, groep, NA)), data = tabel_v, size = rel(1.5)) + ggtitle("Spreiding van de eerste 8 ratten", "Kleur van het label geeft aan dat tot 4 cijfers na de komma deze groep wordt aangehouden.\nAnders een cirkel diagram dat verdeling weergeeft.") + labs(caption = paste("Dit alles aannemende dat er", nvoorouders, "voorouders zijn")) + theme(axis.ticks = element_blank(), axis.text = element_blank(), axis.title = element_blank())
+	ggmap(kaart) + geom_point(aes(LONGDITUDE, LATITUDE), data = tabel_v) + geom_scatterpie(aes(LONGDITUDE, ifelse(!is_1, LATITUDE, NA)), tbl, na.rm = TRUE, cols = as.character(1:(ncol(tbl) - 4))) + geom_label_repel(aes(LONGDITUDE, LATITUDE, label = SAMPLE, fill = ifelse(`is_1`, groep, NA)), data = tabel_v, size = rel(1.5)) + ggtitle("Distribution of the 8 samples") + labs(caption = paste("K = ", nvoorouders, "")) + guides(fill = guide_legend(title = "Ancestor\npopulation")) + theme(axis.ticks = element_blank(), axis.text = element_blank(), axis.title = element_blank())
 	ggsave(sub("\\.(mean)?Q$", "-kaart.png", Q.bestand))
 }

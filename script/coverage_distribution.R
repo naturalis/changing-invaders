@@ -14,9 +14,11 @@ exulans <- tbl(eightnucleotide, "EXULANS")
 # coverage, of QUALITY
 if (FALSE)
   zoekterm <- exulans %>% group_by(chromosome, position) %>% summarise(cov = round(AVG(COVERAGE))) %>% group_by(cov) %>% summarise(hoeveel = n()) else
+  # groepeer op SNP, tel coverage bij elkaar op, kijk hoevaak die coverage voor komt
   zoekterm <- exulans %>% group_by(chromosome, position) %>% summarise(cov = SUM(COVERAGE)) %>% group_by(cov) %>% summarise(hoeveel = n())
 zoekterm %>% show_query()
 diepte <- zoekterm %>% collect()
 dbDisconnect(eightnucleotide)
+# maak daar een distributie plot van
 ggsave("coverage.png", ggplot(diepte, aes(cov, hoeveel)) + geom_col() + xlab("diepte (totaal per positie)"))
 write.csv(diepte, "coverage.csv")

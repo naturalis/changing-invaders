@@ -1,6 +1,7 @@
 #!/bin/bash
 # david
 # changing invaders
+# script om een bcf bestand om te zetten naar een bed bestand
 [ $# -gt 0 ] && sample=$1 || sample=merge3
 # [[ "$sample" =~ .bcf$ ]]&&echo contains extension||sample="$sample.bcf"
 # enkel wanneer het bestaat
