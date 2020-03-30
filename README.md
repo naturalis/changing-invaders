@@ -19,15 +19,4 @@ fi
 Let hierbij op dat sbatch het programma is waarmee jobs bekend worden gemaakt op de server. Het programma dat de job dus inhoud staat dan vervolgens op de volgende regels.
 Omdat er wordt gewerkt met '(enkele quote) zullen argumenten die worden meegegeven vaak staan binnen "'" (dubbelle quote zodat de meeste variabelen spaties kunnen bevatten)
 
-verklaring scripts/eplanation scripts:
-
-* fastp.pl: trim reads
-* minimap2.pl: map reads op referentie genoom/map reads on reference genome
-* merge.sh: voeg bam files van hetzelfde individu samen/combine bam files of the same sample
-* gelijk_sample_naam.sh: herschijf de sample naam/rewrite sample name (every file as a slurm job)
-* sorteer.sh: sorteer/sort fist argument may be sample name
-* indexeer.sh: indexeer/index fist argument may be sample name
-
-vervolgens bcfindex.sh -> bcfmerge.sh
-* bcfindex.sh: indexeer het bcf bestand
-* bcfmerge.sh: combineer bcf bestanden tot een groter bestand
+Voor alle scripts voor de cleanup verwijs ik naar: https://github.com/naturalis/changing-invaders/tree/922c543dcc55c43b1ed627e0396ae57dc107ad10
