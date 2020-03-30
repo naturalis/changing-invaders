@@ -10,9 +10,11 @@ shopt -s extglob
 [ $# -gt 2 ] && db=$3 || db=R7129_41659.cns.fa
 fasta="$(ls "$fasta"*{,.{fa,fasta}} "$HOME/$fasta"*{,.{fa,fasta}} 2>/dev/null|head -1)"
 db="$(ls "$db"*{,.{fa,fasta}} "$HOME/$db"*{,.{fa,fasta}} 2>/dev/null|head -1)"
+# als alle parameters kloppen,
 if [ "" != "$fasta" ];then
  if [ "" != "$db" ];then
   if [[ "$threads" =~ ^[0-9]+$ ]];then
+   # out is het output bestand met alle enkel voorkomende sequenties
    [ $# -gt 3 ] && out=$4 || { out="${fasta//?(*\/|.fa|.fasta)/}";[ -d blast_output ]&&out="blast_output/$out";} # enkel fasta naam zonder pad of extensie
    sbatch -D $PWD -n $threads<<< '#!/bin/bash
 #SBATCH --job-name=blast-"'"$fasta"'"
