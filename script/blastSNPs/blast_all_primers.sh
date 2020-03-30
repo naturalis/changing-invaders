@@ -8,7 +8,11 @@ shopt -s extglob
 [ $# -gt 0 ] && fasta=$1 || fasta=filtered_snps.fasta
 [ $# -gt 1 ] && threads=$2 || threads=25
 [ $# -gt 2 ] && db=$3 || db=R7129_41659.cns.fa
+# de gebruiker kan de volledige fasta naam invullen, maar ook het begin van de naam of de naam zonder fasta/fa
+# de gebruiker kan een bestand specificeren vanuit het pad waar het zich bevind of een volledig pad of vanuit HOME van de gebruiker
+# dit laatste hoeft de gebruiker zelf niet aan te geven
 fasta="$(ls "$fasta"*{,.{fa,fasta}} "$HOME/$fasta"*{,.{fa,fasta}} 2>/dev/null|head -1)"
+# wat voor het fasta bestand geldt geldt ook voor de database
 db="$(ls "$db"*{,.{fa,fasta}} "$HOME/$db"*{,.{fa,fasta}} 2>/dev/null|head -1)"
 # als alle parameters kloppen,
 if [ "" != "$fasta" ];then
