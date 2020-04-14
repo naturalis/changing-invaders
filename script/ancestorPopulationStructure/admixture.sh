@@ -1,7 +1,7 @@
 #!/bin/bash
 # david
 # changing invaders
-# is een plink bed/bim/fam bestand voor nodig
+# requires a plink bed/bim/fam file
 [ $# -gt 0 ] && sample=$1 || sample=merge3
 [ $# -gt 1 ] && voorouders=$2 || voorouders=4
 [ $# -gt 2 ] && runs=$3 || runs=10

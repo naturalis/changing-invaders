@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 # changing invaders
 # by david
-# barplot voorouder output
-# Als er geen bestand wordt gegeven, worden alle K waardes van het laatste opgeslagen Q bestand geplot
+# barplot anchestor output
+# If no file is given, all K values of the last saved Q file is plotted
 if (length(commandArgs(trailingOnly=TRUE))==0) {
 	Q.bestanden <- file.info(paste0(list.files(pattern = "\\.(mean)?Q$")))
 	Q.bestanden <- rownames(Q.bestand[with(Q.bestand, order(mtime, decreasing = TRUE)), ][1,])
@@ -16,7 +16,7 @@ for (Q.bestand in Q.bestanden) {
 	nvoorouders <- as.numeric(rev(strsplit(Q.bestand, "\\.")[[1]])[2])
 	png(paste0(ifelse(grep("-struct", Q.bestand), "faststructure", "admixture"), "_", sub("-struct", "", sub("\\.(mean)?Q$", "", Q.bestand)), ".png"))
 		barplot(t(as.matrix(tbl)), col=rainbow(nvoorouders), ylab="Ancestry", border=NA, las=2)
-		title(sub("([0-9]+)", "(aanname: \\1 voorouders)", sub("(admixt|struct)", "\\1ure", gsub("\\.|-", " ", sub("\\.(mean)?Q$", "", Q.bestand)))))
+		title(sub("([0-9]+)", "(assumption: \\1 anchestors)", sub("(admixt|struct)", "\\1ure", gsub("\\.|-", " ", sub("\\.(mean)?Q$", "", Q.bestand)))))
 		# legend(2, 0.5, legend = c("Overig", "Filipijnen", "Nieuw Zeeland", "Thailand"), lty=c(1, 1), col = rainbow(nvoorouders))
 	dev.off()
 }

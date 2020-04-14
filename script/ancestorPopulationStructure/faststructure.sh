@@ -1,7 +1,7 @@
 #!/bin/bash
 # david
 # changing invaders
-# is een plink bed/bim/fam bestand voor nodig
+# requires a plink bed/bim/fam file
 # en python2
 [ $# -gt 0 ] && sample=$1 || sample=merge3
 [ $# -gt 1 ] && voorouders=$2 || voorouders=4
@@ -13,11 +13,11 @@ sbatch -D $PWD -n $threads<<< '#!/bin/bash
 #SBATCH --output=logs/faststructure-"'"$sample"'"-'$voorouders'.out
 python2 $HOME/proj/fastStructure/structure.py -K '$voorouders' --input="'"$sample"'" --output="'"$sample"'"-struct --seed='$seed' --prior=logistic && {
  mv "'"$sample"'"-struct.'$voorouders'.log logs/
- $HOME/telegramhowto.R "structuur is bepaald voor '"$sample"' met '$voorouders' voorouders."
+ $HOME/telegramhowto.R "structuur is determined for '"$sample"' with '$voorouders' anchestors."
  true
 } || {
- $HOME/telegramhowto.R "tijdens bepalen structuur toch error: $(cat faststructure-"'"$sample"'"-'$voorouders'.out)"
+ $HOME/telegramhowto.R "during determination structure still error: $(cat faststructure-"'"$sample"'"-'$voorouders'.out)"
 }'
 else
- echo "$sample.bim, $sample.bed en/of $sample.fam" bestaat niet
+ echo "$sample.bim, $sample.bed and/or $sample.fam" does not exsist
 fi

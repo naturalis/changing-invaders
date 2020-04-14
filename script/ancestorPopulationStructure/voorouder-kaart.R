@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 # changing invaders
 # by david
-# barplot voorouder output
+# barplot anchestor output
 library(ggmap, quietly = TRUE)
 library(ggrepel)
 library(dplyr, warn.conflicts = FALSE)
@@ -34,21 +34,21 @@ for (Q.bestand in Q.bestanden) {
 	tbl <- round(tbl_orig, digits = 2)
 	rownames(tbl) <- sub("_.*", "", read.table("~/structuur/merge8.fam")$V2)
 	colnames(tbl) <- as.character(1:ncol(tbl))
-	# de sample naam in de plot is de korte (tot de _) versie binnen het fam bestand
+	# the sample name in the plot is the sort (up to the _) version within the fam file
 	tbl$SAMPLE <- sub("_.*", "", read.table("~/structuur/merge8.fam")$V2)
 	sub("(([1-9]+)[0-9]?\\b)", "(aanname: \\1 voorouders)", sub("(admixt|struct)", "\\1ure", gsub("\\.|-", " ", sub("\\.(mean)?Q$", "", Q.bestand))))
 	nvoorouders <- as.numeric(rev(strsplit(Q.bestand, "\\.")[[1]])[2])
 
-	# maak een long tabel met de groepen
+	# create a long table with the groups
 	beter_tabel <- full_join(tabel, tidyr::pivot_longer(tbl, c(as.character(1:(ncol(tbl) - 1))), "groep", values_to = "kans"), "SAMPLE")
-	# sla de groep op die het meest aanwezig is
+	# store the most apparent group
 	tabel_v <- full_join(tabel, beter_tabel %>% group_by(SAMPLE) %>% summarise(groep = groep[kans == max(kans)]), "SAMPLE")
-	# als de long tabel aangeeft dat een groep voor 0.999 deel uit een groep bestaat
-	# maak is_1 waar, zodat we daar geen cirkeldiagram plaatsen
+	# if the long table explains that a group makes up about 0.999 part of an organism
+	# make is_1 true, so we wont put there a cirkeldiagram
 	tabel_v <- full_join(beter_tabel %>% mutate(rond = round(kans, 2)) %>% mutate(is_1 = (rond == 0 | rond == 1)) %>% group_by(SAMPLE) %>% summarise(is_1 = all(is_1)), tabel_v, "SAMPLE")
-	# geef tbl meer eigenschappen
+	# give tbl more properties
 	tbl <- full_join(tabel_v %>% select(LATITUDE, LONGDITUDE, SAMPLE, is_1), tbl, "SAMPLE")
-	# neem de kaart
+	# get the map
 	ggmap(kaart) + geom_point(aes(LONGDITUDE, LATITUDE), data = tabel_v) + geom_scatterpie(aes(LONGDITUDE, ifelse(!is_1, LATITUDE, NA)), tbl, na.rm = TRUE, cols = as.character(1:(ncol(tbl) - 4))) + geom_label_repel(aes(LONGDITUDE, LATITUDE, label = SAMPLE, fill = ifelse(`is_1`, groep, NA)), data = tabel_v, size = rel(1.5)) + ggtitle("Spreiding van de eerste 8 ratten", "Kleur van het label geeft aan dat tot 4 cijfers na de komma deze groep wordt aangehouden.\nAnders een cirkel diagram dat verdeling weergeeft.") + labs(caption = paste("Dit alles aannemende dat er", nvoorouders, "voorouders zijn")) + theme(axis.ticks = element_blank(), axis.text = element_blank(), axis.title = element_blank())
 	ggsave(sub("\\.(mean)?Q$", "-kaart.png", Q.bestand))
 }

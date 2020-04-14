@@ -1,6 +1,7 @@
-# maak 0.3k SNP bcf bestand
-# zodat hierover een structuur analyse kan worden gedaan
-# changing invders
+#!/usr/bin/env Rscript
+# changing invaders
+# create 0.3k SNP bcf file
+# so a structure analysis could be done over that data
 # by david
 library(RSQLite)
 library(dplyr, warn.conflicts = FALSE)
