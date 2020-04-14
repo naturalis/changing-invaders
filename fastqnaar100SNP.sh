@@ -1,16 +1,17 @@
 #!/bin/bash
 # dit script is een pipeline van fastq naar 100 ver van elkaar af staande, goede kwaliteit SNPs
+# TODO:generate nep data
 shopt -s extglob
-fout (){
- echo "Gaat iets fout."
- exit
-}
-perl fastp.pl || fout
-perl minimap2.pl --reference /home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa --yaml /home/d*n*/git-repos/changing-invaders/data/files.yml --index true --outdir || fout
-bash merge.sh || fout
+cd /var/data
+trap 'echo "something goes wrong, error at line $LINENO (commando: $(sed -n $LINENO"p" "$BASH_SOURCE"))";exit 2' ERR
+perl -I $PWD/lib readsNaarVariants/fastp.pl -file "files.yml"
+mkdir /root/tmp
+perl -I $PWD/lib readsNaarVariants/minimap2.pl --yaml files.yml --index true --outdir /var/data/data --verbose
+exit
+bash merge.sh
 # zet de samplenamen goed in het bam bestand zodat haplotypecaller niet crashed
 for x in /home/r*v*/fileserver/projects/B19005-525/Samples/*;do
-samtools addreplacerg -R NA -m overwrite_all '$x/${x##*/}'.bam -o '$x/${x##*/}'.gh.bam || fout
+samtools addreplacerg -R NA -m overwrite_all '$x/${x##*/}'.bam -o '$x/${x##*/}'.gh.bam
 # verplaats weer terug
 mv $x/${x##*/}.gh.bam $x/${x##*/}.bam
 done
@@ -22,9 +23,9 @@ for sample in $(ls /home/r*v*/fileserver/projects/B19005-525/Samples/ -p|grep '_
  samtools sort -o "$sample".sort.bam "$sample".bam
  [ -e "$sample".sort.bam ] && rm "$sample.bam" || rm "$sample".sort.bam.*
  # indexeer
- samtools index "$sample"*.bam || fout
+ samtools index "$sample"*.bam
  # call SNP varianten
- bcftools mpileup -I -Ou -f /home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa "$sample"*.bam | bcftools call --threads 2 --skip-variants indels -mv -Ob  -P 1.1e-4 -o "$sample".bcf || fout
+ bcftools mpileup -I -Ou -f /home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa "$sample"*.bam | bcftools call --threads 2 --skip-variants indels -mv -Ob  -P 1.1e-4 -o "$sample".bcf
 done
 mkdir sample-files
 mv *.bcf sample-files
@@ -35,14 +36,14 @@ database=acht.db
 getal=1
 [ "$getal" = 1 ] && {
 	[ -e $database ] && rm $database
-	sqlite3 $database < /home/d*n*/maak_snp.sql || fout
+	sqlite3 $database < /home/d*n*/maak_snp.sql
 	rm sample-enum.csv
 }
 for sample in $(ls sample-files);do
  if [ -e "$sample" ];then
   if [ -s "$sample" ];then
    echo "${sample%.*},$getal" >> sample-enum.csv
-   bcftools view "$sample"|python3 /home/d*n*/bewerk_snp.py $getal|cat /home/d*n*/voeg_bcf_toe.sql -|sqlite3 $database || fout
+   bcftools view "$sample"|python3 /home/d*n*/bewerk_snp.py $getal|cat /home/d*n*/voeg_bcf_toe.sql -|sqlite3 $database
    [ $? -ne 0 ] && { echo "$(ls -t ~/slurm-*.out|head -1|xargs cat)";exit;} || echo "In de database is nu ook ${sample//*(*\/|.*)} aanwezig."
    echo "Database is dus nu $(du -h $database|cut -d $'\t' -f1|sed -e "s/G/ gigabyte/" -e "s/M/ megabyte/") groot"
    getal=$((getal+1))
@@ -53,14 +54,14 @@ for sample in $(ls sample-files);do
   echo "Database kon $sample niet importeren omdat het niet gevonden is op de huidige locatie."
  fi
 done
-sqlite3 $database < /home/d*n*/vulupos.sql || fout
+sqlite3 $database < /home/d*n*/vulupos.sql
 # extraheer fasta met gefilterde posities
-Rscript uniek-meer.R $database || fout
+Rscript uniek-meer.R $database
 # bouw consensus
 for sample in $(ls /home/r*v*/fileserver/projects/B19005-525/Samples/ -p|grep '_.*/$'|sed 's/.$//');do
  bam=/home/r*v*/fileserver/projects/B19005-525/Samples/"$sample/$sample.bam"
- bcftools mpileup -f /home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa "$bam" | bcftools call -mv -Oz  -o "$sample".calls.vcf.gz || fout
- /home/d*n*/tabix "$sample".calls.vcf.gz || fout
+ bcftools mpileup -f /home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa "$bam" | bcftools call -mv -Oz  -o "$sample".calls.vcf.gz
+ /home/d*n*/tabix "$sample".calls.vcf.gz
  bcftools consensus "$sample".calls.vcf.gz -f /home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa > "$sample".cns.fa
  makeblastdb -in "$sample".cns.fa -dbtype nucl
 done
