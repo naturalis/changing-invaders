@@ -1,6 +1,8 @@
-# Consenus
-Scripts rondom het maken van een consensus genoom
-Zowel het maken als indexeren.
-Als eerste argument de samplenaam (zonder .bam extensie)
+# Consensus
+Scripts around the creation of a consensus genome
+Both creation as indexing.
+As first argument the samplename (without .bam extension)
 
-Consenus genomen worden aangemaakt om te kijken hoe mogelijke primers hierop binden.
+Consensus genomes are made to check how possible primers would bind on it.
+flowchart:
+![flowchart](flowchart.png?raw=true)
