@@ -1,3 +1,7 @@
+#!/usr/bin/env Rscript
+# changing invaders
+# by david
+# schript to obtain user-defined limits
 setwd("Documenten/Naturalis/")
 q <- read.csv("kwaliteit log10", row.names = 1)
 p <- read.csv("kwaliteit.csv", row.names = 1)
