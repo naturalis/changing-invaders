@@ -1,6 +1,6 @@
 # GO-terms
-# doe een Go term analyse
 # changing invaders
+# do a GO-term analysis
 # by david
 # BiocManager::install(c("limma", "GO.db"))
 suppressMessages(library(limma))

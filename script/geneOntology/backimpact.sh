@@ -1,55 +1,55 @@
 #!/bin/bash
 # changing invaders
-# script om mutaties terug te halen vanuit genen
-# dit vanuit de GO-term selectie van de gebruiker
-# flanking regions worden vervolgens ge-extraheert uit
-# het referentie genoom en worden vervolgens geBLAST, en
-# enkel als het slechts 1 keer voor komt in het genoom, wordt
-# het weergegeven op gescherm en opgeslagen
+# script to obtain mutations back from genes
+# this from the GO-term selection from the user
+# flanking regions will be extracted from
+# the reference genome and will be BLASTed, and
+# only when it occurs only once on the genome,
+# it will be displayed on the screen and saved
 #
-# als er geen argument vanuit de commandline wordt meegegeven
+# if there is no argument added from the commandline
 if test $# -eq 0;then
- # laat een gebruiker kiezen in een dialoogvenster tussen alle HIGH impact groepen
- # neem het aantal genen binnen de ontologische groep, en de groep zelf
- # verdubbel iedere regel (behalve de eerste, verwijder die)
- # dit omdat de waarde die wordt weergeven in kdialog een andere is dan de waarde die wordt teruggekeerd.
- # zet alles op 1 regel gescheiden door spaties
- # als de gebruiker gekozen heeft, verwijder dan de spatie aan het einde, en vervang iedere
- # spatie die niet tussen twee " staat door een nieuwe regel
- # en stop het resultaat (een lijst met ontologische groepen met daarvoor een getal in select)
+ # allow a user to choose in a dialog on all HIGH impact groups
+ # get the number of genes within the ontological group and the name of the group itself
+ # duplicate every line (execpt for the first, remove that one)
+ # this becuase the value that is added in kdialog is another than the value that is 'returned'.
+ # put everything on one line, seperated by spaces.
+ # if the user has chosen, remove the space on the end, and replace every
+ # space that is not inbetween two " by a newline
+ # and put the result (a list with ontological groups, preceded by a number in select)
  select="$(eval kdialog --geometry 700x500  --checklist \"Kies een gen groep uit de lijst:\" $(cut -d, -f1,2 GO_HIGH_IMPACT_GROUPS.csv|sed -n '1!p;s/.*/&\noff/p'|tr \\n ' ')|sed 's/ *$//'|perl -pe 's/ (?=([^"\\]*(\\.|"([^"\\]*\\.)*[^"\\]*"))*[^"]*$)/\n/g')"
- # als het niks is sluit dan af
+ # if it is nothing exit the appliction
  [ "$select" = "" ]&& { echo Gebruiker sluit af;exit;}
  echo "$select"
  # echo "$select"|cut -d, -f2|grep -f- merge8.ann.vcf --color=yes
  # groep=$(echo "$select"|cut -d, -f2)
  #groep="Anatomical structure morphogenesis"
- # klap de opvouwbare terminal uit
+ # open up the foldable terminal (only when one has yakuake)
  qdbus org.kde.yakuake /yakuake/window toggleWindowState
- # zoek alle ontologische groepen (de getallen er eerst af halend) in het HIGH impact bestand
- # neem daarvan slechts de derde kolom (de genen, gescheiden op spaties)
- # de genen zitten nu tussen twee " dus neem enkel de genen, en zet ieder op een eigen regel
- # voeg voor het eerste gen een patroon toe wat als eerste karakter op een regel # matched, dan alles
- # behalve #. Zoek dit alles in merge8.ann.vcf (vcf bestand), en neem nu enkel de rijen die HIGH impact
- # hebben en laat die zien
+ # search all ontological groups (first removing the numbers) in the HIGH impact file
+ # get from that only the third column (genes, seperated on spaces)
+ # the genes are now betweeen two " so get only the genes, and put every single one on a single line
+ # add before the first gene a pattern which match as first character on a line a # and then all but #.
+ # Search this all in merge8.ann.vcf (vcf file), and get now only the rows that have HIGH impact
+ # and show them
  echo "$select"|cut -d, -f2|grep -f- GO_HIGH_IMPACT_GROUPS.csv|cut -d, -f3|cut -d\" -f2|tr ' ' $'\n'|sed '1s/^/^#[^#]\n/'|egrep -f- merge8.ann.vcf --color=yes|grep --color=no -E 'HIGH|#'
- # doe het bovenstaande, behalve het niet meenemen van de header
- # gevolgd door enkel de eerste twee velden mee te nemen (chromosoom en positie)
- # en dit op te slaan in geselecteerde_snps.pos
+ # do the previous written, except not getting the header
+ # followed by getting only the first two fields (chromosome and position)
+ # and save this in geselecteerde_snps.pos
  echo "$select"|cut -d, -f2|grep -f- GO_HIGH_IMPACT_GROUPS.csv|cut -d, -f3|cut -d\" -f2|tr ' ' $'\n'|egrep -f- merge8.ann.vcf|grep HIGH|cut -d$'\t' -f1,2 > geselecteerde_snps.pos
 else
- # als er wel een commandline argument is meegegeven, gebruik dit in plaats van select
- # en doe hetzelfde als het bovenstaande
+ # if there is added a commandline argument, use that instead of select
+ # and do that same as above
   cut -d, -f2 "$1"|grep -f- GO_HIGH_IMPACT_GROUPS.csv|cut -d, -f3|cut -d\" -f2|tr ' ' $'\n'|egrep -f- merge8.ann.vcf|grep HIGH|cut -d$'\t' -f1,2 > geselecteerde_snps.pos
 fi
-# kopieer geselecteerde_snps.pos naar de naturalis server
+# copy geselecteerde_snps.pos to the naturalis server
 scp geselecteerde_snps.pos naturalis:
-# start het script dat uit het referentie genoom een fasta maakt en dat BLAST door middel van een ander script. Als dat gebeurt, zal het script zelf al zijn gestopt
+# start the script that extracts fastas from the data out of the reference genome and BLAST by means of another script. If that happens, the script itself is already stopped
 ssh naturalis "Rscript pos2fasta.R"
-echo "Even wachten tot BLAST is gestart"
-# wacht tot BLAST te zien is in squeue, wacht daarna tot het niet meer te zien is (en het BLASTen dus klaar is)
-ssh naturalis 'while test "" = "$(squeue|grep david)";do sleep 3;done;echo "blast draait...";while test "" != "$(squeue|grep david)";do sleep 3;done'
-# kopieer het laatst geBLASTte bestand terug naar de lokale machine
-scp naturalis:$(ssh naturalis "ls -ht /data/david.noteborn/blast_output/*.fasta|head -1") geselecteerde_geblastte_snps.fasta
-# laat het bestand aan de gebruiker zien
+echo "Please wail a few seconds until BLAST is started"
+# wait until BLAST is visible in squeue, wait then until it is no longer visible (and the BLASTing is done)
+ssh naturalis 'while test "" = "$(squeue|grep david)";do sleep 3;done;echo "BLAST runs...";while test "" != "$(squeue|grep david)";do sleep 3;done'
+# copy the last BLASTed file back to the local machine
+scp naturalis:$(ssh naturalis "ls -ht /data/d*.n*/blast_output/*.fasta|head -1") geselecteerde_geblastte_snps.fasta
+# show the file to the user
 less geselecteerde_geblastte_snps.fasta
