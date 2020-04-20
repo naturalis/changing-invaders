@@ -11,10 +11,10 @@ CREATE TABLE EXULANS(
    COVERAGE    INT NOT NULL,
    GENOTYPE    TEXT, -- genotype
    PL          TEXT, -- phred likelihoods afgerond ref
-   GENOTYPE_BP TEXT, -- genotype in basen
+   GENOTYPE_BP TEXT, -- genotype in bases
 
-   DIST_P      INT, -- afstand tov vorige SNP
-   DIST_N      INT, -- afstand tov volgende SNP
+   DIST_P      INT, -- distance related to SNP before
+   DIST_N      INT, -- distance related to SNP after
    ORGANISM    INT,
    FOREIGN KEY(CHROMOSOME, POSITION) REFERENCES UPOS(CHROMOSOME, POSITION)
 );

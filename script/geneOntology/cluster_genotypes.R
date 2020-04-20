@@ -1,11 +1,11 @@
 #!/usr/bin/env Rscript
 # changeing invaders
-# make MCA for genotypes
 # by david
+# make MCA for genotypes
 # cut -d, -f7-14 SNP.csv|sed '1s/_[^,]*//g'|tr , \\t|awk '{print $1"\t"$4"\t"$2"\t"$3"\t"$5"\t"$6"\t"$7"\t"$8}'
-# ggplot voor plotting of the MCA
+# ggplot for plotting of the MCA
 library(ggplot2)
-# ggrepel so labels wont overlap and reading of the samplenames is imposibble
+# ggrepel so labels will not overlap and reading of the samplenames is impossible
 library(ggrepel)
 if (length(commandArgs(trailingOnly=T))>0) verwerken <- commandArgs(trailingOnly=T) else {
 	gt_bestanden <- list.files(pattern = "*.gt")

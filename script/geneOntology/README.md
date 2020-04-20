@@ -6,4 +6,5 @@ And the script to annotate SNPs is also included (SnpEff.sh)
 This folder does also contain older scripts to make a distiction between (on)gene mutations(binneneengen.R) and (on)exon mutations(binnenexon.R).
 
 for the flowchart: allecodinggenotypes is not displayed as a bug in the chart, binnen\* scripts are not displayed for not being used in current flow.
+
 ![flowchart](flowchart.png)

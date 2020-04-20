@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-# dit script bewerkt het vcf bestand voor het wordt opgeslagen in een database
-# door David Noteborn
 # changing invaders
-# de afstand kolommen geven -1 aan als afstand niet bepaald kan worden
-# (geen andere snps meer op dat chromosoom)
+# by david
+# this script edits the vcf file before it is saved in a database
+# the istance columns display -1 if the distance can not be determined
+# (no other SNPs on that chromosome)
 import sys
 import gzip
 
@@ -49,5 +49,5 @@ for regel in sys.stdin:
 			unconstruct(regel[8].split(":"), regel[11].strip().split(':')) + [regel[-1]]
 		else:
 			semi_oud = ["", regel[1]]
-# print de laatste regel
+# print the last line
 print("\t".join(semi_oud + ["-1"]))
