@@ -1,7 +1,7 @@
 #!/bin/bash
-# indexeer een (bam)sample
 # changing invaders
-# David
+# by David
+# index a (bam)sample
 [ $# -gt 0 ] && sample=$1 || sample=GMI-4_41656
 if [ "$sample*.bam" != "$(echo "$sample"*.bam)" ];then
 sbatch -D $PWD<<< '#!/bin/bash
@@ -10,6 +10,6 @@ sbatch -D $PWD<<< '#!/bin/bash
 samtools index "'"$sample"'"*.bam
 $HOME/telegramhowto.R "'"$sample"' is geindexeerd"'
 else
- echo "$sample*".bam bestaat niet "(in $PWD)".
+ echo "$sample*".bam does not exist "(in $PWD)".
 fi
 
