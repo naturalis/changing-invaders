@@ -1,5 +1,5 @@
 #!/bin/bash
-# door david
+# by david
 # Naturalis
 # changing invaders
 # blast sequences
@@ -50,11 +50,11 @@ Rscript $HOME/blast_output.R "'"${out%_*}_${db%%_*}"'"
 $HOME/telegramhowto.R "There are $(($(wc -l "'"${out%_*}_${db%%_*}.fasta"'"|cut -d" " -f1)/4)) SNPs left."
 date >> "'"${out%_*}_${db%%_*}.date"'"'
   else
-   echo "2 argument moet een aantal threads zijn, dit lijkt niet op een voor blast interpreteerbaar getal."
+   echo "2nd argument must be a number of threads, this does not look like a for BLAST interpretable number."
   fi
  else
-  echo "$db" bestaat niet.
+  echo "$db" does not exist.
  fi
 else
- echo "$fasta*".bam bestaat niet.
+ echo "$fasta*".bam does not exist.
 fi

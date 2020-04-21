@@ -3,28 +3,28 @@ library(jsonlite)
 setwd("/data/david.noteborn")
 sample <- commandArgs(TRUE)[1]
 if (is.na(sample)) sample <- "blast_output/filtered_R6750"
-haal_weg <- function(lijst, boolvector) lijst[-grep(paste0(sub(" .*", "", names(lijst)[boolvector]), collapse = "|"), names(lijst))]
-jsoncomb <- Map(function(x) fromJSON(x, simplifyVector = FALSE)$BlastOutput2, rev(rev(gsub("$", "\n}\n", unlist(strsplit(paste0(readLines(paste0(sample, ".json")), collapse = "\n"), "\n}\n"))))[-1]))
-names(jsoncomb) <- paste(unlist(Map(function(x)x$report$results$search$query_title, jsoncomb, USE.NAMES = FALSE)), c("voor", "na"))
-hoeveelhits <- unlist(Map(function(x)length(x$report$results$search$hits)==1&&length(x$report$results$search$hits[[1]]$hsps)==1, jsoncomb, USE.NAMES = FALSE))
-# table(hoeveelhits)
-jsoncomb <- haal_weg(jsoncomb, !hoeveelhits)
-bezitgap <- mapply(function(x) {
+remove_this <- function(json_list, bool_vector) json_list[-grep(paste0(sub(" .*", "", names(json_list)[bool_vector]), collapse = "|"), names(json_list))]
+json_combination <- Map(function(x) fromJSON(x, simplifyVector = FALSE)$BlastOutput2, rev(rev(gsub("$", "\n}\n", unlist(strsplit(paste0(readLines(paste0(sample, ".json")), collapse = "\n"), "\n}\n"))))[-1]))
+names(json_combination) <- paste(unlist(Map(function(x)x$report$results$search$query_title, json_combination, USE.NAMES = FALSE)), c("voor", "na"))
+how_many_hits <- unlist(Map(function(x)length(x$report$results$search$hits)==1&&length(x$report$results$search$hits[[1]]$hsps)==1, json_combination, USE.NAMES = FALSE))
+# table(how_many_hits)
+json_combination <- remove_this(json_combination, !how_many_hits)
+contains_gap <- mapply(function(x) {
   hit <- x$report$results$search$hits[[1]]$hsps[[1]]
   grepl("-", hit$qseq)|grepl("-", hit$hseq)
-}, jsoncomb)
-# table(bezitgap)
-jsoncomb <- haal_weg(jsoncomb, bezitgap)
-pospairs <- sub(" .*", "", names(jsoncomb))
-pospairs <- pospairs[!duplicated(pospairs)]
+}, json_combination)
+# table(contains_gap)
+json_combination <- remove_this(json_combination, contains_gap)
+pos_pairs <- sub(" .*", "", names(json_combination))
+pos_pairs <- pos_pairs[!duplicated(pos_pairs)]
 dna <- readDNAStringSet(paste0(sample, ".fasta"))
-dna_filter <- dna[grep(paste(pospairs, collapse = "|"), names(dna))]
+dna_filter <- dna[grep(paste(pos_pairs, collapse = "|"), names(dna))]
 writeXStringSet(dna_filter, paste0(sample, ".fasta"), width = 300)
-#nietkwartk <- unlist(Map(function(x) {
+#notquarterk <- unlist(Map(function(x) {
 #  alignment <- x$report$results$search$hits[[1]]$hsps[[1]]
 #  (nchar(alignment$hseq[1])==250)[1]
 #},
-#jsoncomb, USE.NAMES = FALSE
+#json_combination, USE.NAMES = FALSE
 #))
-## hoeveel_na <- nchar(sub("^([^-]+)-.*", "\\1", alignment$hseq))
-## hoeveel_voor <- nchar(sub(".*-([^-]+)$", "\\1", alignment$hseq))
+## how_much_after <- nchar(sub("^([^-]+)-.*", "\\1", alignment$hseq))
+## how_much_voor <- nchar(sub(".*-([^-]+)$", "\\1", alignment$hseq))
