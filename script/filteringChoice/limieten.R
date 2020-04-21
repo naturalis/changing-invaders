@@ -1,29 +1,29 @@
 #!/usr/bin/env Rscript
 # changing invaders
 # by david
-# schript to obtain user-defined limits
-setwd("Documenten/Naturalis/")
-q <- read.csv("kwaliteit log10", row.names = 1)
-p <- read.csv("kwaliteit.csv", row.names = 1)
-coverage <- read.csv("diepte1.csv", row.names = 1)
+# script to obtain user-defined limits
 library(ggplot2)
 library(grid)
+setwd("~/Documenten/Naturalis/")
+q <- read.csv("quality log10", row.names = 1)
+p <- read.csv("quality.csv", row.names = 1)
+coverage <- read.csv("depth1.csv", row.names = 1)
 
-ggplot(cbind(p, q), aes(cov, hoeveel)) + geom_col() + xlab("kwaliteit")
-ggplot(cbind(p, q), aes(cov, x)) + geom_col() + xlab("kwaliteit")
-ggplot(cbind(p, q), aes(cov, log(hoeveel))) + geom_col() + xlab("kwaliteit")
+ggplot(cbind(p, q), aes(cov, amount)) + geom_col() + xlab("quality")
+ggplot(cbind(p, q), aes(cov, x)) + geom_col() + xlab("quality")
+ggplot(cbind(p, q), aes(cov, log(amount))) + geom_col() + xlab("quality")
 
-ggplot(coverage, aes(cov, log2(hoeveel))) + geom_col() + xlab("kwaliteit")
-ggplot(coverage, aes(cov, hoeveel)) + geom_col() + xlab("kwaliteit")
+ggplot(coverage, aes(cov, log2(amount))) + geom_col() + xlab("quality")
+ggplot(coverage, aes(cov, amount)) + geom_col() + xlab("quality")
 
-h <- coverage$hoeveel
-names(h) <- coverage$cov
-barplot(h)
+amount <- coverage$amount
+names(amount) <- coverage$cov
+barplot(amount)
 
-limieten <- c()
+limits <- c()
 for (x in 1:2) {
 	value = locator(1)$x
 	abline(v = value, col = "red")
-	limieten <- c(limieten, value)
+	limits <- c(limits, value)
 }
-limieten
+limits
