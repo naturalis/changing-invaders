@@ -7,18 +7,18 @@
 # sbatch_do 'bcftools view /data/d*.n*/merge8.bcf | python3 $HOME/combined_filter_qual_depth.py | bcftools view -Ob > $HOME/merge8.bcf'
 import sys
 
-nregels = 0
-for regel in sys.stdin:
+nlines = 0
+for line in sys.stdin:
 	# if it comprend a header line, show anyway
-	if regel[0:1] == "#":
-		print(regel, end = '')
+	if line[0:1] == "#":
+		print(line, end = '')
 	else:
-		regel = regel.split("\t")
-		diepte = int([s for s in regel[7].split(';') if "DP=" in s][0].split('=')[1])
-		if diepte > 16 and 110 > diepte: # does the depth comply the threshold
-			if float(regel[5]) > 99: # does the quality comply the threshold
-				regel[2] = "SNP" + str(nregels)
-				print("\t".join(regel), end = '')
-				nregels += 1
+		line = line.split("\t")
+		depth = int([s for s in line[7].split(';') if "DP=" in s][0].split('=')[1])
+		if depth > 16 and 110 > depth: # does the depth comply the threshold
+			if float(line[5]) > 99: # does the quality comply the threshold
+				line[2] = "SNP" + str(nlines)
+				print("\t".join(line), end = '')
+				nlines += 1
 
-print(nregels, "written. nice.", file=sys.stderr)
+print(nlines, "written. nice.", file=sys.stderr)
