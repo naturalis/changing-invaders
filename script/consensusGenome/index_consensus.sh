@@ -8,7 +8,7 @@ if [ -e "$sample".cns.fa ];then
  makeblastdb -in "$sample".cns.fa -dbtype nucl && {
   $HOME/telegramhowto.R "index for $sample is made"
  } || {
-  $HOME/telegramhowto.R "during fasta indexation still an error"
+  $HOME/telegramhowto.R "during fasta indexing still an error"
  }
 else
  echo "$sample.cns.fa" does not exist.
