@@ -3,7 +3,7 @@
 # filter SNPs
 # by david
 # biostrings is required (BiocManager::install("Biostrings"))
-# based on uniek-meer.R
+# based on db2FoCaPfasta.R
 library(Biostrings)
 library(telegram)
 if (!is.na(commandArgs(trailingOnly=TRUE)[1])) pos = commandArgs(trailingOnly=TRUE)[1] else pos = "selected_snps.pos"

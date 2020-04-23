@@ -54,7 +54,7 @@ HOME/telegramhowto.R "There are $(($(wc -l "'"${out%_*}_${db%%_*}.fasta"'"|cut -
 # remove all samplenames from the second list that are displayed in the first and het from the remaining the first (if there is at all).
 next=$(ls *.cns.fa|cut -d_ -f1|grep -v "$(ls blast_output/*.fasta|rev|cut -d_ -f1|rev|cut -d. -f1)"|head -1)
 # if that is not empty, BLAST that sample in that case
-if [ ! -z "$next" ];then $HOME/blast_all_primers.sh "'"${out%_*}_${db%%_*}.fasta"'" '$threads' $next*.cns.fa;else $HOME/telegramhowto.R "Everything is BLASTed";fi
+if [ ! -z "$next" ];then $HOME/blast_primers_all_samples.sh "'"${out%_*}_${db%%_*}.fasta"'" '$threads' $next*.cns.fa;else $HOME/telegramhowto.R "Everything is BLASTed";fi
 date >> "'"${out%_*}_${db%%_*}.date"'"'
   else
    echo "2nd argument must be a number of threads, this does not seem like a BLAST interpretable number."

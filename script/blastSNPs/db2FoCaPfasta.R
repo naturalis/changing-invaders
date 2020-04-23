@@ -8,7 +8,7 @@ library(Biostrings)
 library(RSQLite)
 library(dplyr, warn.conflicts = FALSE)
 library(telegram)
-if (!is.na(commandArgs(trailingOnly=TRUE)[1])) db = commandArgs(trailingOnly=TRUE)[1] else db = "/data/david.noteborn/acht.db"
+if (!is.na(commandArgs(trailingOnly=TRUE)[1])) db = commandArgs(trailingOnly=TRUE)[1] else db = "/data/david.noteborn/eight.db"
 Sys.time()
 eightnucleotide <- dbConnect(SQLite(), db)
 exulans <- tbl(eightnucleotide, "EXULANS")
