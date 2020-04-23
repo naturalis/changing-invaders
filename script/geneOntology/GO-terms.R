@@ -1,39 +1,37 @@
 # GO-terms
 # changing invaders
-# do a GO-term analysis
+# execute a GO-term analysis
 # by david
-# BiocManager::install(c("limma", "GO.db"))
+# BiocManager::install(c("limma", "GO.db", "clusterProfiler"))
+suppressMessages(library(clusterProfiler))
 suppressMessages(library(limma))
 suppressMessages(library(biomaRt))
 suppressMessages(library(GO.db))
-# setwd("gen-ontologie/")
-if (!is.na(commandArgs(trailingOnly=TRUE)[1])) bestand = commandArgs(trailingOnly=TRUE)[1] else bestand = "hoevaakGenMetExon.csv"
-hoevaak_gen <- read.table(bestand, header = TRUE, row.names = 1)
+# setwd("~/gene-ontology/")
+if (!is.na(commandArgs(trailingOnly=TRUE)[1])) howManyFile = commandArgs(trailingOnly=TRUE)[1] else howManyFile = "amountGeneWithExon.csv"
+amount_gene <- read.table(howManyFile, header = TRUE, row.names = 1)
 ensembl = useDataset("rnorvegicus_gene_ensembl", mart = useMart("ensembl"))
-ontology_gen <- getBM(attributes = c('ensembl_gene_id', 'entrezgene_id'),
-                      values = rownames(hoevaak_gen), mart = ensembl)
-ontology_sel_gen <- ontology_gen[!is.na(ontology_gen$entrezgene_id),]
-head(ontology_sel_gen)
-hoevaak_gen$ensembl_gene_id <- rownames(hoevaak_gen)
-hoevaak_overview <- dplyr::inner_join(hoevaak_gen, ontology_sel_gen)
-hoevaak_overview <- hoevaak_overview[!duplicated(hoevaak_overview$entrezgene_id),]
-rownames(hoevaak_overview) <- hoevaak_overview$entrezgene_id
-hoevaak <- as.numeric(Reduce(c, apply(hoevaak_overview, 1, function(x) rep(x['entrezgene_id'], x['hoevaak']))))
-#hoevaak <- hoevaak_overview[,c("hoevaak")]
-#names(hoevaak) <- hoevaak_overview$entrezgene_id
+ontology_gene <- getBM(attributes = c('ensembl_gene_id', 'entrezgene_id'),
+                      values = rownames(amount_gene), mart = ensembl)
+ontology_sel_gene <- ontology_gene[!is.na(ontology_gene$entrezgene_id),]
+head(ontology_sel_gene)
+amount_gene$ensembl_gene_id <- rownames(amount_gene)
+amount_overview <- dplyr::inner_join(amount_gene, ontology_sel_gene)
+amount_overview <- amount_overview[!duplicated(amount_overview$entrezgene_id),]
+rownames(amount_overview) <- amount_overview$entrezgene_id
+amount <- as.numeric(Reduce(c, apply(amount_overview, 1, function(x) rep(x['entrezgene_id'], x['amount']))))
+#amount <- amount_overview[,c("amount")]
+#names(amount) <- amount_overview$entrezgene_id
 
-go.analyse <- goana(as.character(hoevaak), species = "Rn")
+go.analysis <- goana(as.character(amount), species = "Rn")
 
-View(go.analyse)
-write.csv(go.analyse, 'go-termen.csv')
+View(go.analysis)
+write.csv(go.analysis, 'go-terms.csv')
 
 
-
-BiocManager::install("clusterProfiler")
-require(clusterProfiler)
 data(geneList, package="DOSE")
 de <- names(geneList)[abs(geneList) > 2]
-bp <- enrichGO(as.character(hoevaak), 'org.Rn.eg.db', ont="MF")
+bp <- enrichGO(as.character(amount), 'org.Rn.eg.db', ont="BP")
 head(bp, n = 10)
 enrichMap(bp)
 bp2 <- simplify(bp, cutoff=0.7, by="p.adjust", select_fun=min)

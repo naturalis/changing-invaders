@@ -5,15 +5,15 @@
 # cut -d, -f7-14 SNP.csv|sed '1s/_[^,]*//g'|tr , \\t|awk '{print $1"\t"$4"\t"$2"\t"$3"\t"$5"\t"$6"\t"$7"\t"$8}'
 # ggplot for plotting of the MCA
 library(ggplot2)
-# ggrepel so labels will not overlap and reading of the samplenames is impossible
+# ggrepel so labels will not overlap and reading of the samplenames becomes impossible
 library(ggrepel)
-if (length(commandArgs(trailingOnly=T))>0) verwerken <- commandArgs(trailingOnly=T) else {
-	gt_bestanden <- list.files(pattern = "*.gt")
+if (length(commandArgs(trailingOnly=T))>0) process <- commandArgs(trailingOnly=T) else {
+	gt_files <- list.files(pattern = "*.gt")
 	# give if possible a graphical menu with all .gt files, where the user can choose one or more for the MCA
-	verwerken <- select.list(gt_bestanden, multiple = TRUE, title = "Kies een genotype bestand")
+	process <- select.list(gt_files, multiple = TRUE, title = "Choose a genotype file")
 }
 # for every chosen gt file
-for (genotypes in verwerken) {
+for (genotypes in process) {
 	# read the gt file
 	ASM <- read.table(genotypes, TRUE, stringsAsFactors = TRUE)
 	# execute the MCA

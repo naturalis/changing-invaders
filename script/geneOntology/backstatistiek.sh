@@ -4,9 +4,9 @@
 # but only HIGH impact
 # and where nieuw zeeland samples are different then the others (and equal towards each other)
 # + annotation
-groep="Anatomical structure morphogenesis"
-[ $# -gt 0 ]&&groep="$1"
-# echo $groep
+group="Anatomical structure morphogenesis"
+[ $# -gt 0 ]&&group="$1"
+# echo $group
 # search group in the go enrichment
 # get from this only the genes, that you put all on its own line and add as first line ^#[^#]
 # (first character # second character all but #).
@@ -24,4 +24,4 @@ groep="Anatomical structure morphogenesis"
 # if yes, show them
 # search only HIGH impact mutations
 # get only the genotypes (remove the INFO field)
-grep "$groep" GO_BIOLOGICAL_PROCESS_enrichment_ALL.csv|cut -d, -f5|tr ' ' $'\n'|sed '1s/^/^#[^#]\n/'|egrep -f- merge8.ann.vcf|cut -d$'\t' -f4,5,10-,8|sed -e 's/:[^\t]*//g' -e 's/\t/,/'|sed -E 's/\t([^\t]*)(.*)/\2\t\1/'|awk '{if (NR==1){$1="";print substr($0, 2)}else{a=$1;split(a,b,",");for(i=2;i<=NF-1;i++) { split($i, c, "/");printf b[c[1]+1]"/"b[c[2]+1]"\t" }print $NF}}'|sed '1s/_[^\t ]*./\t/g'|awk '$4==$6&&$4!=$1&&$4!=$2&&$4!=$3&&$4!=$5&&$4!=$7&&$4!=$8{print}{if(NR==1)print}'|grep -P '[^|]+(?=\|HIGH|INFO)'|cut -d$'\t' -f1-8
+grep "$group" GO_BIOLOGICAL_PROCESS_enrichment_ALL.csv|cut -d, -f5|tr ' ' $'\n'|sed '1s/^/^#[^#]\n/'|egrep -f- merge8.ann.vcf|cut -d$'\t' -f4,5,10-,8|sed -e 's/:[^\t]*//g' -e 's/\t/,/'|sed -E 's/\t([^\t]*)(.*)/\2\t\1/'|awk '{if (NR==1){$1="";print substr($0, 2)}else{a=$1;split(a,b,",");for(i=2;i<=NF-1;i++) { split($i, c, "/");printf b[c[1]+1]"/"b[c[2]+1]"\t" }print $NF}}'|sed '1s/_[^\t ]*./\t/g'|awk '$4==$6&&$4!=$1&&$4!=$2&&$4!=$3&&$4!=$5&&$4!=$7&&$4!=$8{print}{if(NR==1)print}'|grep -P '[^|]+(?=\|HIGH|INFO)'|cut -d$'\t' -f1-8

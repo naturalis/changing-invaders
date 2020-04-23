@@ -3,7 +3,7 @@
 # a script to save all genotypes of all coding (CNS)SNPs in coding.gt
 # this is possibly usefull for a MCA
 #
-# het from the annotated file with only the CNSSNPs, the bases and the sample genotypes (other sample information will
+# get from the annotated file with only the CNSSNPs, the bases and the sample genotypes (other sample information will
 # be removed later) format the bases to a comma seperated list. Remove the header lines (except for the sample header)
 # show the header from the second field (the fisrt field is not a samplename, but REF,ALT) and display the genotypes
 # in bases where homozygote genotypes (A/A) are simplified to a single base (A)

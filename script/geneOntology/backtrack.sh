@@ -9,11 +9,10 @@
 # and put everything on the same line, seperated by a space
 # allow the user to choose a group
 # and save that in select
-select="$(eval echo $(eval kdialog --geometry 700x500  --checklist \"Kies een gen groep uit de lijst:\" $(cut -d, -f1,4 GO_BIOLOGICAL_PROCESS_enrichment_ALL.csv|sed -n '1!{p;s/.*/&\noff/p}'|tr \\n ' ') leeg))"
-[ "$select" = "leeg" ]&& { echo Gebruiker sluit af;exit;}
+select="$(eval echo $(eval kdialog --geometry 700x500  --checklist \"Choose a gene group from the list:\" $(cut -d, -f1,4 GO_BIOLOGICAL_PROCESS_enrichment_ALL.csv|sed -n '1!{p;s/.*/&\noff/p}'|tr \\n ' ') empty))"
+[ "$select" = empty ]&& { echo User exits;exit;}
 # seperate select on , so only get the GO term
-groep="$(echo "$select"|cut -d, -f2)"
-#groep="Anatomical structure morphogenesis"
+group="$(echo "$select"|cut -d, -f2)"
 # fold yakuake open (foldable terminal)
 qdbus org.kde.yakuake /yakuake/window toggleWindowState
 # search the GO term group in GO_BIOLOGICAL_PROCESS_enrichment_ALL.csv,
@@ -29,7 +28,7 @@ qdbus org.kde.yakuake /yakuake/window toggleWindowState
 # if it is a homozygote genotype then it will be displayed as a single base
 # whereafter the bases are colored and the samplename is shorted to the part before the _
 # and all is displayed to the screen
-grep "$groep" GO_BIOLOGICAL_PROCESS_enrichment_ALL.csv|cut -d, -f5|xargs echo|tr ' ' $'\n'|sed -E 's/^|$/\\|/g'|sed '1s/^/^#[^#]\n/'|egrep -f- merge8.ann.vcf|cut -d$'\t' -f4,5,10-|sed -e 's/:[^\t]*//g' -e 's/\t/,/'|awk '{if (NR==1){$1="";print substr($0, 2)}else{a=$1;split(a,b,",");for(i=2;i<=NF;i++) { split($i, c, "/");printf b[c[1]+1]"/"b[c[2]+1]"\t" }print ""}}'|sed 's!\(.\)/\1!\1!g'|sed -E \
+grep "$group" GO_BIOLOGICAL_PROCESS_enrichment_ALL.csv|cut -d, -f5|xargs echo|tr ' ' $'\n'|sed -E 's/^|$/\\|/g'|sed '1s/^/^#[^#]\n/'|egrep -f- merge8.ann.vcf|cut -d$'\t' -f4,5,10-|sed -e 's/:[^\t]*//g' -e 's/\t/,/'|awk '{if (NR==1){$1="";print substr($0, 2)}else{a=$1;split(a,b,",");for(i=2;i<=NF;i++) { split($i, c, "/");printf b[c[1]+1]"/"b[c[2]+1]"\t" }print ""}}'|sed 's!\(.\)/\1!\1!g'|sed -E \
 -e $'1!s/A/\033[1;31m&\033[0m/g' \
 -e $'1!s/C/\033[1;32m&\033[0m/g' \
 -e $'1!s/G/\033[1;33m&\033[0m/g' \
