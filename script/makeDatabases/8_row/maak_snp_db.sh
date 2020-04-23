@@ -2,17 +2,17 @@
 # changing invaders
 # by david
 # create SNP database
-[ $# -gt 0 ] && map=$1 || map=/home/rutger.vos/fileserver/projects/B19005-525/Samples/
-[ $# -gt 1 ] && samples=$(ls $map/*.bcf|egrep $2) || samples=$(ls {/data/david.noteborn/L0235_41658,/home/david.noteborn/sample-files/{C0910_41662,GMI-4_41656,L0234_41660,R14018_41657,R7129_41659,R6750_41661,P0041_41663}}.bcf)
-[ $# -gt 2 ] && getal=$3 || getal=1
+[ $# -gt 0 ] && directory=$1 || directory=/home/rutger.vos/fileserver/projects/B19005-525/Samples/
+[ $# -gt 1 ] && samples=$(ls $directory/*.bcf|egrep $2) || samples=$(ls {/data/d*.n*/L0235_41658,/home/d*.n*/sample-files/{C0910_41662,GMI-4_41656,L0234_41660,R14018_41657,R7129_41659,R6750_41661,P0041_41663}}.bcf)
+[ $# -gt 2 ] && number=$3 || number=1
 
 sbatch -D $PWD <<< '#!/bin/bash
 #SBATCH --job-name=DB-seq
-database=acht.db
+database=eight.db
 
 shopt -s extglob
-getal='$getal'
-[ "$getal" = 1 ] && {
+number='$number'
+[ "$number" = 1 ] && {
 	[ -e $database ] && rm $database
 	sqlite3 $database < $HOME/maak_snp.sql
 	[ -e sample-enum.csv ]&&rm sample-enum.csv
@@ -21,11 +21,11 @@ getal='$getal'
 for sample in '$samples';do
  if [ -e "$sample" ];then
   if [ -s "$sample" ];then
-   echo "${sample%.*},$getal" >> sample-enum.csv
-   bcftools view "$sample"|python3 $HOME/bewerk_snp.py $getal|cat $HOME/voeg_bcf_toe.sql -|sqlite3 $database
-   [ $? -ne 0 ] && { $HOME/telegramhowto.R "$(ls -t ~/slurm-*.out|head -1|xargs cat)";exit;} || $HOME/telegramhowto.R "In de database is nu ook ${sample//*(*\/|.*)} aanwezig."
+   echo "${sample%.*},$number" >> sample-enum.csv
+   bcftools view "$sample"|python3 $HOME/bewerk_snp.py $number|cat $HOME/voeg_bcf_toe.sql -|sqlite3 $database
+   [ $? -ne 0 ] && { $HOME/telegramhowto.R "$(ls -t ~/slurm-*.out|head -1|xargs cat)";exit;} || $HOME/telegramhowto.R "In the database ${sample//*(*\/|.*)} is also present."
    $HOME/telegramhowto.R "Database is now $(du -h $database|cut -d $'\''\t'\'' -f1|sed -e "s/G/ gigabyte/" -e "s/M/ megabyte/") in size"
-   getal=$((getal+1))
+   number=$((number+1))
   else
    $HOME/telegramhowto.R "Database could not import $sample because it does not contain any content."
   fi
@@ -35,5 +35,5 @@ for sample in '$samples';do
 done
 $HOME/telegramhowto.R "Database completely filled... (Now only making of UPOS)"
 sqlite3 $database < $HOME/vulupos.sql
-$HOME/telegramhowto.R "Even UPOS filled, fill in as third argument next time $getal ."
-echo fill in the next time as number $getal :\)'
+$HOME/telegramhowto.R "Even UPOS filled, fill in as third argument next time $number ."
+echo fill in the next time as number $number :\)'

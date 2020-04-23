@@ -6,7 +6,7 @@
 # (no other SNP on that chromosome)
 import sys
 
-def notperiod(x):
+def notPeriod(x):
 	if x == ".":
 		return ""
 	else:
@@ -18,44 +18,44 @@ def unconstruct(info, data):
 	except:
 		print(info)
 
-semi_oud = ""
+semi_old = ""
 if len(sys.argv) > 1:
 	getal = sys.argv[1]
 else:
 	print("No number given (required for the last column).")
 	sys.exit()
 
-for regel in sys.stdin:
-	if regel[0:2] == "##":
+for line in sys.stdin:
+	if line[0:2] == "##":
 		pass
-	elif regel[0:1] == "#":
+	elif line[0:1] == "#":
 		if False:
-			regel = [notperiod(x) for x in regel.split("\t")]
-			print("\t".join(regel[0:8] + [regel[9].strip() + "_" + x for x in ['GT', 'PL-R', 'PL-H', 'PL-A']] + ['SNP_SIZE']))
+			line = [notPeriod(x) for x in line.split("\t")]
+			print("\t".join(line[0:8] + [line[9].strip() + "_" + x for x in ['GT', 'PL-R', 'PL-H', 'PL-A']] + ['SNP_SIZE']))
 	else:
-		regel = [notperiod(x) for x in regel.split("\t")]
-		if semi_oud == "":
-			regel += ["-1"]
+		line = [notPeriod(x) for x in line.split("\t")]
+		if semi_old == "":
+			line += ["-1"]
 		else:
-			if regel[0]==semi_oud[0]:
-				regel += [str(int(regel[1]) - int(semi_oud[1]))]
-				semi_oud += [str(int(regel[1]) - int(semi_oud[1]))]
+			if line[0]==semi_old[0]:
+				line += [str(int(line[1]) - int(semi_old[1]))]
+				semi_old += [str(int(line[1]) - int(semi_old[1]))]
 			else:
-				regel += ["-1"]
-				semi_oud += ["-1"]
-			if len(semi_oud) > 3:
-				#if semi_oud[-5] == "" or semi_oud[-5] == xyz:  # Phred-scaled genotype likelihoods
-				semi_oud += [getal]
-				print("\t".join(semi_oud))
-		if len(regel[8].split(":")) > 1:
+				line += ["-1"]
+				semi_old += ["-1"]
+			if len(semi_old) > 3:
+				#if semi_old[-5] == "" or semi_old[-5] == xyz:  # Phred-scaled genotype likelihoods
+				semi_old += [getal]
+				print("\t".join(semi_old))
+		if len(line[8].split(":")) > 1:
 			# the info column is here but the depth
-			mogelijkheden = [regel[3]] + regel[4].split(",")
-			voor, na = regel[9].strip().split(':')[[idx for idx, s in enumerate(regel[8].split(":")) if 'GT' in s][0]].split("/")
-			semi_oud = regel[0:2] + regel[3:6] + \
-			[[s for s in regel[7].split(';') if "DP=" in s][0].split('=')[1]] + \
-			unconstruct(regel[8].split(":"), regel[9].strip().split(':')) + [mogelijkheden[int(voor)] + "/" + mogelijkheden[int(na)], regel[-1]]
+			possibilities = [line[3]] + line[4].split(",")
+			before, after = line[9].strip().split(':')[[idx for idx, s in enumerate(line[8].split(":")) if 'GT' in s][0]].split("/")
+			semi_old = line[0:2] + line[3:6] + \
+			[[s for s in line[7].split(';') if "DP=" in s][0].split('=')[1]] + \
+			unconstruct(line[8].split(":"), line[9].strip().split(':')) + [possibilities[int(before)] + "/" + possibilities[int(after)], line[-1]]
 		else:
-			semi_oud = ["", regel[1]]
+			semi_old = ["", line[1]]
 # print the last line
-semi_oud += [getal]
-print("\t".join(semi_oud + ["-1"]))
+semi_old += [getal]
+print("\t".join(semi_old + ["-1"]))

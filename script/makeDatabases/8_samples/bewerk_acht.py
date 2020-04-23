@@ -7,7 +7,7 @@
 import sys
 import gzip
 
-def notperiod(x):
+def notPeriod(x):
 	if x == ".":
 		return ""
 	else:
@@ -19,40 +19,40 @@ def unconstruct(info, data):
 	except:
 		print("THIS:", info)
 
-semi_oud = ""
+semi_old = ""
 
-for regel in sys.stdin:
-	if regel[0:2] == "##":
+for line in sys.stdin:
+	if line[0:2] == "##":
 		pass
-	elif regel[0:1] == "#":
+	elif line[0:1] == "#":
 		if False:
-			regel = [notperiod(x) for x in regel.split("\t")]
-			print("\t".join(regel[0:8] + [regel[9].strip() + "_" + x for x in ['GT', 'PL']] + ['SNP_SIZE']))
+			line = [notPeriod(x) for x in line.split("\t")]
+			print("\t".join(line[0:8] + [line[9].strip() + "_" + x for x in ['GT', 'PL']] + ['SNP_SIZE']))
 	else:
-		regel = [notperiod(x) for x in regel.split("\t")]
-		if semi_oud == "":
-			regel += ["-1"]
+		line = [notPeriod(x) for x in line.split("\t")]
+		if semi_old == "":
+			line += ["-1"]
 		else:
-			if regel[0]==semi_oud[0]:
-				regel += [str(int(regel[1]) - int(semi_oud[1]))]
-				semi_oud += [str(int(regel[1]) - int(semi_oud[1]))]
+			if line[0]==semi_old[0]:
+				line += [str(int(line[1]) - int(semi_old[1]))]
+				semi_old += [str(int(line[1]) - int(semi_old[1]))]
 			else:
-				regel += ["-1"]
-				semi_oud += ["-1"]
-			if len(semi_oud) > 3:
-				#if semi_oud[-5] == "" or semi_oud[-5] == xyz:  # Phred-scaled genotype likelihoods
-				print("\t".join(semi_oud))
-		if len(regel[8].split(":")) > 1:
-			semi_oud = regel[0:2] + regel[3:6] + regel[7:8] + \
-			unconstruct(regel[8].split(":"), regel[9].strip().split(':')) + \
-			unconstruct(regel[8].split(":"), regel[10].strip().split(':')) + \
-			unconstruct(regel[8].split(":"), regel[11].strip().split(':')) + \
-			unconstruct(regel[8].split(":"), regel[12].strip().split(':')) + \
-			unconstruct(regel[8].split(":"), regel[13].strip().split(':')) + \
-			unconstruct(regel[8].split(":"), regel[14].strip().split(':')) + \
-			unconstruct(regel[8].split(":"), regel[15].strip().split(':')) + \
-			unconstruct(regel[8].split(":"), regel[16].strip().split(':')) + [regel[-1]]
+				line += ["-1"]
+				semi_old += ["-1"]
+			if len(semi_old) > 3:
+				#if semi_old[-5] == "" or semi_old[-5] == xyz:  # Phred-scaled genotype likelihoods
+				print("\t".join(semi_old))
+		if len(line[8].split(":")) > 1:
+			semi_old = line[0:2] + line[3:6] + line[7:8] + \
+			unconstruct(line[8].split(":"), line[9].strip().split(':')) + \
+			unconstruct(line[8].split(":"), line[10].strip().split(':')) + \
+			unconstruct(line[8].split(":"), line[11].strip().split(':')) + \
+			unconstruct(line[8].split(":"), line[12].strip().split(':')) + \
+			unconstruct(line[8].split(":"), line[13].strip().split(':')) + \
+			unconstruct(line[8].split(":"), line[14].strip().split(':')) + \
+			unconstruct(line[8].split(":"), line[15].strip().split(':')) + \
+			unconstruct(line[8].split(":"), line[16].strip().split(':')) + [line[-1]]
 		else:
-			semi_oud = ["", regel[1]]
+			semi_old = ["", line[1]]
 # print the last line
-print("\t".join(semi_oud + ["-1"]))
+print("\t".join(semi_old + ["-1"]))
