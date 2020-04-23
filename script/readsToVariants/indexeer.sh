@@ -6,9 +6,9 @@
 if [ "$sample*.bam" != "$(echo "$sample"*.bam)" ];then
 sbatch -D $PWD<<< '#!/bin/bash
 #SBATCH --job-name=index:"'"$sample"'"
-## cp ../rutger.vos/fileserver/projects/B19005-525/Samples/"'"$sample/$sample"'".bam .
+## cp ../r*.v*/fileserver/projects/B19005-525/Samples/"'"$sample/$sample"'".bam .
 samtools index "'"$sample"'"*.bam
-$HOME/telegramhowto.R "'"$sample"' is geindexeerd"'
+$HOME/telegramhowto.R "'"$sample"' is indexed"'
 else
  echo "$sample*".bam does not exist "(in $PWD)".
 fi
