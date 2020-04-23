@@ -4,7 +4,7 @@
 # the output (stdout) is the edited file
 # by David
 # example run
-# sbatch_do 'bcftools view /data/d*.n*/merge8.bcf | python3 $HOME/combined_filter_qual_depth.py | bcftools view -Ob > $HOME/merge8.bcf'
+# sbatch_do 'bcftools view /data/d*.n*/merge8.bcf | python3 $HOME/combined2FoCaPSNPs.py | bcftools view -Ob > $HOME/merge8.bcf'
 import sys
 
 nlines = 0
