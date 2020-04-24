@@ -14,7 +14,7 @@ shopt -s extglob
 number='$number'
 [ "$number" = 1 ] && {
 	[ -e $database ] && rm $database
-	sqlite3 $database < $HOME/maak_snp.sql
+	sqlite3 $database < $HOME/make_snp.sql
 	[ -e sample-enum.csv ]&&rm sample-enum.csv
 	$HOME/telegramhowto.R "Database is generated (without real content)"
 }
@@ -22,7 +22,7 @@ for sample in '$samples';do
  if [ -e "$sample" ];then
   if [ -s "$sample" ];then
    echo "${sample%.*},$number" >> sample-enum.csv
-   bcftools view "$sample"|python3 $HOME/bewerk_snp.py $number|cat $HOME/voeg_bcf_toe.sql -|sqlite3 $database
+   bcftools view "$sample"|python3 $HOME/edit_snp.py $number|cat $HOME/add_bcf.sql -|sqlite3 $database
    [ $? -ne 0 ] && { $HOME/telegramhowto.R "$(ls -t ~/slurm-*.out|head -1|xargs cat)";exit;} || $HOME/telegramhowto.R "In the database ${sample//*(*\/|.*)} is also present."
    $HOME/telegramhowto.R "Database is now $(du -h $database|cut -d $'\''\t'\'' -f1|sed -e "s/G/ gigabyte/" -e "s/M/ megabyte/") in size"
    number=$((number+1))
@@ -34,6 +34,6 @@ for sample in '$samples';do
  fi
 done
 $HOME/telegramhowto.R "Database completely filled... (Now only making of UPOS)"
-sqlite3 $database < $HOME/vulupos.sql
+sqlite3 $database < $HOME/fill_upos.sql
 $HOME/telegramhowto.R "Even UPOS filled, fill in as third argument next time $number ."
 echo fill in the next time as number $number :\)'

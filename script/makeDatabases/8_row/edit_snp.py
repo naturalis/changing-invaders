@@ -12,7 +12,7 @@ def notPeriod(x):
 	else:
 		return x
 
-def unconstruct(info, data):
+def unConstruct(info, data):
 	try:
 		return data
 	except:
@@ -53,7 +53,7 @@ for line in sys.stdin:
 			before, after = line[9].strip().split(':')[[idx for idx, s in enumerate(line[8].split(":")) if 'GT' in s][0]].split("/")
 			semi_old = line[0:2] + line[3:6] + \
 			[[s for s in line[7].split(';') if "DP=" in s][0].split('=')[1]] + \
-			unconstruct(line[8].split(":"), line[9].strip().split(':')) + [possibilities[int(before)] + "/" + possibilities[int(after)], line[-1]]
+			unConstruct(line[8].split(":"), line[9].strip().split(':')) + [possibilities[int(before)] + "/" + possibilities[int(after)], line[-1]]
 		else:
 			semi_old = ["", line[1]]
 # print the last line
