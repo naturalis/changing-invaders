@@ -8,7 +8,7 @@ SAMPLES=$(ls $DIR)
 for SAMPLE in $SAMPLES; do
   cd $DIR/$SAMPLE
     export SAMPLE
-    if [[ ! -e ${SAMBLE}.bam ]]; then
+    if [[ -e ${SAMPLE}.bam ]]; then
       perl -e 'print printf("\@RG\tID:NA\tSM:%s\tPL:ILLUMINA\tPI:NA", $ENV{SAMPLE})' > rg.txt
       samtools merge -rh rg.txt -l 9 --threads 16 ${SAMPLE}.bam *.bam
     fi

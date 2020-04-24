@@ -2,7 +2,7 @@
 # changing invaders
 # by david
 # bcf calling by the use of slurm (default 8 cores)
-# callwith `./bcfcall.sh [possible sample name] [number of threads(-1)]`
+# callwith `./bcf_call.sh [possible sample name] [number of threads(-1)]`
 [ $# -gt 0 ] && sample=$1 || sample=GMI-4_41656
 [ $# -gt 1 ] && threads=$2 || threads=8
 # --max-depth default is used, if not working reducing to something lower
