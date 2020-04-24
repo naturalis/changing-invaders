@@ -1,9 +1,9 @@
 #!/usr/bin/env Rscript
 #SBATCH --job-name=unique-SNP
 # changing invaders
-# unique more
 # by david
-# biostrings is nodig (BiocManager::install("Biostrings"))
+# obtain FoCaP + distance SNP upstream + downstream sequences from R norvegicus
+# biostrings is required (BiocManager::install("Biostrings"))
 library(Biostrings)
 library(RSQLite)
 library(dplyr, warn.conflicts = FALSE)

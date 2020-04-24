@@ -1,7 +1,7 @@
 #!/bin/bash
-# door david
 # Naturalis
 # changing invaders
+# by david
 # blast sequences
 # and extract then only sequences with 1 hit
 shopt -s extglob
