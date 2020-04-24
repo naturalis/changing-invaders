@@ -1,9 +1,9 @@
 #!/bin/bash
 # Naturalis
 # changing invaders
-# by david noteborn
+# by david
 # put the samplenames right in the bam file so haplotypecaller will not crash
-for sample in ../rutger.vos/fileserver/projects/B19005-525/Samples/*;do
+for sample in ../r*.v*/fileserver/projects/B19005-525/Samples/*;do
  # runs a sbatch job
  sbatch <<< '#!/bin/bash
   # replace the header sample name (else gatk wont become happy)

@@ -1,7 +1,7 @@
 #!/bin/bash
 # changing invaders
 # by david
-# bcf calling by the use of slurm (default 8 cores)
+# bcf calling by the use of slurm (default 8+1 cores)
 # callwith `./bcf_call.sh [possible sample name] [number of threads(-1)]`
 [ $# -gt 0 ] && sample=$1 || sample=GMI-4_41656
 [ $# -gt 1 ] && threads=$2 || threads=8

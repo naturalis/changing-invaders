@@ -6,7 +6,7 @@
 [ $# -gt 0 ] && sample=$1 || sample=GMI-4_41656
 sbatch -D $PWD<<< '#!/bin/bash
 #SBATCH --job-name="'"$sample"'"
-sample=/home/rutger.vos/fileserver/projects/B19005-525/Samples/"'"$sample/$sample"'".bam
+sample=/home/r*.v*/fileserver/projects/B19005-525/Samples/"'"$sample/$sample"'".bam
 # if the size is bigger than 100 bytes copy
 # longlist the sample, by replacing multiple spaces the fifth field will be the samplefile size
 [ $(ls -l $sample |sed s/\ +/\ /g|cut -d\  -f5) -gt 100 ] && cp $sample .

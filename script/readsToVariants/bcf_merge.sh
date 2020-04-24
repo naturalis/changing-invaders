@@ -1,7 +1,7 @@
 #!/bin/bash
+# Naturalis
 # changing invaders
 # by david
-# Naturalis
 # first argument filter over bcf files
 # combine bcf files to one
 [ $# -eq 1 ] && samples=$(ls *.bcf|grep $1) || samples=$(ls *.bcf|grep -v merge)
