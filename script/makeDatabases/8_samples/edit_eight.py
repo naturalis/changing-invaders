@@ -13,7 +13,7 @@ def notPeriod(x):
 	else:
 		return x
 
-def unconstruct(info, data):
+def unConstruct(info, data):
 	try:
 		return data
 	except:
@@ -44,14 +44,14 @@ for line in sys.stdin:
 				print("\t".join(semi_old))
 		if len(line[8].split(":")) > 1:
 			semi_old = line[0:2] + line[3:6] + line[7:8] + \
-			unconstruct(line[8].split(":"), line[9].strip().split(':')) + \
-			unconstruct(line[8].split(":"), line[10].strip().split(':')) + \
-			unconstruct(line[8].split(":"), line[11].strip().split(':')) + \
-			unconstruct(line[8].split(":"), line[12].strip().split(':')) + \
-			unconstruct(line[8].split(":"), line[13].strip().split(':')) + \
-			unconstruct(line[8].split(":"), line[14].strip().split(':')) + \
-			unconstruct(line[8].split(":"), line[15].strip().split(':')) + \
-			unconstruct(line[8].split(":"), line[16].strip().split(':')) + [line[-1]]
+			unConstruct(line[8].split(":"), line[9].strip().split(':')) + \
+			unConstruct(line[8].split(":"), line[10].strip().split(':')) + \
+			unConstruct(line[8].split(":"), line[11].strip().split(':')) + \
+			unConstruct(line[8].split(":"), line[12].strip().split(':')) + \
+			unConstruct(line[8].split(":"), line[13].strip().split(':')) + \
+			unConstruct(line[8].split(":"), line[14].strip().split(':')) + \
+			unConstruct(line[8].split(":"), line[15].strip().split(':')) + \
+			unConstruct(line[8].split(":"), line[16].strip().split(':')) + [line[-1]]
 		else:
 			semi_old = ["", line[1]]
 # print the last line
