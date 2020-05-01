@@ -1,1 +1,1 @@
-![flowchart](flowchart.png?raw=true)
+![flowchart](../../../doc/flowchart/makeDatabases_8samples.png?raw=true)

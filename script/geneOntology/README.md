@@ -7,4 +7,4 @@ This folder does also contain older scripts to make a distiction between (on)gen
 
 for the flowchart: all_coding_genotypes is not displayed as a bug in the chart, within\* scripts are not displayed for not being used in current flow, and basically half-depricated.
 Also a half-read script to find GO-terms using a R package is written in GO_terms.R
-![flowchart](flowchart.png)
+![flowchart](../../doc/flowchart/geneOntology.png?raw=true)

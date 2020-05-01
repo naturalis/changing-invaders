@@ -9,4 +9,4 @@ On the current moment the scripts from `maak_snp_db.sh` are the used model.
 `make_*_db.sh` does combine everything to one working script.
 `filtered_rows_table.sh` create a table based on filtered criterion, using `make_valid.sql`.
 flowchart (check individual folders for more zoomed in version):
-![flowchart](flowchart.png?raw=true)
+![flowchart](../../doc/flowchart/makeDatabases.png?raw=true)
