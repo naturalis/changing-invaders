@@ -6,10 +6,12 @@
 # cd data;ls|xargs gzip
 shopt -s extglob
 cd /var/data
+yaml=data/files.yml
 trap 'echo "something goes wrong, error at line $LINENO (commando: $(sed -n $LINENO"p" "$BASH_SOURCE"))";exit 2' ERR
-perl -I $PWD/lib readsToVariants/fastp.pl -file "files.yml"
-mkdir /root/tmp
-perl -I $PWD/lib readsToVariants/minimap2.pl --yaml files.yml --index true --outdir /var/data/data --verbose
+perl -I $PWD/lib script/readsToVariants/fastp.pl -file "$yaml"
+mkdir -p /root/tmp
+sed -i 's/-m 7G/-m 70M/' script/readsToVariants/minimap2.pl
+perl -I $PWD/lib script/readsToVariants/minimap2.pl --yaml "$yaml" --index true --outdir /var/data/data --verbose
 exit
 bash merge.sh
 # put the samplenames in the bam file so haplotypecaller wont crash
