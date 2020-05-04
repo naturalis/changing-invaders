@@ -1,7 +1,7 @@
 # Make Databases
 
 The SNPs are templorarily saved inside a database, here are different scripts written for.
-On the current moment the scripts from `maak_snp_db.sh` are the used model.
+On the current moment the scripts from `make_snp_db.sh` are the used model.
 `make_*.sql` does contain the table definitions.
 `add_bcf.sql` adds a table (from stdin) (seperated on tab) (row-based)
 `fill_upos.sql` is a script that fills all unique chromosoom/positie correlations in the UPOS table of the database (row based)
