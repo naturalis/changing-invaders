@@ -1,22 +1,23 @@
 # changing-invaders
 Scripts and config files for assembly and SNP design of genomics of Polynesian rats
 
-Veel scripts kosten wat tijd om te draaien. Mede hierdoor wordt gebruik gemaakt van het slurm systeem.
-Dit is een systeem dat jobs beheert op een server. Vandaar dat de meeste (bash)scripts in deze repository gebruik maken van sbatch en de volgende structuur:
+Many scripts take some time to run(especially in scripts/readsToVariants folder). Because of this the slurm system is used.
+This is a system that manages jobs on a server. Therefore a lot of (bash)scripts in this repository make use of sbatch and the following structure:
 ```bash
 #!/bin/bash
-# wat het script doet
-code om de argumenten te verwerken of op standaard waarden te zetten
-[ $# -gt 0 ]&&variable1=$1||variable1=standaard_argument
-code die kijkt of de bestandsargumenten daadwerkelijk aanwezig zijn
-if test $(dat het geval is);then
+# what the script does
+code to parse arguments of set them on default values
+[ $# -gt 0 ]&&variable1=$1||variable1=standard_argument
+code that checks whether file arguments are available
+if test $(that is the case);then
  sbatch <<< '#!/bin/bash
-  # daadwerkelijke code
-  programma_a "'"$variable1"'"
+  # read code
+  program_a "'"$variable1"'"
 '
 fi
 ```
-Let hierbij op dat sbatch het programma is waarmee jobs bekend worden gemaakt op de server. Het programma dat de job dus inhoud staat dan vervolgens op de volgende regels.
-Omdat er wordt gewerkt met '(enkele quote) zullen argumenten die worden meegegeven vaak staan binnen "'" (dubbelle quote zodat de meeste variabelen spaties kunnen bevatten)
+Please note that sbatch is the program where jobs are made known on the server. The program the job comprend is on the next lines.
+Because there is worked with '(single quote) arguments that are given are within "'" (double quote so most variabeles could contain spaces)
 
-Voor alle scripts voor de cleanup verwijs ik naar: https://github.com/naturalis/changing-invaders/tree/922c543dcc55c43b1ed627e0396ae57dc107ad10
+For this repo with a lot of things still in Dutch I refer to this commit: https://github.com/naturalis/changing-invaders/commit/184a23c18492c1197a6f8936b0b42a7750dde9e4
+For all scripts before cleanup(and translation) I refer to: https://github.com/naturalis/changing-invaders/tree/922c543dcc55c43b1ed627e0396ae57dc107ad10

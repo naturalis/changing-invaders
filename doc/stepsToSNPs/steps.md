@@ -34,4 +34,4 @@
 * Final Selection
   - more diverse SNPs are prefered, SNPs that only apply to one organism are avoided as much as possible.
 
-![Filter steps image](https://raw.githubusercontent.com/naturalis/changing-invaders/master/filterStap.png?token=ANKL234X5VYRSAE4RBEXL6C6AXKGS)
+![Filter steps image](https://raw.githubusercontent.com/naturalis/changing-invaders/master/doc/stepsToSNPs/filterStep.png?raw=true)
