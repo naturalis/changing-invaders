@@ -78,7 +78,7 @@ blast_primers_all_samples() {
  [ $# -gt 2 ] && db=$3 || db=R7129_41659.cns.fa
  fasta="$(ls "$fasta"*{,.{fa,fasta}} "/home/d*n*/$fasta"*{,.{fa,fasta}} 2>/dev/null|head -1)"
  db="$(ls "$db"*{,.{fa,fasta}} "/home/d*n*/$db"*{,.{fa,fasta}} 2>/dev/null|head -1)"
- [ $# -gt 3 ] && out=$4 || { out="${fasta//?(*\/|.fa|.fasta)/}";[ -d blast_output ]&&out="blast_output/$out";} # enkel fasta naam zonder pad of extensie
+ [ $# -gt 3 ] && out=$4 || { out="${fasta//?(*\/|.fa|.fasta)/}";[ -d blast_output ]&&out="blast_output/$out";} # only fasta name without path or extension
  date > "${out%_*}_${db%%_*}.date"
  # blast with max 4 chromosome hits and 4 hits per chromosome
  blastn -gapopen 20 -gapextend 4 -num_threads '$threads' -outfmt 13 -max_target_seqs 4 -max_hsps 4 -query "$fasta" -db "$db"
