@@ -22,7 +22,7 @@ if [ "" != "$fasta" ];then
    [ $# -gt 3 ] && out=$4 || { out="${fasta//?(*\/|.fa|.fasta)/}";[ -d blast_output ]&&out="blast_output/$out";} # only fasta name without path of extension
    sbatch -D $PWD -n $threads<<< '#!/bin/bash
 #SBATCH --job-name=blast-"'"$fasta"'"
-#SBATCH --output="'"${out%_*}_${db%%_*}.json"'" # output naam = filtered_snps_R7129.json
+#SBATCH --output="'"${out%_*}_${db%%_*}.json"'" # output name = filtered_snps_R7129.json
 date > "'"${out%_*}_${db%%_*}.date"'"
 # blast with max 4 chromosome hits and 4 hits per chromosome
 blastn -gapopen 20 -gapextend 4 -num_threads '$threads' -outfmt 13 -max_target_seqs 4 -max_hsps 4 -query "'"$fasta"'" -db "'"$db"'" && {
