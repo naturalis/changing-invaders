@@ -3,7 +3,8 @@ Scripts and config files for assembly and SNP design of genomics of Polynesian r
 
 The source tree is:
 ```
-├───data - data and yml file to reflect the data for first steps of the flowchart
+├───data - data (on Docker image) and yml file to reflect the data for first steps of the flowchart
+├───local-data - data and yml file to reflect the data for first steps of the flowchart to use in the pipeline
 ├───doc
 │   ├───flowchart - flowchart images to show in /script/\* folders
 │   ├───stepsToSNPs - explaination of SNPs in English language
@@ -23,6 +24,33 @@ The source tree is:
     │   └───row_based
     └───readsToVariants
 ```
+Please not that different runs of the same sample should be located in different subdirectories under local-data. If this isn't done and the naming sheme is used that here is documented and more than 1 run belongs to one sample, your data will be incorrect because of the `--dont_overwrite` policy enforced in `fastp.pl`. fastq-files should be named samplename_*adapter used for the run*_L002_R*1 or 2 depending on pair*_*run name*.fastq.gz other naming shemes *might* work out as well but this is recommend. Also create a YAML file (`files.yml`) on the same folder as the data:
+```bash
+---
+reference:
+  Rnor_6.0: /var/data/data/path to reference(fasta.gz)
+  Rnor_6.0-filtered: /var/data/data/path to filtered reference(fasta.gz)
+sample:
+  samplename(for every sample):
+    run:
+      run name(for every run):
+        file:
+          fastp:
+            - /var/data/data/filename_first of pair.fastp.fastq.gz
+            - /var/data/data/C0910_41662_TTCCTCCTTTGCTTGC_L001_R2_001_H5YKNDRXX.filt.fastp.fastq.gz (filename 2nd of pair)
+          raw:
+            - /var/data/data/filename_first of pair.fastq.gz
+            - /var/data/data/filename_second of pair.fastq.gz
+```
+and this repeated for every file you have. Note the relativeness of the paths since /var/data/data is where your data is mounted in docker, so every path must start that way. (or you have to mount somewhere different of course)
+
+The docker-image might be invoked using
+```bash
+docker build -t changing-invaders:v0.5.11 .
+# local-data could of course be changed to every folder that contains your data and the files.yml file
+docker run -v $PWD/local-data:/var/data/data -ti changing-invaders:v0.5.11 ./fastqTo100SNPs.sh
+```
+
 Many scripts take some time to run(especially in scripts/readsToVariants folder). Because of this the slurm system is used.
 This is a system that manages jobs on a server. Therefore a lot of (bash)scripts in this repository make use of sbatch and the following structure:
 ```bash
