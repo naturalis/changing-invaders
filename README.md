@@ -24,7 +24,7 @@ The source tree is:
     │   └───row_based
     └───readsToVariants
 ```
-Please not that different runs of the same sample should be located in different subdirectories under local-data. If this isn't done and the naming sheme is used that here is documented and more than 1 run belongs to one sample, your data will be incorrect because of the `--dont_overwrite` policy enforced in `fastp.pl`. fastq-files should be named samplename_*adapter used for the run*_L002_R*1 or 2 depending on pair*_*run name*.fastq.gz other naming shemes *might* work out as well but this is recommend. Also create a YAML file (`files.yml`) on the same folder as the data:
+Please not that different runs of the same sample should be located in different subdirectories under local-data. If this isn't done and the naming sheme is used that here is documented and more than 1 run belongs to one sample, your data will be incorrect because of the `--dont_overwrite` policy enforced in `fastp.pl`. fastq-files should be named samplename_*adapter used for the run*\_L002\_R*1 or 2 depending on pair*\_*run name*.fastq.gz other naming shemes *might* work out as well but this is recommend. Also create a YAML file (`files.yml`) on the same folder as the data:
 ```bash
 ---
 reference:
