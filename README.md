@@ -12,7 +12,7 @@ The source tree is:
 ├───lib
 │   └───My
 │       └───ChangingInvaders - perl modules for first ~2 scripts
-└───script - actual scripts
+└───script - actual scripts (this and every subdirectory contains a flowchart to represent what part of the flow one is looking at)
     ├───ancestorPopulationStructure
     ├───blastSNPs
     ├───consensusGenome
@@ -67,7 +67,7 @@ if test $(that is the case);then
 fi
 ```
 Please note that sbatch is the program where jobs are made known on the server. The program the job comprend is on the next lines.
-Because there is worked with '(single quote) arguments that are given are within "'" (double quote so most variabeles could contain spaces)
+Because there is worked with '(single quote) arguments that are given are within "'" (double quote so most variables could contain spaces)
 
 For this repo with a lot of things still in Dutch I refer to this commit: https://github.com/naturalis/changing-invaders/commit/184a23c18492c1197a6f8936b0b42a7750dde9e4
 For all scripts before cleanup(and translation) I refer to: https://github.com/naturalis/changing-invaders/tree/922c543dcc55c43b1ed627e0396ae57dc107ad10
