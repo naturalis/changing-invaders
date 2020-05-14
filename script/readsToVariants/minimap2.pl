@@ -99,7 +99,10 @@ for my $sample ( sort { $a cmp $b } $config->samples ) {
 
     # merge the files for this sample all under the same sample (SM) read group (RG)
     my $RG = "\@RG\tID:NA\tSM:${sample}\tPL:ILLUMINA\tPI:NA";
-    my $merge_command = "samtools merge -l 9 --threads ${threads} ${outdir}/${sample}.bam @bams_to_merge";
+    open(RGFILE, '>', "${outdir}/${sample}.rg") or die $!;
+    print RGFILE $RG;
+    close(RGFILE);
+    my $merge_command = "samtools merge -rh ${outdir}/${sample}.rg -l 9 --threads ${threads} ${outdir}/${sample}.bam @bams_to_merge";
     INFO "Going to merge BAM files with '$merge_command'";
     system($merge_command) == 0 or die $?;
     unlink(@bams_to_merge);

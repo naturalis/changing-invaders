@@ -15,18 +15,18 @@ perl -I $PWD/lib script/readsToVariants/fastp.pl -file "$yaml"
 mkdir -p /root/tmp
 sed -i 's/-m 7G/-m 70M/' script/readsToVariants/minimap2.pl
 perl -I $PWD/lib script/readsToVariants/minimap2.pl --yaml "$yaml" --index true --outdir /var/data/data --verbose
-exit
-bash merge.sh
 # put the samplenames in the bam file so haplotypecaller wont crash
-for x in /home/r*v*/fileserver/projects/B19005-525/Samples/*;do
-samtools addreplacerg -R NA -m overwrite_all "$x/${x##*/}".bam -o "$x/${x##*/}".gh.bam
-# move back
-mv "$x/${x##*/}".gh.bam "$x/${x##*/}".bam
+for x in /var/data/data/*.bam;do
+ # something to file
+ samtools addreplacerg -R NA -m overwrite_all "$x" -o "${x%.*}".gh.bam
+ # move back
+ mv "${x%.*}".gh.bam "${x%.*}".bam
 done
+exit
 
 # sort
-for sample in $(ls /home/r*v*/fileserver/projects/B19005-525/Samples/ -p|grep '_.*/$'|sed 's/.$//');do
- b=/home/rutger.vos/fileserver/projects/B19005-525/Samples/"$sample/$sample".bam
+for sample in $(ls /var/data/data/*.bam -p|grep '_.*/$'|sed 's/.$//');do
+ b=/var/data/data/"$sample/$sample".bam
  [ $(ls -l $b |sed s/\ +/\ /g|cut -d\  -f5) -gt 100 ] && cp $b .
  samtools sort -o "$sample".sort.bam "$sample".bam
  [ -e "$sample".sort.bam ] && rm "$sample.bam" || rm "$sample".sort.bam.*
