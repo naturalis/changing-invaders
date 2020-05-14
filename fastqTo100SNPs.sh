@@ -25,8 +25,13 @@ done
 exit
 
 # sort
-for sample in $(ls /var/data/data/*.bam -p|grep '_.*/$'|sed 's/.$//');do
- b=/var/data/data/"$sample/$sample".bam
+# ls /var/data/data/*.bam|grep '_.*/$'|sed 's/.$//'
+# take from the files only the filename (and not directory)
+# by searching for a preceded / and then everything except /
+# this ended in .bam (without obtaining this extension)
+for sample in $(ls /var/data/data/*.bam|grep -Po '(?<=/)[^/]*(?=.bam)'|sort -u);do
+ #b=/var/data/data/"$sample/$sample".bam
+ b=/var/data/data/"$sample".bam
  [ $(ls -l $b |sed s/\ +/\ /g|cut -d\  -f5) -gt 100 ] && cp $b .
  samtools sort -o "$sample".sort.bam "$sample".bam
  [ -e "$sample".sort.bam ] && rm "$sample.bam" || rm "$sample".sort.bam.*
