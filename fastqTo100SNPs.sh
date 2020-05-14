@@ -42,22 +42,23 @@ for sample in $(ls /var/data/data/*.bam|grep -Po '(?<=/)[^/]*(?=.bam)'|sort -u);
  # call SNP varianten
  bcftools mpileup -I -Ou -f "$REF" "$sample"*.bam | bcftools call --threads 2 --skip-variants indels -mv -Ob  -P 1.1e-4 -o "$sample".bcf
 done
-mkdir sample-files
-mv *.bcf sample-files
+[ ! -d data/sample-files ] && mkdir data/sample-files
+mv *.bcf data/sample-files
 # save in database
-database=eight.db
+database=data/eight.db
 
 number=1
 [ "$number" = 1 ] && {
 	[ -e $database ] && rm $database
 	sqlite3 $database < script/makeDatabases/row_based/make_snp.sql
-	rm sample-enum.csv
+	[ -e data/sample-enum.csv ] && rm data/sample-enum.csv
 }
-for sample in $(ls sample-files);do
- if [ -e "$sample" ];then
-  if [ -s "$sample" ];then
-   echo "${sample%.*},$number" >> sample-enum.csv
-   bcftools view "$sample"|python3 script/makeDatabases/row_based/edit_snp.py $number|cat script/makeDatabases/row_based/add_bcf.sql -|sqlite3 $database
+for sample in $(ls data/sample-files);do
+ sample_path="data/sample-files/$sample"
+ if [ -e "$sample_path" ];then
+  if [ -s "$sample_path" ];then
+   echo "${sample%.*},$number" >> data/sample-enum.csv
+   bcftools view "$sample_path"|python3 script/makeDatabases/row_based/edit_snp.py $number|cat script/makeDatabases/row_based/add_bcf.sql -|sqlite3 $database
    [ $? -ne 0 ] && { echo "$(ls -t ~/slurm-*.out|head -1|xargs cat)";exit;} || echo "In the database ${sample//*(*\/|.*)} is now also available."
    echo "Database is now $(du -h $database|cut -d $'\t' -f1|sed -e "s/G/ gigabyte/" -e "s/M/ megabyte/") in size."
    number=$((number+1))
@@ -83,7 +84,7 @@ for sample in $(ls /var/data/data/*.bam|grep -Po '(?<=/)[^/]*(?=.bam)'|sort -u);
 done
 
 # BLAST regio's before and after mutation on the consensus genomes of the 8 rats
-mkdir blast_output
+mkdir data/blast_output
 
 blast_primers_all_samples() {
  [ $# -gt 0 ] && fasta=$1 || fasta=filtered_snps.fasta
@@ -91,7 +92,7 @@ blast_primers_all_samples() {
  [ $# -gt 2 ] && db=$3 || db=R7129_41659.cns.fa
  fasta="$(ls "$fasta"*{,.{fa,fasta}} "/home/d*n*/$fasta"*{,.{fa,fasta}} 2>/dev/null|head -1)"
  db="$(ls "$db"*{,.{fa,fasta}} "/home/d*n*/$db"*{,.{fa,fasta}} 2>/dev/null|head -1)"
- [ $# -gt 3 ] && out=$4 || { out="${fasta//?(*\/|.fa|.fasta)/}";[ -d blast_output ]&&out="blast_output/$out";} # only fasta name without path or extension
+ [ $# -gt 3 ] && out=$4 || { out="${fasta//?(*\/|.fa|.fasta)/}";[ -d data/blast_output ]&&out="data/blast_output/$out";} # only fasta name without path or extension
  date > "${out%_*}_${db%%_*}.date"
  # blast with max 4 chromosome hits and 4 hits per chromosome
  blastn -gapopen 20 -gapextend 4 -num_threads '$threads' -outfmt 13 -max_target_seqs 4 -max_hsps 4 -query "$fasta" -db "$db"
@@ -103,24 +104,24 @@ blast_primers_all_samples() {
  # count the number of lines after a qeury line and show that number alongside the query line. This will be 2 (never less)
  # cut on _ and display the second part; Because a SNP has two flanking regions (before and after) every two lines are combined to one, seperated by ,
  # if a line contains two commas, save it in blast_output/numlines(db name).txt
- egrep '"num"|"query_id"' "${out%_*}_${db%%_*}.json" |egrep -B1 " 1,|query_id"| sed -En '/--/!s/ {10,14}//p' | awk -F\" 'BEGIN{a="";b=0}/query/{if (a!=""){print a","b;b=0};a=$4}/num/{b++}END{print a","b}'|cut -d_ -f2 |sed -ne N\;s/\\n/,/ -e "/,.*,/p" > blast_output/numlines_"${db%%_*}".txt
+ egrep '"num"|"query_id"' "${out%_*}_${db%%_*}.json" |egrep -B1 " 1,|query_id"| sed -En '/--/!s/ {10,14}//p' | awk -F\" 'BEGIN{a="";b=0}/query/{if (a!=""){print a","b;b=0};a=$4}/num/{b++}END{print a","b}'|cut -d_ -f2 |sed -ne N\;s/\\n/,/ -e "/,.*,/p" > data/blast_output/numlines_"${db%%_*}".txt
  # dertemine what SNPs have more than 1 hit inside one or both sequences and extract them out the fasta file by use of numlines and save under a new name
  # search all lines with 2 times a 2 (minimum number of hist when there is 1) take the fist field seperated on ,
  # pun an _ before and a " after every line. Combine every line, but put inbetween an | (and replace the last one)
  # search the numbers that are found in the json file and show these lines + the line after (that you save becuase the title is written in there)
  # split the line on " and take the 4th part (SNP pair) and search these in the fasta file(and take the line therafter too, which is the real sequence.)
  # remove -- lines (seperation line for grep)
- egrep "^([0-9]+,2,?){2}$" blast_output/numlines_"${db%%_*}".txt|cut -d, -f1|sed "s/.*/_&\"/"|tr \\n \||sed "s/|$//" |egrep -f - "${out%_*}_${db%%_*}.json" -A1|grep title|cut -d\" -f4|grep -f- "$fasta" -A1|grep -v ^--\$ > "${out%_*}_${db%%_*}.fasta"
- Rscript blastSNPs/blast_output.R "${out%_*}_${db%%_*}"
+ egrep "^([0-9]+,2,?){2}$" data/blast_output/numlines_"${db%%_*}".txt|cut -d, -f1|sed "s/.*/_&\"/"|tr \\n \||sed "s/|$//" |egrep -f - "${out%_*}_${db%%_*}.json" -A1|grep title|cut -d\" -f4|grep -f- "$fasta" -A1|grep -v ^--\$ > "${out%_*}_${db%%_*}.fasta"
+ Rscript script/blastSNPs/blast_output.R "${out%_*}_${db%%_*}"
  # display the information to the user
  $HOME/telegramhowto.R "There are $(($(wc -l "${out%_*}_${db%%_*}.fasta"|cut -d" " -f1)/4)) SNPs left."
  # check whether there are samples that are not BLASTed yet
  # show all files in blast_output that end on .fasta and get the part of the name that reflects the samplename
  # show all files ending on .cns.fa, seperate them on _ so only the sample part of the filename remains
  # remove all samplenames from the second list that are displayed in the first and het from the remaining the first (if there is at all).
- next=$(ls *.cns.fa|cut -d_ -f1|grep -v "$(ls blast_output/*.fasta|rev|cut -d_ -f1|rev|cut -d. -f1)"|head -1)
+ next=$(ls *.cns.fa|cut -d_ -f1|grep -v "$(ls data/blast_output/*.fasta|rev|cut -d_ -f1|rev|cut -d. -f1)"|head -1)
  # if that is not empty, BLAST that sample in that case
- if [ ! -z "$next" ];then blast_primers_all_samples "${out%_*}_${db%%_*}.fasta" '$threads' $next*.cns.fa;else $HOME/telegramhowto.R "Everything is BLASTed";fi
+ if [ ! -z "$next" ];then blast_primers_all_samples "${out%_*}_${db%%_*}.fasta" '$threads' $next*.cns.fa;else script/telegramhowto.R "Everything is BLASTed";fi
  date >> "${out%_*}_${db%%_*}.date"
 }
 blast_primers_all_samples # een recursieve functie
