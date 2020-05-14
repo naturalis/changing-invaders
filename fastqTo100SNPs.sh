@@ -10,6 +10,8 @@
 shopt -s extglob
 cd /var/data
 yaml=data/files.yml
+# REF=/home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa
+REF="$(grep reference -A2 "$yaml"|grep -Po '(?<=filtered: ).*')"
 trap 'echo "something goes wrong, error at line $LINENO (commando: $(sed -n $LINENO"p" "$BASH_SOURCE"))";exit 2' ERR
 perl -I $PWD/lib script/readsToVariants/fastp.pl -file "$yaml"
 mkdir -p /root/tmp
@@ -22,8 +24,8 @@ for x in /var/data/data/*.bam;do
  # move back
  mv "${x%.*}".gh.bam "${x%.*}".bam
 done
-exit
-
+# first index the reference genome
+samtools faidx "$REF"
 # sort
 # ls /var/data/data/*.bam|grep '_.*/$'|sed 's/.$//'
 # take from the files only the filename (and not directory)
@@ -38,25 +40,24 @@ for sample in $(ls /var/data/data/*.bam|grep -Po '(?<=/)[^/]*(?=.bam)'|sort -u);
  # index
  samtools index "$sample"*.bam
  # call SNP varianten
- bcftools mpileup -I -Ou -f /home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa "$sample"*.bam | bcftools call --threads 2 --skip-variants indels -mv -Ob  -P 1.1e-4 -o "$sample".bcf
+ bcftools mpileup -I -Ou -f "$REF" "$sample"*.bam | bcftools call --threads 2 --skip-variants indels -mv -Ob  -P 1.1e-4 -o "$sample".bcf
 done
 mkdir sample-files
 mv *.bcf sample-files
-
 # save in database
 database=eight.db
 
 number=1
 [ "$number" = 1 ] && {
 	[ -e $database ] && rm $database
-	sqlite3 $database < /home/d*n*/make_snp.sql
+	sqlite3 $database < script/makeDatabases/row_based/make_snp.sql
 	rm sample-enum.csv
 }
 for sample in $(ls sample-files);do
  if [ -e "$sample" ];then
   if [ -s "$sample" ];then
    echo "${sample%.*},$number" >> sample-enum.csv
-   bcftools view "$sample"|python3 /home/d*n*/edit_snp.py $number|cat /home/d*n*/add_bcf.sql -|sqlite3 $database
+   bcftools view "$sample"|python3 script/makeDatabases/row_based/edit_snp.py $number|cat script/makeDatabases/row_based/add_bcf.sql -|sqlite3 $database
    [ $? -ne 0 ] && { echo "$(ls -t ~/slurm-*.out|head -1|xargs cat)";exit;} || echo "In the database ${sample//*(*\/|.*)} is now also available."
    echo "Database is now $(du -h $database|cut -d $'\t' -f1|sed -e "s/G/ gigabyte/" -e "s/M/ megabyte/") in size."
    number=$((number+1))
@@ -67,15 +68,17 @@ for sample in $(ls sample-files);do
   echo "Database could not import $sample because it is not found in the current location."
  fi
 done
-sqlite3 $database < /home/d*n*/fill_upos.sql
+sqlite3 $database < script/makeDatabases/row_based/fill_upos.sql
 # extract fasta with filtered positions
-Rscript db2FoCaPfasta.R $database
+Rscript script/blastSNPs/db2FoCaPfasta.R $database
+exit
 # build consensus
-for sample in $(ls /home/r*v*/fileserver/projects/B19005-525/Samples/ -p|grep '_.*/$'|sed 's/.$//');do
- bam=/home/r*v*/fileserver/projects/B19005-525/Samples/"$sample/$sample.bam"
- bcftools mpileup -f /home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa "$bam" | bcftools call -mv -Oz  -o "$sample".calls.vcf.gz
+# ls /var/data/data/*.bam|grep '_.*/$'|sed 's/.$//'
+for sample in $(ls /var/data/data/*.bam|grep -Po '(?<=/)[^/]*(?=.bam)'|sort -u);do
+ bam="/var/data/data/$sample.bam"
+ bcftools mpileup -f "$REF" "$bam" | bcftools call -mv -Oz  -o "$sample".calls.vcf.gz
  /home/d*n*/tabix "$sample".calls.vcf.gz
- bcftools consensus "$sample".calls.vcf.gz -f /home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa > "$sample".cns.fa
+ bcftools consensus "$sample".calls.vcf.gz -f "$REF" > "$sample".cns.fa
  makeblastdb -in "$sample".cns.fa -dbtype nucl
 done
 
@@ -121,4 +124,4 @@ blast_primers_all_samples() {
  date >> "${out%_*}_${db%%_*}.date"
 }
 blast_primers_all_samples # een recursieve functie
-Rscript SNPstats.R # finally recieve the 100 best SNPs
+Rscript script/SNPstats.R # finally recieve the 100 best SNPs
