@@ -1,7 +1,9 @@
 # use ubuntu as base image
 FROM ubuntu:20.04
 # dependencies
-RUN apt-get -qq update && apt-get -qq install -y locales wget python3.5 gcc make g++ zlib1g-dev zlib1g libyaml-syck-perl git bzip2 libbz2-dev liblzma-dev ncurses-dev sqlite3 && rm -rf /var/lib/apt/lists/* && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive
+# last 2 in install are for telegram
+RUN apt-get -qq update && apt-get -qq install -y locales wget python3.5 gcc make g++ zlib1g-dev zlib1g libyaml-syck-perl git bzip2 libbz2-dev liblzma-dev ncurses-dev sqlite3 r-base python3-minimal libssl-dev libcurl4-openssl-dev && rm -rf /var/lib/apt/lists/* && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV LANG en_US.utf8
 # install samtools
 ENV SAMTOOLS_INSTALL_DIR=/opt/samtools
@@ -36,6 +38,8 @@ RUN cd var/building/ && git clone --depth 1 https://github.com/rvosa/bio-phylo &
 # https://github.com/samtools/bcftools/releases/download/1.9/bcftools-1.9.tar.bz2
 RUN cd /var/building && wget -q https://github.com/samtools/bcftools/releases/download/1.10.2/bcftools-1.10.2.tar.bz2 && \
  tar -xjf bcftools-*tar.bz2 && cd bcftools-* && ./configure -q && make -sj2 && make install -s
+# install R dependencies
+RUN R -e 'install.packages(c("BiocManager", "RSQLite", "dbplyr", "telegram"));BiocManager::install("Biostrings")'
 #
 COPY ./ /var/data/
 WORKDIR /var/data/

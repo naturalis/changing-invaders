@@ -12,6 +12,7 @@ cd /var/data
 yaml=data/files.yml
 # REF=/home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa
 REF="$(grep reference -A2 "$yaml"|grep -Po '(?<=filtered: ).*')"
+export $REF
 trap 'echo "something goes wrong, error at line $LINENO (commando: $(sed -n $LINENO"p" "$BASH_SOURCE"))";exit 2' ERR
 perl -I $PWD/lib script/readsToVariants/fastp.pl -file "$yaml"
 mkdir -p /root/tmp
