@@ -3,7 +3,7 @@ FROM ubuntu:20.04
 # dependencies
 ENV DEBIAN_FRONTEND=noninteractive
 # last 2 in install are for telegram
-RUN apt-get -qq update && apt-get -qq install -y locales wget python3.5 gcc make g++ zlib1g-dev zlib1g libyaml-syck-perl git bzip2 libbz2-dev liblzma-dev ncurses-dev sqlite3 r-base python3-minimal libssl-dev libcurl4-openssl-dev && rm -rf /var/lib/apt/lists/* && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+RUN apt-get -qq update && apt-get -qq install -y locales wget python3.5 gcc make g++ zlib1g-dev zlib1g libyaml-syck-perl git bzip2 libbz2-dev liblzma-dev ncurses-dev sqlite3 r-base python3-minimal ncbi-blast+ libssl-dev libcurl4-openssl-dev && rm -rf /var/lib/apt/lists/* && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV LANG en_US.utf8
 # install samtools
 ENV SAMTOOLS_INSTALL_DIR=/opt/samtools

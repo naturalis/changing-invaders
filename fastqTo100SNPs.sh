@@ -77,10 +77,10 @@ exit
 # ls /var/data/data/*.bam|grep '_.*/$'|sed 's/.$//'
 for sample in $(ls /var/data/data/*.bam|grep -Po '(?<=/)[^/]*(?=.bam)'|sort -u);do
  bam="/var/data/data/$sample.bam"
- bcftools mpileup -f "$REF" "$bam" | bcftools call -mv -Oz  -o "$sample".calls.vcf.gz
- /opt/samtools/bin/tabix "$sample".calls.vcf.gz
- bcftools consensus "$sample".calls.vcf.gz -f "$REF" > "$sample".cns.fa
- makeblastdb -in "$sample".cns.fa -dbtype nucl
+ bcftools mpileup -f "$REF" "$bam" | bcftools call -mv -Oz  -o "data/sample-files/$sample".calls.vcf.gz
+ /opt/samtools/bin/tabix "data/sample-files/$sample".calls.vcf.gz
+ bcftools consensus "data/sample-files/$sample".calls.vcf.gz -f "$REF" > "data/sample-files/$sample".cns.fa
+ makeblastdb -in "data/sample-files/$sample".cns.fa -dbtype nucl
 done
 
 # BLAST regio's before and after mutation on the consensus genomes of the 8 rats
