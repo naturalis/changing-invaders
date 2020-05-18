@@ -39,7 +39,7 @@ RUN cd var/building/ && git clone --depth 1 https://github.com/rvosa/bio-phylo &
 RUN cd /var/building && wget -q https://github.com/samtools/bcftools/releases/download/1.10.2/bcftools-1.10.2.tar.bz2 && \
  tar -xjf bcftools-*tar.bz2 && cd bcftools-* && ./configure -q && make -sj2 && make install -s
 # install R dependencies
-RUN R -e 'install.packages(c("BiocManager", "RSQLite", "dbplyr", "telegram"));BiocManager::install("Biostrings")'
+RUN R -e 'install.packages(c("BiocManager", "RSQLite", "dbplyr", "telegram", "ggplot2"));BiocManager::install("Biostrings")'
 #
 COPY ./ /var/data/
 WORKDIR /var/data/

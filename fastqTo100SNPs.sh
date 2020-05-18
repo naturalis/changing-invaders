@@ -13,6 +13,7 @@ yaml=data/files.yml
 # REF=/home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa
 export REF="$(grep reference -A2 "$yaml"|grep -Po '(?<=filtered: ).*')" COVERAGE_MIN=0 COVERAGE_MAX=3 QUALITY=2
 trap 'echo "something goes wrong, error at line $LINENO (commando: $(sed -n $LINENO"p" "$BASH_SOURCE"))";exit 2' ERR
+[ ! -e script/telegramhowto.R ] && echo 'print(commandArgs(TRUE))' > script/telegramhowto.R
 perl -I $PWD/lib script/readsToVariants/fastp.pl -file "$yaml"
 mkdir -p /root/tmp
 sed -i 's/-m 7G/-m 70M/' script/readsToVariants/minimap2.pl
@@ -67,12 +68,13 @@ for sample in $(ls data/sample-files);do
   fi
  else
   echo "Database could not import $sample because it is not found in the current location."
+  exit
  fi
 done
 sqlite3 $database < script/makeDatabases/row_based/fill_upos.sql
 # extract fasta with filtered positions
 Rscript script/blastSNPs/db2FoCaPfasta.R $database
-exit
+
 # build consensus
 # ls /var/data/data/*.bam|grep '_.*/$'|sed 's/.$//'
 for sample in $(ls /var/data/data/*.bam|grep -Po '(?<=/)[^/]*(?=.bam)'|sort -u);do
@@ -82,21 +84,23 @@ for sample in $(ls /var/data/data/*.bam|grep -Po '(?<=/)[^/]*(?=.bam)'|sort -u);
  bcftools consensus "data/sample-files/$sample".calls.vcf.gz -f "$REF" > "data/sample-files/$sample".cns.fa
  makeblastdb -in "data/sample-files/$sample".cns.fa -dbtype nucl
 done
-
+exit
 # BLAST regio's before and after mutation on the consensus genomes of the 8 rats
 mkdir data/blast_output
 
 blast_primers_all_samples() {
- [ $# -gt 0 ] && fasta=$1 || fasta=filtered_snps.fasta
+ [ $# -gt 0 ] && fasta=$1 || fasta=data/filtered_snps.fasta
  [ $# -gt 1 ] && threads=$2 || threads=16
- [ $# -gt 2 ] && db=$3 || db=R7129_41659.cns.fa
- fasta="$(ls "$fasta"*{,.{fa,fasta}} "/home/d*n*/$fasta"*{,.{fa,fasta}} 2>/dev/null|head -1)"
- db="$(ls "$db"*{,.{fa,fasta}} "/home/d*n*/$db"*{,.{fa,fasta}} 2>/dev/null|head -1)"
+ [ $# -gt 2 ] && db=$3 || db="$(ls data/sample-files/*|grep .fa\$|head -1)"
+ fasta="$(ls "$fasta"*{,.{fa,fasta}} "data/sample-files/$fasta"*{,.{fa,fasta}} 2>/dev/null|head -1)"
+ db="$(ls "$db"*{,.{fa,fasta}} "data/sample-files/$db"*{,.{fa,fasta}} 2>/dev/null|head -1)";db_fp="$db";db="${db##*/}"
  [ $# -gt 3 ] && out=$4 || { out="${fasta//?(*\/|.fa|.fasta)/}";[ -d data/blast_output ]&&out="data/blast_output/$out";} # only fasta name without path or extension
  date > "${out%_*}_${db%%_*}.date"
  # blast with max 4 chromosome hits and 4 hits per chromosome
- blastn -gapopen 20 -gapextend 4 -num_threads '$threads' -outfmt 13 -max_target_seqs 4 -max_hsps 4 -query "$fasta" -db "$db"
- $HOME/telegramhowto.R "$fasta is BLASTed! ($(date))"
+ # the specification of out is only needed in this version, not the individual script
+ blastn -gapopen 20 -gapextend 4 -num_threads $threads -outfmt 13 -max_target_seqs 4 -max_hsps 4 -query "$fasta" -db "$db_fp" -out ${out%_*}_${db%%_*}.json
+ cat ${out%_*}_${db%%_*}_*.json > ${out%_*}_${db%%_*}.json;rm ${out%_*}_${db%%_*}_*.json
+ Rscript script/telegramhowto.R "$fasta is BLASTed! ($(date))"
  # create a numlines file out of which could be determined how many hits there approximately are by extracting the 'num', and 'query' lines out of the fasta
  # search first on 'num' or query id, so one gets for every qeury id(SNP pair) all chromosomes and hits within a line with num followed by a number
  # search now on '1', or query_id and the line before so first nums and SNP pairs
@@ -114,14 +118,16 @@ blast_primers_all_samples() {
  egrep "^([0-9]+,2,?){2}$" data/blast_output/numlines_"${db%%_*}".txt|cut -d, -f1|sed "s/.*/_&\"/"|tr \\n \||sed "s/|$//" |egrep -f - "${out%_*}_${db%%_*}.json" -A1|grep title|cut -d\" -f4|grep -f- "$fasta" -A1|grep -v ^--\$ > "${out%_*}_${db%%_*}.fasta"
  Rscript script/blastSNPs/blast_output.R "${out%_*}_${db%%_*}"
  # display the information to the user
- $HOME/telegramhowto.R "There are $(($(wc -l "${out%_*}_${db%%_*}.fasta"|cut -d" " -f1)/4)) SNPs left."
+ remainingSNPs=$(($(wc -l "${out%_*}_${db%%_*}.fasta"|cut -d" " -f1)/4))
+ Rscript script/telegramhowto.R "There are $remainingSNPs SNPs left."
+ if test $remainingSNPs -eq 0;then echo "becuase of no valid SNPs anymore the program will exit now...";exit;fi
  # check whether there are samples that are not BLASTed yet
  # show all files in blast_output that end on .fasta and get the part of the name that reflects the samplename
  # show all files ending on .cns.fa, seperate them on _ so only the sample part of the filename remains
  # remove all samplenames from the second list that are displayed in the first and het from the remaining the first (if there is at all).
- next=$(ls *.cns.fa|cut -d_ -f1|grep -v "$(ls data/blast_output/*.fasta|rev|cut -d_ -f1|rev|cut -d. -f1)"|head -1)
+ next=$(ls data/sample-files/*.cns.fa|cut -d_ -f1|grep -v "$(ls data/blast_output/*.fasta|rev|cut -d_ -f1|rev|grep -Po '.+?(?=\.fasta)')"|head -1|rev|cut -d/ -f1|rev)
  # if that is not empty, BLAST that sample in that case
- if [ ! -z "$next" ];then blast_primers_all_samples "${out%_*}_${db%%_*}.fasta" '$threads' $next*.cns.fa;else script/telegramhowto.R "Everything is BLASTed";fi
+ if [ ! -z "$next" ];then blast_primers_all_samples "${out%_*}_${db%%_*}.fasta" $threads $next;else Rscript script/telegramhowto.R "Everything is BLASTed";fi
  date >> "${out%_*}_${db%%_*}.date"
 }
 blast_primers_all_samples # een recursieve functie
