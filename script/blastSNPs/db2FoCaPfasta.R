@@ -28,7 +28,6 @@ reference = ifelse(is.na(Sys.getenv()["REF"]), paste0(Sys.getenv("HOME"), "/REF/
 DNA_sequences = readDNAStringSet(reference)
 # edit the names so it is only the chromosome number
 names(DNA_sequences) <- mapply(`[`, strsplit(names(DNA_sequences), " "), 1)
-print(names(DNA_sequences))
 # filtered <- read.table("vanHIGHimpact.pos", col.names = c("chromosome", "position"))
 filtered <- filtered[filtered$chromosome!=0,]
 if (nrow(filtered)==0) {
@@ -63,8 +62,8 @@ write.csv(filtered, "data/filtered_snps.csv", quote = FALSE, row.names = FALSE)
 # all groups like \(content\) but like (content) and use + (1 or more instead of * 0 or more)
 system("sed -nE '1!{s/([0-9]+,[0-9]+),([^,]+),([^,]+),(.)/>\\1-\\4\\n\\2\\n>\\1-\\4\\n\\3/p}' data/filtered_snps.csv > data/filtered_snps.fasta")
 Sys.time()
+SNP_message <- paste("There are", nrow(filtered), "SNPs left during the improved algorithm.")
 # append here the telegram bot token one wants to use during this analysis
 # bot <- TGBot$new(token = "TOKEN")
-# SNP_message <- paste("There are", nrow(filtered), "SNPs left during the improved algorithm.")
 # bot$sendMessage(SNP_message, chat_id = 0)
 cat(SNP_message)

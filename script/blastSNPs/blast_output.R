@@ -3,7 +3,6 @@
 # by david
 suppressMessages(library(Biostrings, quietly = TRUE))
 library(jsonlite)
-setwd(Sys.glob("/data/d*.n*"))
 sample <- commandArgs(TRUE)[1]
 if (is.na(sample)) sample <- "blast_output/filtered_R6750"
 remove_this <- function(json_list, bool_vector) json_list[-grep(paste0(sub(" .*", "", names(json_list)[bool_vector]), collapse = "|"), names(json_list))]
