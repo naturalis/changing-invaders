@@ -8,13 +8,15 @@ library(Biostrings)
 library(RSQLite)
 library(dplyr, warn.conflicts = FALSE)
 library(telegram)
+# this is a shortcut operator for either using a default value or using the value of a environment variable
+"%envordefault%" <- function(env_var, default) ifelse(is.na(Sys.getenv(env_var)), default, Sys.getenv(env_var))
 if (!is.na(commandArgs(trailingOnly=TRUE)[1])) db = commandArgs(trailingOnly=TRUE)[1] else db = "/data/david.noteborn/eight.db"
 Sys.time()
 eightnucleotide <- dbConnect(SQLite(), db)
 exulans <- tbl(eightnucleotide, "EXULANS")
 # group on SNP, make a variable that explains whether it is a heterozygote SNP, and whether the coverage, quality and distance comply
 # filter on these variables
-searchterm <- exulans %>% group_by(chromosome, position) %>% summarise(heterozygote = !(n_distinct(paste0(GENOTYPE_BP)) == 1L && count(GENOTYPE_BP) == 8L), p = COUNT(REFERENCE), COVERAGE_THRESHOLD = mean(COVERAGE, na.rm = TRUE) > 16L && 110L > mean(COVERAGE, na.rm = TRUE), QUALITY_THRESHOLD = mean(QUALITY, na.rm = TRUE) > 99L, DIST_P = min(ifelse(DIST_N==-1, 250, DIST_P), na.rm = TRUE), DIST_N = min(ifelse(DIST_N==-1, 250, DIST_N), na.rm = TRUE)) %>% filter(heterozygote, COVERAGE_THRESHOLD, QUALITY_THRESHOLD, DIST_N > 249L, DIST_P > 249L)
+searchterm <- exulans %>% group_by(chromosome, position) %>% summarise(heterozygote = !(n_distinct(paste0(GENOTYPE_BP)) == 1L && count(GENOTYPE_BP) == 8L), p = COUNT(REFERENCE), COVERAGE_THRESHOLD = mean(COVERAGE, na.rm = TRUE) > !!as.integer("COVERAGE_MIN" %envordefault% 16L) && !!as.integer("COVERAGE_MAX" %envordefault% 110L) > mean(COVERAGE, na.rm = TRUE), QUALITY_THRESHOLD = mean(QUALITY, na.rm = TRUE) > !!as.integer("QUALITY" %envordefault% 99L), DIST_P = min(ifelse(DIST_N==-1, 250, DIST_P), na.rm = TRUE), DIST_N = min(ifelse(DIST_N==-1, 250, DIST_N), na.rm = TRUE)) %>% filter(heterozygote, COVERAGE_THRESHOLD, QUALITY_THRESHOLD, DIST_N > 249L, DIST_P > 249L)
 # searchterm <- searchterm %>% ungroup() %>% summarise(how_many = count())
 searchterm <- searchterm %>% select(chromosome, position)
 searchterm %>% show_query()
@@ -22,16 +24,22 @@ filtered <- searchterm %>% collect()
 dbDisconnect(eightnucleotide)
 # read the reference fasta file in.
 # this takes some time
-DNA_sequences = readDNAStringSet(paste0(Sys.getenv("HOME"), "/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa"))
+reference = ifelse(is.na(Sys.getenv()["REF"]), paste0(Sys.getenv("HOME"), "/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa"), Sys.getenv()["REF"])
+DNA_sequences = readDNAStringSet(reference)
 # edit the names so it is only the chromosome number
 names(DNA_sequences) <- mapply(`[`, strsplit(names(DNA_sequences), " "), 1)
+print(names(DNA_sequences))
 # filtered <- read.table("vanHIGHimpact.pos", col.names = c("chromosome", "position"))
 filtered <- filtered[filtered$chromosome!=0,]
+if (nrow(filtered)==0) {
+	message("There has been no SNPs that comply the filterin criterion set, maybe try again with other filtering parameters")
+	quit(save="no")
+}
 sequences <- apply(filtered, 1, function(x) {
   # check whether flanking regions are on the chromosome to stop errors
-  if (length(DNA_sequences[[x["chromosome"]]])>as.numeric(x["position"])+250&as.numeric(x["position"])-250>0)
+  if (length(DNA_sequences[[as.character(x["chromosome"])]])>as.numeric(x["position"])+250&as.numeric(x["position"])-250>0)
     # if that applies, get 250 before, to 250 after the SNP
-    toString(subseq(DNA_sequences[[x["chromosome"]]], start=as.numeric(x["position"])-250, end = as.numeric(x["position"])+250)) else NA
+    toString(subseq(DNA_sequences[[as.character(x["chromosome"])]], start=as.numeric(x["position"])-250, end = as.numeric(x["position"])+250)) else NA
 })
 # add sequences to the position table
 filtered$before <- substr(sequences, 1, 250)
@@ -39,8 +47,7 @@ filtered$after <- substr(sequences, 252, 501)
 filtered$ref <- substr(sequences, 251, 251)
 filtered <- filtered[!is.na(sequences),]
 # store it
-setwd("/data/david.noteborn/blast_output")
-write.csv(filtered, "filtered_snps.csv", quote = FALSE, row.names = FALSE)
+write.csv(filtered, "data/filtered_snps.csv", quote = FALSE, row.names = FALSE)
 # make it a fasta
 # the csv file looks like this:
 # CHR,POS,seq_before,seq_after,SNP_base
@@ -54,10 +61,10 @@ write.csv(filtered, "filtered_snps.csv", quote = FALSE, row.names = FALSE)
 # the p in the end explains that this should be written to stdout
 # -E explains that this is about an extended regular expression which gives us the advantage to not write
 # all groups like \(content\) but like (content) and use + (1 or more instead of * 0 or more)
-system("sed -nE '1!{s/([0-9]+,[0-9]+),([^,]+),([^,]+),(.)/>\\1-\\4\\n\\2\\n>\\1-\\4\\n\\3/p}' filtered_snps.csv > filtered_snps.fasta")
+system("sed -nE '1!{s/([0-9]+,[0-9]+),([^,]+),([^,]+),(.)/>\\1-\\4\\n\\2\\n>\\1-\\4\\n\\3/p}' data/filtered_snps.csv > data/filtered_snps.fasta")
 Sys.time()
 # append here the telegram bot token one wants to use during this analysis
-bot <- TGBot$new(token = "TOKEN")
-SNP_message <- paste("There are", nrow(filtered), "SNPs left during the improved algorithm.")
-bot$sendMessage(SNP_message, chat_id = 0)
+# bot <- TGBot$new(token = "TOKEN")
+# SNP_message <- paste("There are", nrow(filtered), "SNPs left during the improved algorithm.")
+# bot$sendMessage(SNP_message, chat_id = 0)
 cat(SNP_message)
