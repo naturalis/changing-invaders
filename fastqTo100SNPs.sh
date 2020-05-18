@@ -11,8 +11,7 @@ shopt -s extglob
 cd /var/data
 yaml=data/files.yml
 # REF=/home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa
-REF="$(grep reference -A2 "$yaml"|grep -Po '(?<=filtered: ).*')"
-export $REF
+export REF="$(grep reference -A2 "$yaml"|grep -Po '(?<=filtered: ).*')" COVERAGE_MIN=0 COVERAGE_MAX=3 QUALITY=2
 trap 'echo "something goes wrong, error at line $LINENO (commando: $(sed -n $LINENO"p" "$BASH_SOURCE"))";exit 2' ERR
 perl -I $PWD/lib script/readsToVariants/fastp.pl -file "$yaml"
 mkdir -p /root/tmp
@@ -79,7 +78,7 @@ exit
 for sample in $(ls /var/data/data/*.bam|grep -Po '(?<=/)[^/]*(?=.bam)'|sort -u);do
  bam="/var/data/data/$sample.bam"
  bcftools mpileup -f "$REF" "$bam" | bcftools call -mv -Oz  -o "$sample".calls.vcf.gz
- /home/d*n*/tabix "$sample".calls.vcf.gz
+ /opt/samtools/bin/tabix "$sample".calls.vcf.gz
  bcftools consensus "$sample".calls.vcf.gz -f "$REF" > "$sample".cns.fa
  makeblastdb -in "$sample".cns.fa -dbtype nucl
 done
