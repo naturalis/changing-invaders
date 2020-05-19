@@ -43,14 +43,14 @@ removeNearest <- function(distance, remain = 100) {
   return(longing)
 }
 Sys.time()
-setwd("/data/david.noteborn/blast_output/100arbitrair/")
-# get the ;ast saved fasta file
-blasted <- file.info(paste0(list.files(pattern = "fasta")))
+arguments = commandArgs(trailingOnly=TRUE)
+# get the last saved fasta file
+blasted <- file.info(paste0(list.files(ifelse(!is.na(arguments[2]), arguments[2], "."), pattern = "fasta")))
 fasta.file <- rownames(blasted[with(blasted, order(mtime, decreasing = TRUE)), ][1,])
 chrpos <- strsplit(sub("..$", "", unique(names(readDNAStringSet(fasta.file)))), ",")
 positions <- data.frame(chromosome = as.numeric(mapply(`[`, chrpos, 1)),
                        position = as.numeric(mapply(`[`, chrpos, 2)))
-if (!is.na(commandArgs(trailingOnly=TRUE)[1])) db = commandArgs(trailingOnly=TRUE)[1] else db = "/data/david.noteborn/acht.db"
+if (!is.na(arguments[1])) db = arguments[1] else db = Sys.glob("/d*/d*/eight.db")
 eightnucleotide <- dbConnect(SQLite(), db)
 dbWriteTable(eightnucleotide, "FILTERED_VALIDATE_FR", positions, overwrite = TRUE)
 if ("EXULANS_VALID" %in% dbListTables(eightnucleotide)) dbRemoveTable(eightnucleotide, "EXULANS_VALID")
@@ -76,7 +76,7 @@ searchterm %>% filter(divergents > 1) %>% ungroup() %>% summarise(n())
 searchterm <- searchterm [mapply(function(x) 3>length(unique(x)), strsplit(searchterm
                                                                          $alle_bases, '/')),]
 # table that the number of genotypes/ how many does the most occuring occur
-deep <- searchterm %>% filter(divergents > 1) %>% group_by(divergents, max_genotype) %>% summarise(aantal = n())
+deep <- searchterm %>% filter(divergents > 1) %>% group_by(divergents, max_genotype) %>% summarise(amount = n())
 deep$`Most
 occurring
 genotype` <- as.character(deep$max_genotype)
@@ -85,35 +85,35 @@ heterozygote <- searchterm %>% filter(divergents == 3) %>% collect()
 no_seven <- searchterm %>% filter(divergents == 2, !(max_genotype == 7 & divergents == 2)) %>% collect()
 seven <- searchterm %>% filter(divergents > 1, (max_genotype == 7 & divergents == 2)) %>% collect()
 
-# volledig <- rbind(no_seven[sample(1:nrow(no_seven), ifelse(100-nrow(heterozygote) > 0, 100-nrow(heterozygote), 0)),], heterozygote[if (nrow(heterozygote)<100) TRUE else 1:207,])
+# full <- rbind(no_seven[sample(1:nrow(no_seven), ifelse(100-nrow(heterozygote) > 0, 100-nrow(heterozygote), 0)),], heterozygote[if (nrow(heterozygote)<100) TRUE else 1:207,])
 full <- removeNearest(rbind(heterozygote, no_seven), 259)
 
-# volledig <- rbind(seven[sample(1:nrow(no_seven), ifelse(300-nrow(full) > 0, 300-nrow(full), 0)),], full[if (nrow(full)<300) TRUE else 1:300,])
-# make a bardiagram figure
-ggplot(deep, aes(divergents, aantal)) + geom_col(aes(fill = `Most
+# full <- rbind(seven[sample(1:nrow(no_seven), ifelse(300-nrow(full) > 0, 300-nrow(full), 0)),], full[if (nrow(full)<300) TRUE else 1:300,])
+# make a bar-diagram figure
+ggplot(deep, aes(divergents, amount)) + geom_col(aes(fill = `Most
 occurring
-genotype`)) + xlab("Genotypen op SNP") + ylab("aantal")
+genotype`)) + xlab("Genotypes on SNP") + ylab("amount")
 ggsave("temp.png")
 bot <- TGBot$new(token = "TOKEN")
 bot$sendPhoto("temp.png", "This is the polyformity distribution of EXULANS", chat_id = 0)
 unlink("temp.png")
 # show a row
 seven[sample(1:nrow(seven), 1),]
-meta.data <- full %>% group_by(divergents, max_genotype) %>% summarise(aantal = n())
+meta.data <- full %>% group_by(divergents, max_genotype) %>% summarise(amount = n())
 setwd("~/SNP-files/")
-# sla op in database, en bestand
+# store in database, and file
 write.csv(full, "PRIMER_DESIGNER_opvullend.csv")
 dbWriteTable(eightnucleotide, "SELECTED_OPVULLEND", full[,c("CHROMOSOME", "POSITION")], overwrite = TRUE)
 selected <- tbl(eightnucleotide, "SELECTED_OPVULLEND")
-# haal dmv inner join alle informatie van de geselecteerde SNPs op
+# obtain using inner join all information from the selected SNPs
 SNPs <- inner_join(exulans, selected, c(CHROMOSOME = "CHROMOSOME", POSITION = "POSITION")) %>% collect()
 dbDisconnect(eightnucleotide)
 
 SNPs <- SNPs[,-grep(":1", colnames(SNPs))]
 SNPs$GENOTYPE <- SNPs$GENOTYPE_BP
-# geef aan hoe vaak welk genotype voorkomt over de geselecteerde SNPs
+# show how often a genotype occurs over the selected SNPs
 table(SNPs$GENOTYPE_BP)
-# vat de data samen tot 1 rij per SNP
+# summarise the data to 1 row per SNP
 beterSNPs <- SNPs %>% group_by(CHROMOSOME, POSITION) %>% summarise(average.quality = mean(QUALITY), diff_gt = paste(dplyr::first(REFERENCE), paste0(GENOTYPE_BP, collapse = "/"), sep = "/"), average.coverage = mean(COVERAGE), REFERENCE = dplyr::first(as.character(REFERENCE)))
 o2n <- sub(".*/", "", read.csv("/data/david.noteborn/sample-enum.csv", col.names = c("ORGANISM", "NUMBER"), header = FALSE, stringsAsFactors = FALSE)$ORGANISM)
 o2n <- o2n[!duplicated(o2n)]
@@ -123,7 +123,7 @@ ggplot(data.frame(table(beterSNPs$CHROMOSOME)), aes(Var1, Freq)) + geom_col()
 ggsave("SNPchromOpvullend.png")
 invisible(apply(SNPs, 1, function(x) beterSNPs[beterSNPs$CHROMOSOME==as.numeric(x["CHROMOSOME"])&beterSNPs$POSITION==as.numeric(x["POSITION"]), o2n[as.numeric(x['ORGANISM'])]] <<- sub("(.)/\\1", "\\1", x["GENOTYPE"])))
 beterSNPs
-setwd("/data/david.noteborn/blast_output/100arbitrair/")
+setwd(Sys.glob("/d*/*/blast_output/100arbitrair/"))
 # retrieve the sequences
 # retrieve the latest file
 blasted <- file.info(paste0(list.files(pattern = "fasta")))
