@@ -10,7 +10,7 @@ library(dplyr, warn.conflicts = FALSE)
 library(telegram)
 # this is a shortcut operator for either using a default value or using the value of a environment variable
 "%envordefault%" <- function(env_var, default) ifelse(is.na(Sys.getenv(env_var)), default, Sys.getenv(env_var))
-if (!is.na(commandArgs(trailingOnly=TRUE)[1])) db = commandArgs(trailingOnly=TRUE)[1] else db = "/data/david.noteborn/eight.db"
+if (!is.na(commandArgs(trailingOnly=TRUE)[1])) db = commandArgs(trailingOnly=TRUE)[1] else db = Sys.glob("/d*/d*/eight.db")
 Sys.time()
 eightnucleotide <- dbConnect(SQLite(), db)
 exulans <- tbl(eightnucleotide, "EXULANS")

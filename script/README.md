@@ -1,10 +1,8 @@
 # the actual scripts
 
-Scroll down for explaination...
 The program flow scematic:
+
 ![flowchart image](../doc/flowchart/simple_flow.png)
-The full flowchart:
-![flowchart image](../doc/flowchart/full-flowchart.png)
 
 The flowcharts are structured to all use the same color references. Every subdirectory (one field in the smallest flowchart) contains its own part of the flowchart, to improve usability of this repo. Alongside the directory color codes, bright yellow is used for scripts that are not needed when progress simply works fine.
 Next to that the bigger flowchart is structured in the following ways:
@@ -16,12 +14,14 @@ Next to that the bigger flowchart is structured in the following ways:
   - boxes that are bold, means this should be executed for every sample
   - boxes that are italic, means this should be executed for every number of *K* (ancestor populations)
   - boxes that contain five lines that do not contain scripts explain a part of the flowchart
-* output
+* textual conventions
   - script names are explained in between \(these characters\)
   - output is explained in between \[these characters\] this is almost always filenames, but occasionally this can be a database table, which is represented by fully use of UPPERCASE.
   - output of \(...\).xyz means the input filename, without the last extension (.something part of the filename) and added .xyz
   - output filename that contains *sample* is symbolical. Then the output file(s) will be the sample name.
   - output containing \<this characters\> means a number
+  - output containing {a/b}c means either ac or bc
+  - {} outside of output brackets means more explained about that box
 * arrows
   - normal arrows represent flow of data
   - arrows ending in dotted lines represent that values are defined in the script pointed to, because of the outcome of the script pointed from
@@ -29,3 +29,8 @@ Next to that the bigger flowchart is structured in the following ways:
   - arrows that started with a dotted line means that the script pointed to is depended on multiple runs of the "pointed from" script
   - a fully dotted line inside an arrow means "in exceptional cases"
   - a line starting dotted and in the middle switching line and empty represent developmental only
+
+
+The full flowchart (not the latest version):
+![flowchart image](../doc/flowchart/full-flowchart.png)
+

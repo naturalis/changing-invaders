@@ -130,5 +130,6 @@ blast_primers_all_samples() {
  if [ ! -z "$next" ];then blast_primers_all_samples "${out%_*}_${db%%_*}.fasta" $threads $next;else Rscript script/telegramhowto.R "Everything is BLASTed";fi
  date >> "${out%_*}_${db%%_*}.date"
 }
-blast_primers_all_samples # een recursieve functie
+blast_primers_all_samples # a recursive function
+cd data/blast_output
 Rscript script/SNPstats.R # finally recieve the 100 best SNPs
