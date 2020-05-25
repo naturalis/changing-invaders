@@ -16,6 +16,7 @@ trap 'echo "something goes wrong, error at line $LINENO (commando: $(sed -n $LIN
 [ ! -e script/telegramhowto.R ] && echo 'print(commandArgs(TRUE))' > script/telegramhowto.R
 perl -I $PWD/lib script/readsToVariants/fastp.pl -file "$yaml"
 mkdir -p /root/tmp
+# minimize the default memory minimap2 uses to make it work on test environments
 sed -i 's/-m 7G/-m 70M/' script/readsToVariants/minimap2.pl
 perl -I $PWD/lib script/readsToVariants/minimap2.pl --yaml "$yaml" --index true --outdir /var/data/data --verbose
 # put the samplenames in the bam file so haplotypecaller wont crash
@@ -35,6 +36,7 @@ samtools faidx "$REF"
 for sample in $(ls /var/data/data/*.bam|grep -Po '(?<=/)[^/]*(?=.bam)'|sort -u);do
  #b=/var/data/data/"$sample/$sample".bam
  b=/var/data/data/"$sample".bam
+ # if the size of the file is bigger than 100 bytes/blocks
  [ $(ls -l $b |sed s/\ +/\ /g|cut -d\  -f5) -gt 100 ] && cp $b .
  samtools sort -o "$sample".sort.bam "$sample".bam
  [ -e "$sample".sort.bam ] && rm "$sample.bam" || rm "$sample".sort.bam.*
@@ -54,13 +56,13 @@ number=1
 	sqlite3 $database < script/makeDatabases/row_based/make_snp.sql
 	[ -e data/sample-enum.csv ] && rm data/sample-enum.csv
 }
-for sample in $(ls data/sample-files);do
+for sample in $(ls data/sample-files/|grep \\.bcf\$);do
  sample_path="data/sample-files/$sample"
  if [ -e "$sample_path" ];then
   if [ -s "$sample_path" ];then
    echo "${sample%.*},$number" >> data/sample-enum.csv
    bcftools view "$sample_path"|python3 script/makeDatabases/row_based/edit_snp.py $number|cat script/makeDatabases/row_based/add_bcf.sql -|sqlite3 $database
-   [ $? -ne 0 ] && { echo "$(ls -t ~/slurm-*.out|head -1|xargs cat)";exit;} || echo "In the database ${sample//*(*\/|.*)} is now also available."
+   [ $? -ne 0 ] && { echo "$(ls -t ~/slurm-*.out|head -1|xargs cat)";exit;} || echo "In the database ${sample//*(*\/|.bcf)} is now also available."
    echo "Database is now $(du -h $database|cut -d $'\t' -f1|sed -e "s/G/ gigabyte/" -e "s/M/ megabyte/") in size."
    number=$((number+1))
   else
@@ -84,9 +86,8 @@ for sample in $(ls /var/data/data/*.bam|grep -Po '(?<=/)[^/]*(?=.bam)'|sort -u);
  bcftools consensus "data/sample-files/$sample".calls.vcf.gz -f "$REF" > "data/sample-files/$sample".cns.fa
  makeblastdb -in "data/sample-files/$sample".cns.fa -dbtype nucl
 done
-exit
 # BLAST regio's before and after mutation on the consensus genomes of the 8 rats
-mkdir data/blast_output
+mkdir -p data/blast_output
 
 blast_primers_all_samples() {
  [ $# -gt 0 ] && fasta=$1 || fasta=data/filtered_snps.fasta
@@ -132,4 +133,4 @@ blast_primers_all_samples() {
 }
 blast_primers_all_samples # a recursive function
 cd data/blast_output
-Rscript script/SNPstats.R # finally recieve the 100 best SNPs
+Rscript script/SNPextract.R 100 data/eight.db data/sample-enum.csv data/blast_output/ data/SNP_output/ filled # finally recieve the 100 best SNPs
