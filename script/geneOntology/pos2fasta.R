@@ -11,7 +11,7 @@ Sys.time()
 filtered <- read.table(pos, col.names = c("chromosome", "position"))
 # read the fasta file.
 # this takes some time
-DNA_sequence = readDNAStringSet(paste0(Sys.getenv("HOME"), "/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa"))
+DNA_sequence = readDNAStringSet(ifelse(is.na(Sys.getenv()["REF"]), paste0(Sys.getenv("HOME"), "/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa"), Sys.getenv()["REF"]))
 # edit the names so it is only the chromosome number
 names(DNA_sequence) <- mapply(`[`, strsplit(names(DNA_sequence), " "), 1)
 filtered <- filtered[filtered$chromosome!=0,]
