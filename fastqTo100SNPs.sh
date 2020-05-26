@@ -10,6 +10,7 @@
 shopt -s extglob
 cd /var/data
 yaml=data/files.yml
+export DISPLAY=:0
 # REF=/home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa
 export REF="$(grep reference -A2 "$yaml"|grep -Po '(?<=filtered: ).*')" COVERAGE_MIN=0 COVERAGE_MAX=3 QUALITY=2
 trap 'echo "something goes wrong, error at line $LINENO (commando: $(sed -n $LINENO"p" "$BASH_SOURCE"))";exit 2' ERR
@@ -132,5 +133,4 @@ blast_primers_all_samples() {
  date >> "${out%_*}_${db%%_*}.date"
 }
 blast_primers_all_samples # a recursive function
-cd data/blast_output
 Rscript script/SNPextract.R 100 data/eight.db data/sample-enum.csv data/blast_output/ data/SNP_output/ filled # finally recieve the 100 best SNPs

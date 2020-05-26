@@ -7,7 +7,7 @@
 shopt -s extglob
 [ $# -gt 0 ] && fasta=$1 || fasta=filtered_snps.fasta
 [ $# -gt 1 ] && threads=$2 || threads=25
-[ $# -gt 2 ] && db=$3 || db=R7129_41659.cns.fa
+[ $# -gt 2 ] && db=$3 || db="$(ls *|grep -E '.cns.(fa|fasta)$'|head -1)"
 # the user can fill in the full fasta name, but also the begin of the name or the name without fasta/fa
 # the user could specify a fule from the path they currently is or a full path or from users HOME
 # the latter does not need to be specified exactly by the user
@@ -47,12 +47,14 @@ egrep '\''"num"|"query_id"'\'' "'"${out%_*}_${db%%_*}.json"'" |egrep -B1 " 1,|qu
 egrep "^([0-9]+,2,?){2}$" blast_output/numlines_"'"${db%%_*}"'".txt|cut -d, -f1|sed "s/.*/_&\"/"|tr \\n \||sed "s/|$//" |egrep -f - "'"${out%_*}_${db%%_*}.json"'" -A1|grep title|cut -d\" -f4|grep -f- "'"$fasta"'" -A1|grep -v ^--\$ > "'"${out%_*}_${db%%_*}.fasta"'"
 Rscript $HOME/blast_output.R "'"${out%_*}_${db%%_*}"'"
 # display the information to the user
-HOME/telegramhowto.R "There are $(($(wc -l "'"${out%_*}_${db%%_*}.fasta"'"|cut -d" " -f1)/4)) SNPs left."
+ remainingSNPs=$(($(wc -l "${out%_*}_${db%%_*}.fasta"|cut -d" " -f1)/4))
+ Rscript script/telegramhowto.R "There are $remainingSNPs SNPs left."
+ if test $remainingSNPs -eq 0;then echo "becuase of no valid SNPs anymore the program will exit now...";exit;fi
 # check whether there are samples that are not BLASTed yet
 # show all files in blast_output that end on .fasta and get the part of the name that reflects the samplename
 # show all files ending on .cns.fa, seperate them on _ so only the sample part of the filename remains
 # remove all samplenames from the second list that are displayed in the first and het from the remaining the first (if there is at all).
-next=$(ls *.cns.fa|cut -d_ -f1|grep -v "$(ls blast_output/*.fasta|rev|cut -d_ -f1|rev|cut -d. -f1)"|head -1)
+next=$(ls *.cns.fa|cut -d_ -f1|grep -v "$(ls blast_output/*.fasta|rev|cut -d_ -f1|rev|grep -Po '.+?(?=\.fasta)')"|head -1|rev|cut -d/ -f1|rev)
 # if that is not empty, BLAST that sample in that case
 if [ ! -z "$next" ];then $HOME/blast_primers_all_samples.sh "'"${out%_*}_${db%%_*}.fasta"'" '$threads' $next*.cns.fa;else $HOME/telegramhowto.R "Everything is BLASTed";fi
 date >> "'"${out%_*}_${db%%_*}.date"'"'

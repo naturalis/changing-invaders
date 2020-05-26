@@ -7,7 +7,7 @@
 shopt -s extglob
 [ $# -gt 0 ] && fasta=$1 || fasta=filtered_snps.fasta
 [ $# -gt 1 ] && threads=$2 || threads=25
-[ $# -gt 2 ] && db=$3 || db=R7129_41659.cns.fa
+[ $# -gt 2 ] && db=$3 || db="$(ls *|grep -E '.cns.(fa|fasta)$'|head -1)"
 # the user can fill in the full fasta name, but also the begin of the name or the name without fasta/fa
 # the user could specify a fule from the path they currently is or a full path or from users HOME
 # the latter does not need to be specified exactly by the user
@@ -28,7 +28,7 @@ date > "'"${out%_*}_${db%%_*}.date"'"
 blastn -gapopen 20 -gapextend 4 -num_threads '$threads' -outfmt 13 -max_target_seqs 4 -max_hsps 4 -query "'"$fasta"'" -db "'"$db"'" && {
 	$HOME/telegramhowto.R "'"$fasta"' is BLASTed! ($(date))";true
 } || {
-	$HOME/telegramhowto.R "Something goes whrong during BLASTing of '"$fasta"' sequences($(date))";exit
+	$HOME/telegramhowto.R "Something goes wrong during BLASTing of '"$fasta"' sequences($(date))";exit
 }
 # create a numlines file out of which could be determined how many hits there approximately are by extracting the 'num', and 'query' lines out of the fasta
 # search first on 'num' or query id, so one gets for every qeury id(SNP pair) all chromosomes and hits within a line with num followed by a number
