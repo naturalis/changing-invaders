@@ -16,7 +16,7 @@
 # the last command on the line is exit
 # this is useful because it tells bash to exit, so it wont execute commands that are for the R part of this file
 # it wont do much, but it will give some errors, we can bypass this way
-confusion=1#;read -p "Telegram Token: " token;read -p "Telegram chat id: " chatid;find -type f |grep -v README.md\$|grep -Ev './(.git|doc)/'|xargs sed -Ei -e 's/(TGBot *\$ *new\(token *= *)"TOKEN"/\1"'"$token"'"/' -e 's/(\$ *sendMessage *\( *.*\<chat_id\> *= *)[0-9]+/\1'$chatid'/' -e 's/# (.*library\( *telegram *\))/\1/' -e 's/# (.*TGBot *\$ *new\(token *=)/\1/' -e 's/# (.*\$ *sendMessage *\( *.*\<chat_id\> *=)/\1/';exit
+confusion=1#;read -p "Telegram Token: " token;read -p "Telegram chat id: " chatid;find -type f |grep -v README.md\$|grep -Ev './(.git|doc)/'|xargs sed -Ei -e 's/(TGBot *\$ *new\(token *= *)"TOKEN"/\1"'"$token"'"/' -e 's/(\$ *(sendMessage|sendPhoto) *\( *.*\<chat_id\> *= *)[0-9]+/\1'$chatid'/' -e 's/# (.*library\( *telegram *\))/\1/' -e 's/# (.*TGBot *\$ *new\(token *=)/\1/' -e 's/# (.*\$ *sendMessage *\( *.*\<chat_id\> *=)/\1/';exit
 boodschap <- commandArgs(trailingOnly=TRUE)[1]
 send_telegram_message <- function(text) {
 # 	library(telegram)
