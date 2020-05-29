@@ -43,12 +43,13 @@ sample:
             - /var/data/data/filename_second of pair.fastq.gz
 ```
 and this repeated for every file you have. Note the relativeness of the paths since /var/data/data is where your data is mounted in docker, so every path must start that way. (or you have to mount somewhere different of course)
+For convenience there is a script included to provide mouse data that can directly be used with the fastq pipeline. The script is called `script/mouse2pipeline.sh`. This file will create a directory 'mouse' which could be used as the local-data directory
 
 The docker-image might be invoked using
 ```bash
-docker build -t changing-invaders:v0.9 .
+docker build -t changing-invaders:v1.0 .
 # local-data could of course be changed to every folder that contains your data and the files.yml file
-docker run -v $PWD/local-data:/var/data/data -ti changing-invaders:v0.9 ./fastqTo100SNPs.sh
+docker run -v $PWD/local-data:/var/data/data -ti changing-invaders:v1.0 ./fastqTo100SNPs.sh
 ```
 optionally one can directly see the results of ggplot (without writing to a file) using this method: first run on the host:
 ```
