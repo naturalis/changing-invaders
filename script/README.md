@@ -1,5 +1,6 @@
 # the actual scripts
 
+Scripts that use a reference genome, will work with the REF environment variable, if available. The shell scripts will search for the path in the files.yml file, if they can find it.
 The program flow scematic:
 
 ![flowchart image](../doc/flowchart/simple_flow.png)

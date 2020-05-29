@@ -1,12 +1,5 @@
 #!/bin/bash
-# this script is a (not fully working) pipeline from fastq to 100 distant, good quality SNPs
-# generate fake data
-# sed -n $'N;N;N;w data/exulans_left_AAAA_R1_L00.fastq\ns/.*//;N;N;N;N;s/\\n//;w data/exulans_right_AAAA_L00_R1.fastq\nN;N;N;N;w data/exulans_left_AAAA_L00_R2.fastq\ns/.*//;N;N;N;N;s/\\n//;w data/exulans_right_AAAA_L00_R2.fastq\nN;N;N;N;w data/vegicus_left_AAAA_L00_R1.fastq\ns/.*//;N;N;N;N;s/\\n//;w data/vegicus_right_AAAA_L00_R1.fastq\nN;N;N;N;w data/vegicus_left_AAAA_L00_R2.fastq\ns/.*//;N;N;N;N;s/\\n//;w data/vegicus_right_AAAA_L00_R2.fastq' SP1.fastq
-# (in ./data)
-# cd data;ls|xargs gzip
-# ls |grep 'RUN[^\\.]*' -o|sort -u|xargs mkdir
-# for x in $(ls |grep 'RUN[^\\.]*' -o|sort -u);do mv *$x*fastq* $x;done
-# sed -Ei 's/(\/MCL[^\/]*)(.*)(RUN[^\.]*)/\/\3\1\2\3/' files.yml
+# this script is a pipeline from fastq to 100 distant, good quality SNPs
 shopt -s extglob
 cd /var/data
 yaml=data/files.yml

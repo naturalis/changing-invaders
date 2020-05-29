@@ -5,7 +5,7 @@
 # changing invaders
 library(RSQLite)
 library(dplyr, warn.conflicts = FALSE)
-library(telegram)
+# library(telegram)
 library(ggplot2)
 library(Biostrings)
 # this is the second function written for this purpose
@@ -116,7 +116,7 @@ if (nrow(full)<number_snps) warning("Less than the asked SNPs are given:\n", num
 ggplot(deep, aes(divergents, amount)) + geom_col(aes(fill = `Most
 occurring
 genotype`)) + xlab("Genotypes on SNP") + ylab("amount")
-# ggsave("temp.png");bot <- TGBot$new(token = "TOKEN");bot$sendPhoto("temp.png", "This is the polyformity distribution of EXULANS", chat_id = 0)´unlink("temp.png")
+# ggsave("temp.png");bot <- TGBot$new(token = "TOKEN");bot$sendPhoto("temp.png", "This is the polyformity distribution of EXULANS", chat_id = 454771972);unlink("temp.png")
 # show a row
 seven[sample(1:nrow(seven), 1),]
 meta.data <- full %>% group_by(divergents, max_genotype) %>% summarise(amount = n())
