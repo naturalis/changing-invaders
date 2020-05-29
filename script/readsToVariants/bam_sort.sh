@@ -12,4 +12,4 @@ sample=/home/r*.v*/fileserver/projects/B19005-525/Samples/"'"$sample/$sample"'".
 [ $(ls -l $sample |sed s/\ +/\ /g|cut -d\  -f5) -gt 100 ] && cp $sample .
 samtools sort -o '$sample'.sort.bam "'"$sample"'".bam
 [ -e "'"$sample"'".sort.bam ] && rm "'"$sample".bam'" || rm "'"$sample"'".sort.bam.*
-$HOME/telegramhowto.R "'"$sample"' is sorted"'
+$HOME/telegram_message.R "'"$sample"' is sorted"'

@@ -1,0 +1,5 @@
+#!/bin/bash
+names_of_token_files="$(grep -El 'TGBot\$new\(token *= *' $(git diff --cached --name-only HEAD^))"
+for x in $names_of_token_files;do
+ mv "$x.orig" "$x"
+done

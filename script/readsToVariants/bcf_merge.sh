@@ -14,7 +14,7 @@ sbatch -D $PWD -n2<<< '#!/bin/bash
 #SBATCH --job-name=merge" "'$number'
  bcftools merge --threads 2 -0 -m snps -Ob '$samples' -o merge'$number'.bcf && {
  # seperate samplenames on _ and get the first part, replace newlines by , (comma space) (and the last one by nothing) and the last one by "and"
- $HOME/telegramhowto.R "'$(cut -d_ -f1<<<"$samples"|tr \\n ,|sed -e 's/,$//' -e 's/,/& /g'|rev|sed 's/,/dna /'|rev)' are combined to one"
+ $HOME/telegram_message.R "'$(cut -d_ -f1<<<"$samples"|tr \\n ,|sed -e 's/,$//' -e 's/,/& /g'|rev|sed 's/,/dna /'|rev)' are combined to one"
 } || {
- $HOME/telegramhowto.R "Combining to merge'$number'.bcf failed"
+ $HOME/telegram_message.R "Combining to merge'$number'.bcf failed"
 }'

@@ -18,9 +18,9 @@ sbatch -D $PWD <<< '#!/bin/bash
 # also introns are by default not included, which is not usefull for only-SNP-data
 bcftools view "'"$sample_full"'"|java -Xmx4g -jar $HOME/snpEff/snpEff.jar -noLog Rnor_6.0.86 -no synonymous_coding -no-intergenic $(if test "'"$introns"'" = "false";then echo -no intron;fi) -no SYNONYMOUS_START -no SYNONYMOUS_STOP|egrep "^#|ANN=" | bcftools view -Ob > "'"${sample_full/./.ann.}"'" && {
  # ends with true, so that an error in sending a message does not secondly tries to send a message that there was an error
- $HOME/telegramhowto.R "SNP gene annotation for '"$sample"' saved.";true
+ $HOME/telegram_message.R "SNP gene annotation for '"$sample"' saved.";true
 } || {
- $HOME/telegramhowto.R "during annotation with genes still error: $(cat snpEFF.log)"
+ $HOME/telegram_message.R "during annotation with genes still error: $(cat snpEFF.log)"
 }'
 else
  echo "$sample."'{bcf,vcf{,.gz}' does not exist

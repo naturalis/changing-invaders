@@ -83,5 +83,6 @@ fi
 Please note that sbatch is the program where jobs are made known on the server. The program the job comprend is on the next lines.
 Because there is worked with '(single quote) arguments that are given are within "'" (double quote so most variables could contain spaces)
 
+For how information about telegram in relation to the repo see [the telegram information](README-telegram.md)
 For this repo with a lot of things still in Dutch I refer to this commit: https://github.com/naturalis/changing-invaders/commit/184a23c18492c1197a6f8936b0b42a7750dde9e4
 For all scripts before cleanup(and translation) I refer to: https://github.com/naturalis/changing-invaders/tree/922c543dcc55c43b1ed627e0396ae57dc107ad10

@@ -20,7 +20,7 @@ if [ "$sample*.bam" = "$(echo "$sample"*.bam)" ];then
 # --max-depth default is used, if not working reducing to something lower
 #SBATCH --output="'"$sample"'".bcf.out
 bcftools mpileup -I -Ou -f "'"$REF"'" "'"$sample"'"*.bam | bcftools call --threads '$threads' --skip-variants indels -mv -Ob  -P 1.1e-4 -o "'"$sample"'".bcf
-$HOME/telegramhowto.R "Variants of '"$sample"' are called (using bcf)."'
+$HOME/telegram_message.R "Variants of '"$sample"' are called (using bcf)."'
 else
  echo "$sample*.bam" does not exist.
 fi

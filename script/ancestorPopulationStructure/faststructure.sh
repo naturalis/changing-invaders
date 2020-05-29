@@ -13,10 +13,10 @@ sbatch -D $PWD -n $threads<<< '#!/bin/bash
 #SBATCH --output=logs/faststructure-"'"$sample"'"-'$ancestors'.out
 python2 $HOME/proj/fastStructure/structure.py -K '$ancestors' --input="'"$sample"'" --output="'"$sample"'"-struct --seed='$seed' --prior=logistic && {
  mv "'"$sample"'"-struct.'$ancestors'.log logs/
- $HOME/telegramhowto.R "structure is determined for '"$sample"' with '$ancestors' anchestors.";true
+ $HOME/telegram_message.R "structure is determined for '"$sample"' with '$ancestors' anchestors.";true
 } || {
- $HOME/telegramhowto.R "during determination structure still error: $(cat faststructure-"'"$sample"'"-'$voorouders'.out)"
+ $HOME/telegram_message.R "during determination structure still error: $(cat faststructure-"'"$sample"'"-'$voorouders'.out)"
 }'
 else
- echo "$sample.bim, $sample.bed and/or $sample.fam" does not exsist
+ echo "$sample.bim, $sample.bed and/or $sample.fam" does not exist
 fi

@@ -5,7 +5,7 @@
 # changing invaders
 library(RSQLite)
 library(dplyr, warn.conflicts = FALSE)
-# library(telegram)
+library(telegram)
 library(ggplot2)
 library(Biostrings)
 # this is the second function written for this purpose

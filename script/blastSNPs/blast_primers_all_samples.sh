@@ -26,9 +26,9 @@ if [ "" != "$fasta" ];then
 date > "'"${out%_*}_${db%%_*}.date"'"
 # blast with max 4 chromosome hits and 4 hits per chromosome
 blastn -gapopen 20 -gapextend 4 -num_threads '$threads' -outfmt 13 -max_target_seqs 4 -max_hsps 4 -query "'"$fasta"'" -db "'"$db"'" && {
-	$HOME/telegramhowto.R "'"$fasta"' is BLASTed! ($(date))";true
+	$HOME/telegram_message.R "'"$fasta"' is BLASTed! ($(date))";true
 } || {
-	$HOME/telegramhowto.R "Something goes wrong during BLASTing of '"$fasta"' sequences($(date))";exit
+	$HOME/telegram_message.R "Something goes wrong during BLASTing of '"$fasta"' sequences($(date))";exit
 }
 # create a numlines file out of which could be determined how many hits there approximately are by extracting the 'num', and 'query' lines out of the fasta
 # search first on 'num' or query id, so one gets for every qeury id(SNP pair) all chromosomes and hits within a line with num followed by a number

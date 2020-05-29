@@ -7,7 +7,6 @@ export DISPLAY=:0
 # REF=/home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa
 export REF="$(grep reference -A2 "$yaml"|grep -Po '(?<=filtered: ).*')" COVERAGE_MIN=0 COVERAGE_MAX=3 QUALITY=2
 trap 'echo "something goes wrong, error at line $LINENO (commando: $(sed -n $LINENO"p" "$BASH_SOURCE"))";exit 2' ERR
-[ ! -e script/telegramhowto.R ] && echo 'print(commandArgs(TRUE))' > script/telegramhowto.R
 perl -I $PWD/lib script/readsToVariants/fastp.pl -file "$yaml"
 mkdir -p /root/tmp
 # minimize the default memory minimap2 uses to make it work on test environments
@@ -95,7 +94,7 @@ blast_primers_all_samples() {
  # the specification of out is only needed in this version, not the individual script
  blastn -gapopen 20 -gapextend 4 -num_threads $threads -outfmt 13 -max_target_seqs 4 -max_hsps 4 -query "$fasta" -db "$db_fp" -out ${out%_*}_${db%%_*}.json
  cat ${out%_*}_${db%%_*}_*.json > ${out%_*}_${db%%_*}.json;rm ${out%_*}_${db%%_*}_*.json
- Rscript script/telegramhowto.R "$fasta is BLASTed! ($(date))"
+ Rscript script/telegram_message.R "$fasta is BLASTed! ($(date))"
  # create a numlines file out of which could be determined how many hits there approximately are by extracting the 'num', and 'query' lines out of the fasta
  # search first on 'num' or query id, so one gets for every qeury id(SNP pair) all chromosomes and hits within a line with num followed by a number
  # search now on '1', or query_id and the line before so first nums and SNP pairs
@@ -114,7 +113,7 @@ blast_primers_all_samples() {
  Rscript script/blastSNPs/blast_output.R "${out%_*}_${db%%_*}"
  # display the information to the user
  remainingSNPs=$(($(wc -l "${out%_*}_${db%%_*}.fasta"|cut -d" " -f1)/4))
- Rscript script/telegramhowto.R "There are $remainingSNPs SNPs left."
+ Rscript script/telegram_message.R "There are $remainingSNPs SNPs left."
  if test $remainingSNPs -eq 0;then echo "becuase of no valid SNPs anymore the program will exit now...";exit;fi
  # check whether there are samples that are not BLASTed yet
  # show all files in blast_output that end on .fasta and get the part of the name that reflects the samplename
@@ -122,7 +121,7 @@ blast_primers_all_samples() {
  # remove all samplenames from the second list that are displayed in the first and het from the remaining the first (if there is at all).
  next=$(ls data/sample-files/*.cns.fa|cut -d_ -f1|grep -v "$(ls data/blast_output/*.fasta|rev|cut -d_ -f1|rev|grep -Po '.+?(?=\.fasta)')"|head -1|rev|cut -d/ -f1|rev)
  # if that is not empty, BLAST that sample in that case
- if [ ! -z "$next" ];then blast_primers_all_samples "${out%_*}_${db%%_*}.fasta" $threads $next;else Rscript script/telegramhowto.R "Everything is BLASTed";fi
+ if [ ! -z "$next" ];then blast_primers_all_samples "${out%_*}_${db%%_*}.fasta" $threads $next;else Rscript script/telegram_message.R "Everything is BLASTed";fi
  date >> "${out%_*}_${db%%_*}.date"
 }
 blast_primers_all_samples # a recursive function

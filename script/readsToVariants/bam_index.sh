@@ -8,7 +8,7 @@ sbatch -D $PWD<<< '#!/bin/bash
 #SBATCH --job-name=index:"'"$sample"'"
 ## cp ../r*.v*/fileserver/projects/B19005-525/Samples/"'"$sample/$sample"'".bam .
 samtools index "'"$sample"'"*.bam
-$HOME/telegramhowto.R "'"$sample"' is indexed"'
+$HOME/telegram_message.R "'"$sample"' is indexed"'
 else
  echo "$sample*".bam does not exist "(in $PWD)".
 fi

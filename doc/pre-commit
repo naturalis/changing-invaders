@@ -1,0 +1,11 @@
+#!/bin/bash
+names_of_token_files="$(grep -El 'TGBot *\$ *new\(token *= *' $(git diff --cached --name-only))"
+for x in $names_of_token_files;do
+ cp "$x" "$x.orig"
+ sed -Ei -e 's/(TGBot *\$ *new\(token *= *)["'\''][^"'\'']+["'\'']/\1"TOKEN"/' \
+ -e 's/(\$ *sendMessage *\( *.*\<chat_id\> *= *)[0-9]+/\10/' \
+ -e 's/[^#].*library *\( *telegram *\)/# &/' \
+ -e 's/[^#].*TGBot *\$ *new\(token *=/# &/' \
+ -e 's/[^#].*\$ *sendMessage *\( *.*\<chat_id\> *=/# &/' "$x"
+ git add "$x"
+done

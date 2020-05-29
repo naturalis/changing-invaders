@@ -26,9 +26,9 @@ if [ "" != "$fasta" ];then
 date > "'"${out%_*}_${db%%_*}.date"'"
 # blast with max 4 chromosome hits and 4 hits per chromosome
 blastn -gapopen 20 -gapextend 4 -num_threads '$threads' -outfmt 13 -max_target_seqs 4 -max_hsps 4 -query "'"$fasta"'" -db "'"$db"'" && {
-	$HOME/telegramhowto.R "'"$fasta"' is BLASTed! ($(date))";true
+	$HOME/telegram_message.R "'"$fasta"' is BLASTed! ($(date))";true
 } || {
-	$HOME/telegramhowto.R "Something goes wrong during BLASTing of '"$fasta"' sequences($(date))";exit
+	$HOME/telegram_message.R "Something goes wrong during BLASTing of '"$fasta"' sequences($(date))";exit
 }
 # create a numlines file out of which could be determined how many hits there approximately are by extracting the 'num', and 'query' lines out of the fasta
 # search first on 'num' or query id, so one gets for every qeury id(SNP pair) all chromosomes and hits within a line with num followed by a number
@@ -47,7 +47,7 @@ egrep '\''"num"|"query_id"'\'' "'"${out%_*}_${db%%_*}.json"'" |egrep -B1 " 1,|qu
 egrep "^([0-9]+,2,?){2}$" blast_output/numlines_"'"${db%%_*}"'".txt|cut -d, -f1|sed "s/.*/_&\"/"|tr \\n \||sed "s/|$//" |egrep -f - "'"${out%_*}_${db%%_*}.json"'" -A1|grep title|cut -d\" -f4|grep -f- "'"$fasta"'" -A1|grep -v ^--\$ > "'"${out%_*}_${db%%_*}.fasta"'"
 Rscript $HOME/blast_output.R "'"${out%_*}_${db%%_*}"'"
 # display the information to the user
-$HOME/telegramhowto.R "There are $(($(wc -l "'"${out%_*}_${db%%_*}.fasta"'"|cut -d" " -f1)/4)) SNPs left."
+$HOME/telegram_message.R "There are $(($(wc -l "'"${out%_*}_${db%%_*}.fasta"'"|cut -d" " -f1)/4)) SNPs left."
 date >> "'"${out%_*}_${db%%_*}.date"'"'
   else
    echo "2nd argument must be a number of threads, this does not look like a for BLAST interpretable number."

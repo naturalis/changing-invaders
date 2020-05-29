@@ -15,8 +15,8 @@ $HOME/admixture*/admixture "'"$sample"'".bed '$ancestors' --seed='$seed' -j'$thr
  [ -e "'"$sample"'".'$ancestors'.P ]    && mv "'"$sample"'".'$ancestors'.P      "'"$sample"'"-admixt.'$ancestors'.P
  [ -e "'"$sample"'".'$ancestors'.Q_bias ]&&mv "'"$sample"'".'$ancestors'.Q_bias "'"$sample"'"-admixt.'$ancestors'.Q_bias
  [ -e "'"$sample"'".'$ancestors'.Q_se ] && mv "'"$sample"'".'$ancestors'.Q_se   "'"$sample"'"-admixt.'$ancestors'.Q_se
- $HOME/telegramhowto.R "structuur is determined for '"$sample"' with '$ancestors' ancestors."
+ $HOME/telegram_message.R "structuur is determined for '"$sample"' with '$ancestors' ancestors."
  true
 } || {
- $HOME/telegramhowto.R "during determing structure still error: $(cat logs/admixture-"'"$sample"'"-'$ancestors'.out)"
+ $HOME/telegram_message.R "during determing structure still error: $(cat logs/admixture-"'"$sample"'"-'$ancestors'.out)"
 }'

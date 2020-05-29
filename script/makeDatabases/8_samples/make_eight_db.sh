@@ -8,7 +8,7 @@ if [ -e "$sample".bcf ];then
 #SBATCH --job-name=make-DB-8
 rm onenucleotide_eight.db
 bcftools view "'"$sample"'".bcf|python3 $HOME/edit_eight.py | cat $HOME/make_eight.sql - | sqlite3 onenucleotide_eight.db
-[ $? -ne 0 ] && $HOME/telegramhowto.R "$(ls -t slurm-*.out|head -1|xargs cat)" || $HOME/telegramhowto.R "Database with eight individuals is created"'
+[ $? -ne 0 ] && $HOME/telegram_message.R "$(ls -t slurm-*.out|head -1|xargs cat)" || $HOME/telegram_message.R "Database with eight individuals is created"'
 else
  echo "$sample".bcf does not exist
 fi

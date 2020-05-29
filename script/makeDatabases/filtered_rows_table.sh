@@ -5,4 +5,4 @@
 [ $# -gt 0 ] && db=$1 || db=seven_or_more.db
 sbatch -D $PWD <<< $'#!/bin/bash
 sqlite3 "'"$db"'" < $HOME/make_valid.sql
-$HOME/telegramhowto.R "generated table"'
+$HOME/telegram_message.R "generated table"'
