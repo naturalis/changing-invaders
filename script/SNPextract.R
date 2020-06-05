@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 #SBATCH --job-name=SNPfinal
+# changing invaders
 # extract SNPs (last step)
 # by david
-# changing invaders
 library(RSQLite)
 library(dplyr, warn.conflicts = FALSE)
 library(telegram)

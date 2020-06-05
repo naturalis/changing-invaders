@@ -3,24 +3,37 @@
 # changing invaders
 # by david
 # obtain FoCaP + distance SNP upstream + downstream sequences from R norvegicus
-# biostrings is required (BiocManager::install("Biostrings"))
-library(Biostrings)
+suppressMessages(library(Biostrings))
 library(RSQLite)
 library(dplyr, warn.conflicts = FALSE)
 library(telegram)
 # this is a shortcut operator for either using a default value or using the value of a environment variable
-"%envordefault%" <- function(env_var, default) ifelse(is.na(Sys.getenv(env_var)), default, Sys.getenv(env_var))
+"%andfordefault%" <- function(env_var, default) ifelse(is.na(Sys.getenv(env_var)), default, Sys.getenv(env_var))
 if (!is.na(commandArgs(trailingOnly=TRUE)[1])) db = commandArgs(trailingOnly=TRUE)[1] else db = Sys.glob("/d*/d*/eight.db")
 Sys.time()
 eightnucleotide <- dbConnect(SQLite(), db)
 exulans <- tbl(eightnucleotide, "EXULANS")
 # group on SNP, make a variable that explains whether it is a heterozygote SNP, and whether the coverage, quality and distance comply
 # filter on these variables
-searchterm <- exulans %>% group_by(chromosome, position) %>% summarise(heterozygote = !(n_distinct(paste0(GENOTYPE_BP)) == 1L && count(GENOTYPE_BP) == 8L), p = COUNT(REFERENCE), COVERAGE_THRESHOLD = mean(COVERAGE, na.rm = TRUE) > !!as.integer("COVERAGE_MIN" %envordefault% 16L) && !!as.integer("COVERAGE_MAX" %envordefault% 110L) > mean(COVERAGE, na.rm = TRUE), QUALITY_THRESHOLD = mean(QUALITY, na.rm = TRUE) > !!as.integer("QUALITY" %envordefault% 99L), DIST_P = min(ifelse(DIST_N==-1, 250, DIST_P), na.rm = TRUE), DIST_N = min(ifelse(DIST_N==-1, 250, DIST_N), na.rm = TRUE)) %>% filter(heterozygote, COVERAGE_THRESHOLD, QUALITY_THRESHOLD, DIST_N > 249L, DIST_P > 249L)
+coverage_min <- as.integer("COVERAGE_MIN" %andfordefault% 16L)
+coverage_max <- as.integer("COVERAGE_MAX" %andfordefault% 110L)
+quality_minima <- as.integer("QUALITY" %andfordefault% 99L)
+distance_min <- as.integer("DISTANCE" %andfordefault% 250L)
+searchterm <- exulans %>% group_by(chromosome, position) %>%
+ summarise(heterozygote = !(n_distinct(paste0(GENOTYPE_BP)) == 1L && count(GENOTYPE_BP) == 8L),
+  p = COUNT(REFERENCE),
+  COVERAGE_THRESHOLD = mean(COVERAGE, na.rm = TRUE) > coverage_min && coverage_max > mean(COVERAGE, na.rm = TRUE),
+  QUALITY_THRESHOLD = mean(QUALITY, na.rm = TRUE) > quality_minima,
+  DIST_P = min(ifelse(DIST_N==-1, distance_min, DIST_P), na.rm = TRUE),
+  DIST_N = min(ifelse(DIST_N==-1, distance_min, DIST_N), na.rm = TRUE)) %>%
+ filter(heterozygote, COVERAGE_THRESHOLD, QUALITY_THRESHOLD, DIST_N > (distance_min - 1L), DIST_P > (distance_min - 1L))
 # searchterm <- searchterm %>% ungroup() %>% summarise(how_many = count())
 searchterm <- searchterm %>% select(chromosome, position)
 searchterm %>% show_query()
 filtered <- searchterm %>% collect()
+dbWriteTable(eightnucleotide, "FOCAP", filtered, overwrite = TRUE)
+write.csv(filtered, "data/FOCAP.csv", row.names = FALSE)
+
 dbDisconnect(eightnucleotide)
 # read the reference fasta file in.
 # this takes some time
@@ -64,6 +77,6 @@ system("sed -nE '1!{s/([0-9]+,[0-9]+),([^,]+),([^,]+),(.)/>\\1-\\4\\n\\2\\n>\\1-
 Sys.time()
 SNP_message <- paste("There are", nrow(filtered), "SNPs left during the improved algorithm.")
 # append here the telegram bot token one wants to use during this analysis
-# bot <- TGBot$new(token = "TOKEN")
-# bot$sendMessage(SNP_message, chat_id = 0)
+##  bot <- TGBot$new(token = "TOKEN")
+##  bot$sendMessage(SNP_message, chat_id = 0)
 cat(SNP_message)

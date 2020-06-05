@@ -2,7 +2,6 @@
 #SBATCH --job-name=filter-SNP
 # filter SNPs
 # by david
-# biostrings is required (BiocManager::install("Biostrings"))
 # based on db2FoCaPfasta.R
 library(Biostrings)
 library(telegram)
@@ -36,9 +35,9 @@ write.csv(filtered, "selected_snps.csv", quote = FALSE, row.names = FALSE)
 # make a fasta of it
 system("sed -nE '1!{s/([0-9]+,[0-9]+),([^,]+),([^,]+),(.)/>\\1-\\4\\n\\2\\n>\\1-\\4\\n\\3/p}' selected_snps.csv > selected_snps.fasta")
 Sys.time()
-bot <- TGBot$new(token = "939730741:AAHnRC-oDDSMJ_qjqmsxcrfcfWkJ6uaXm28")
+# bot <- TGBot$new(token = "TOKEN")
 SNP_message <- paste("There are", nrow(filtered), "SNPs remaining during the improved algorithm.")
-bot$sendMessage(SNP_message, chat_id = 454771972)
+# bot$sendMessage(SNP_message, chat_id = 0)
 cat(SNP_message)
 setwd("..")
 system("$HOME/blast_all_primers_no_remove.sh blast_output/selected_snps.fasta")

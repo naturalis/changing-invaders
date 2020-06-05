@@ -3,6 +3,7 @@
 # by David
 # this script edits the vcf file before it is saved inside a database
 # the distances display -1 if the distance can not be determined
+# this distance might be incorrect
 # (no other SNP on that chromosome)
 import sys
 
@@ -57,5 +58,5 @@ for line in sys.stdin:
 		else:
 			semi_old = ["", line[1]]
 # print the last line
-semi_old += [getal]
-print("\t".join(semi_old + ["-1"]))
+semi_old += ["-1", getal]
+print("\t".join(semi_old))
