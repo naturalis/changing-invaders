@@ -5,7 +5,7 @@ cd /var/data
 yaml=data/files.yml
 export DISPLAY=:0
 # REF=/home/d*n*/REF/Rattus_norvegicus.Rnor_6.0.dna.toplevel.filtered.fa
-export REF="$(grep reference -A2 "$yaml"|grep -Po '(?<=filtered: ).*')" COVERAGE_MIN=0 COVERAGE_MAX=3 QUALITY=2 DISTANCE=2
+export REF="$(grep reference -A2 "$yaml"|grep -Po '(?<=filtered: ).*')" COVERAGE_MIN=0 COVERAGE_MAX=3 QUALITY=2 DISTANCE=2 SILENT=true
 trap 'echo "something goes wrong, error at line $LINENO (commando: $(sed -n $LINENO"p" "$BASH_SOURCE"))";exit 2' ERR
 perl -I $PWD/lib script/readsToVariants/fastp.pl -file "$yaml"
 mkdir -p /root/tmp
@@ -69,7 +69,8 @@ done
 sqlite3 $database < script/makeDatabases/row_based/fill_upos.sql
 # extract fasta with filtered positions
 Rscript script/blastSNPs/db2FoCaPfasta.R $database
-
+./script/iupacman.sh data/filtered_snps.fasta
+mv data/filtered_snps_iupac.fasta data/filtered_snps.fasta
 # build consensus
 # ls /var/data/data/*.bam|grep '_.*/$'|sed 's/.$//'
 for sample in $(ls /var/data/data/*.bam|grep -Po '(?<=/)[^/]*(?=.bam)'|sort -u);do

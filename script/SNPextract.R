@@ -8,12 +8,33 @@ library(dplyr, warn.conflicts = FALSE)
 library(telegram)
 library(ggplot2)
 library(Biostrings)
+# multiple arguments:
+#  1. number of required SNPs (or nothing)
+#  2. database file (or nothing)
+#  3. sample-enum file (or nothing)
+#  4. blast directory (or nothing)
+#  5. SNP directory (or nothing)
+#  6. posfix for output names (or nothing)
+arguments = commandArgs(trailingOnly=TRUE)
+number_snps = if (!is.na(arguments[1])) as.integer(arguments[1]) else 100 # 1.
+database_file = if (!is.na(arguments[2])) arguments[2] else Sys.glob("/d*/d*/eight.db") # 2.
+sample_enum = if (!is.na(arguments[3])) arguments[3] else Sys.glob("/d*/d*/sample-enum.csv") # 3.
+# get the last saved fasta file
+folder_to_blast_directory = ifelse(!is.na(arguments[4]), arguments[4], ".") # 4.
+blasted <- file.info(paste0(folder_to_blast_directory, list.files(folder_to_blast_directory, pattern = "\\.fasta$")))
+fasta.file <- rownames(blasted[with(blasted, order(mtime, decreasing = TRUE)), ][1,])
+output_directory = if (!is.na(arguments[5])) arguments[5] else paste0(Sys.getenv("HOME"), "/SNP-files/") # 5.
+postfix_name = if (!is.na(arguments[6])) arguments[6] else "data" # 6.
+# checks if all the files exists
+# TODO...
 # this is the second function written for this purpose
-removeNearest <- function(distance, remain = 100, longed = NULL) {
+removeNearest <- function(distance, remain = number_snps, longed = NULL) {
   # longing == all taken SNPs
   # notYet == rest
   # while more SNPs should be added, calculate the minimal distance of every in rest related to all
   # longing. Is that distance maxed, add to longing
+  #
+  # longing is first filled with the very first and the very last SNP
   longing <- distance %>% arrange(CHROMOSOME, POSITION) %>% group_by(CHROMOSOME) %>% filter(row_number() == 1 | row_number() == n())
   if (!is.null(longed)) longing <- rbind(longing, longed)
   notYet <- distance %>% arrange(CHROMOSOME, POSITION) %>% group_by(CHROMOSOME) %>% filter(!(row_number() == 1 | row_number() == n()))
@@ -46,31 +67,42 @@ removeNearest <- function(distance, remain = 100, longed = NULL) {
   message("The shortest distance between 2 mutations on the same chromosome is ", min(least_distance$remainder_before, least_distance$remainder_after))
   return(longing)
 }
+# this is the third function for this purpose
+heleenDistance <- function(distance, remain = number_snps, longed = NULL) {
+  # longing == all taken SNPs
+  # notYet == rest
+  # longing is first filled with the very first and the very last SNP
+  longing <- distance %>% arrange(CHROMOSOME, POSITION) %>% group_by(CHROMOSOME) %>% filter(row_number() == 1 | row_number() == n())
+  if (!is.null(longed)) longing <- rbind(longing, longed)
+  notYet <- distance %>% arrange(CHROMOSOME, POSITION) %>% group_by(CHROMOSOME) %>% filter(!(row_number() == 1 | row_number() == n()))
+  
+  print(distance)
+  while (nrow(longing) != remain & nrow(notYet) != 0) {
+    q <- apply(notYet, 1, function(x) {
+      chrw <- longing[longing$CHROMOSOME == as.numeric(x['CHROMOSOME']),]$POSITION
+      curw <- as.numeric(x['POSITION'])
+      min(ifelse(chrw > curw, chrw - curw, curw - chrw))
+    })
+    q <- ifelse(q < 0, -q, q)
+    print(q)
+    longing <- rbind(longing, notYet[grep(max(q), q)[1],])
+    notYet <- notYet[-grep(max(q), q)[1],]
+  }
+  least_distance <- longing %>% arrange(CHROMOSOME, POSITION) %>% group_by(CHROMOSOME) %>%
+    mutate(remainder_before = POSITION - lag(POSITION, default = NA),
+           remainder_after = lead(POSITION, default = NA) - POSITION) %>%
+    filter(min(if_else(!is.na(remainder_before), remainder_before, 1000000000L)) == remainder_before |
+             min(if_else(!is.na(remainder_after), remainder_after, 1000000000L)) == remainder_after) %>%
+    filter(min(if_else(min(remainder_before) == remainder_before, as.integer(NA), remainder_before),
+               if_else(min(remainder_after) == remainder_after, as.integer(NA), remainder_after), na.rm = TRUE) == remainder_before |
+             min(if_else(min(remainder_before) == remainder_before, as.integer(NA), remainder_before),
+                 if_else(min(remainder_after) == remainder_after, as.integer(NA), remainder_after), na.rm = TRUE) == remainder_after) %>%
+    ungroup() %>% filter(min(remainder_before, remainder_after, na.rm = TRUE) == remainder_before |
+                           min(remainder_before, remainder_after, na.rm = TRUE) == remainder_after)
+  message("The shortest distance between 2 mutations on the same chromosome is ", min(least_distance$remainder_before, least_distance$remainder_after))
+  return(longing)
+}
 Sys.time()
-# multiple arguments:
-#  1. number of required SNPs (or nothing)
-#  2. database file (or nothing)
-#  3. sample-enum file (or nothing)
-#  4. blast directory (or nothing)
-#  5. SNP directory (or nothing)
-#  6. posfix for output names (or nothing)
-arguments = commandArgs(trailingOnly=TRUE)
-# 1.
-number_snps = if (!is.na(arguments[6])) as.integer(arguments[1]) else 100
-# 2.
-database_file = if (!is.na(arguments[2])) arguments[2] else Sys.glob("/d*/d*/eight.db")
-# 3.
-sample_enum = if (!is.na(arguments[3])) arguments[3] else Sys.glob("/d*/d*/sample-enum.csv")
-# get the last saved fasta file
-folder_to_blast_directory = ifelse(!is.na(arguments[4]), arguments[4], ".")
-# 4.
-blasted <- file.info(paste0(folder_to_blast_directory, list.files(folder_to_blast_directory, pattern = "\\.fasta$")))
-fasta.file <- rownames(blasted[with(blasted, order(mtime, decreasing = TRUE)), ][1,])
-# 5.
-output_directory = if (!is.na(arguments[5])) arguments[5] else paste0(Sys.getenv("HOME"), "/SNP-files/")
-# 6.
-postfix_name = if (!is.na(arguments[6])) arguments[6] else "data"
-# checks if all the files exists
 chrpos <- strsplit(sub("..$", "", unique(names(readDNAStringSet(fasta.file)))), ",")
 positions <- data.frame(chromosome = as.numeric(mapply(`[`, chrpos, 1)),
                        position = as.numeric(mapply(`[`, chrpos, 2)))
@@ -149,8 +181,9 @@ q <- apply(beterSNPs, 1, function(x) {
   sel <- grep(paste(as.numeric(x["CHROMOSOME"]), as.numeric(x["POSITION"]), sep = ","), names(fasta))
   if (length(sel)!=0) {
     # cat(sel)
-    beterSNPs[as.numeric(x["CHROMOSOME"])==beterSNPs$CHROMOSOME&beterSNPs$POSITION==as.numeric(x["POSITION"]),"sequence.before"] <<- toString(fasta[sel[1]])
-    beterSNPs[as.numeric(x["CHROMOSOME"])==beterSNPs$CHROMOSOME&beterSNPs$POSITION==as.numeric(x["POSITION"]),"sequence.after"] <<- toString(fasta[sel[2]])
+    where = (as.numeric(x["CHROMOSOME"])==beterSNPs$CHROMOSOME&beterSNPs$POSITION==as.numeric(x["POSITION"]))
+    beterSNPs[where,"sequence.before"] <<- toString(fasta[sel[1]])
+    beterSNPs[where,"sequence.after"] <<- toString(fasta[sel[2]])
   }
 })
 beterSNPs <- beterSNPs[!is.na(beterSNPs$sequence.before),]

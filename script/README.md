@@ -1,6 +1,25 @@
 # the actual scripts
 
 Scripts that use a reference genome, will work with the REF environment variable, if available. The shell scripts will search for the path in the files.yml file, if they can find it.
+
+Many scripts take some time to run(especially in scripts/readsToVariants folder). Because of this the slurm system is used.
+This is a system that manages jobs on a server. Therefore a lot of (bash)scripts in this repository make use of sbatch and the following structure:
+```bash
+#!/bin/bash
+# what the script does
+code to parse arguments of set them on default values
+[ $# -gt 0 ]&&variable1=$1||variable1=standard_argument
+code that checks whether file arguments are available
+if test $(that is the case);then
+ sbatch <<< '#!/bin/bash
+  # read code
+  program_a "'"$variable1"'"
+'
+fi
+```
+Please note that sbatch is the program where jobs are made known on the server. The program the job comprend is on the next lines.
+Because there is worked with '(single quote) arguments that are given are within "'" (double quote so most variables could contain spaces)
+
 The program flow scematic:
 
 ![flowchart image](../doc/flowchart/simple_flow.png)

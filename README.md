@@ -11,7 +11,7 @@ The source tree is:
 │   └───translations - translation of 2 articles of AAE Van Der Geer in the Dutch language
 ├───lib
 │   └───My
-│       └───ChangingInvaders - perl modules for first ~2 scripts
+│       └───ChangingInvaders - perl modules for first 2 scripts
 └───script - actual scripts (this and every subdirectory contains a flowchart to represent what part of the flow one is looking at)
     ├───ancestorPopulationStructure
     ├───blastSNPs
@@ -64,24 +64,6 @@ and then call docker with these arguments:
 added after $PWD/local-data:/var/data/data
 and within the container execute: `export DISPLAY=:0`
 Of course this will not work on a Windows system or a system that has no X server available.
-
-Many scripts take some time to run(especially in scripts/readsToVariants folder). Because of this the slurm system is used.
-This is a system that manages jobs on a server. Therefore a lot of (bash)scripts in this repository make use of sbatch and the following structure:
-```bash
-#!/bin/bash
-# what the script does
-code to parse arguments of set them on default values
-[ $# -gt 0 ]&&variable1=$1||variable1=standard_argument
-code that checks whether file arguments are available
-if test $(that is the case);then
- sbatch <<< '#!/bin/bash
-  # read code
-  program_a "'"$variable1"'"
-'
-fi
-```
-Please note that sbatch is the program where jobs are made known on the server. The program the job comprend is on the next lines.
-Because there is worked with '(single quote) arguments that are given are within "'" (double quote so most variables could contain spaces)
 
 For how information about telegram in relation to the repo see [the telegram information](README-telegram.md)
 For this repo with a lot of things still in Dutch I refer to this commit: https://github.com/naturalis/changing-invaders/commit/184a23c18492c1197a6f8936b0b42a7750dde9e4
