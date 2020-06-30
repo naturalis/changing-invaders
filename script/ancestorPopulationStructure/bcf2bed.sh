@@ -1,12 +1,12 @@
 #!/bin/bash
 # david
 # changing invaders
-# script to convert a bcf file to a een bed file
+# script to convert a bcf file to a bed file
 [ $# -gt 0 ] && sample=$1 || sample=merge3
 # [[ "$sample" =~ .bcf$ ]]&&echo contains extension||sample="$sample.bcf"
 # only when it exist
 if [ -e "$sample.bcf" -o -e "$sample.vcf" ];then
-sbatch -D $PWD <<< '#!/bin/bash
+ sbatch -D $PWD <<< '#!/bin/bash
 #SBATCH --job-name=bcf2bed
 #SBATCH --output=bcf2bed.out
 # --geno added

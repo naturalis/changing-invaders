@@ -7,7 +7,7 @@ if (length(commandArgs(trailingOnly=TRUE))==0) {
 	Q.files <- file.info(paste0(list.files(pattern = "\\.(mean)?Q$")))
 	Q.files <- rownames(Q.files[with(Q.files, order(mtime, decreasing = TRUE)), ][1,])
 } else {
-	Q.files <- commandArgs(trailingOnly=TRUE)[1]
+	Q.files <- commandArgs(trailingOnly=TRUE)
 }
 for (Q.file in Q.files) {
 	tbl <- read.table(Q.file)

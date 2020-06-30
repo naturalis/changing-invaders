@@ -1,5 +1,20 @@
 # the actual scripts
 
+## Scripts in this directory:
+
+telegram_message.R provides a possibility to allow telegram messages from bash scripts. Running it as bash, telegram_message.R could have one argument (the message itself that should be sent, else the message will be NA)
+as bash script it modifies the files in the repo in a manner that the secret token and chat id are applied to files that require them.
+These values are inputed by `read` so no argument is required
+SNPextract.R could accept a lot of arguments:
+1. number of required SNPs (defaults 100)
+2. database file (defaults system globbing /d\*/d\*/eight.db)
+3. sample-enum file (defaults system globbing /d\*/d\*/sample-enum.csv)
+4. blast directory (defaults current directory)
+5. SNP directory (defaults SNP-files in HOME directory)
+6. posfix for output names (default to data)
+
+## General information
+
 Scripts that use a reference genome, will work with the REF environment variable, if available. The shell scripts will search for the path in the files.yml file, if they can find it.
 
 Many scripts take some time to run(especially in scripts/readsToVariants folder). Because of this the slurm system is used.
@@ -40,6 +55,7 @@ Next to that the bigger flowchart is structured in the following ways:
   - output filename that contains *sample* is symbolical. Then the output file(s) will be the sample name, the same applies to postfix.
   - output containing \<this characters\> means a number
   - output containing {a/b}c ac and bc
+  - output containing \+.ext means the filename and .ext added.
   - {} outside of output brackets means more explained about that box
 * arrows
   - normal arrows represent flow of data

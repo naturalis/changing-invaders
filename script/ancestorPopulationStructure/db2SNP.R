@@ -9,7 +9,7 @@ library(dplyr, warn.conflicts = FALSE)
 # sed -En '1!s/,([^,]+).*/-\1/p' SNP_Vfinal.csv > SNPOUT
 # sed -En '1!s/,([^,]+).*/-\1/p' SNP.csv > SNPOUT
 SNPs <- read.table("SNP-files/SNPOUT", sep = "-", header = FALSE, col.names = c("CHR", "POS"))
-eightnucleotide <- dbConnect(SQLite(), "/home/david.noteborn/onenucleotide_eight.db")
+eightnucleotide <- dbConnect(SQLite(), Sys.glob("/h*/d*n*/onenucleotide_eight.db"))
 dbWriteTable(eightnucleotide, "CHOSEN", SNPs, overwrite = TRUE)
 exulans <- tbl(eightnucleotide, "EXULANS")
 about0.3kSNPsdb <- tbl(eightnucleotide, "CHOSEN")
