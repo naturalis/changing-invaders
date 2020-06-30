@@ -24,7 +24,7 @@ The source tree is:
     │   └───row_based
     └───readsToVariants
 ```
-Please not that different runs of the same sample should be located in different subdirectories under local-data. If this isn't done and the naming sheme is used that here is documented and more than 1 run belongs to one sample, your data will be incorrect because of the `--dont_overwrite` policy enforced in `fastp.pl`. fastq-files should be named samplename_*adapter used for the run*\_L002\_R*1 or 2 depending on pair*\_*run name*.fastq.gz other naming shemes *might* work out as well but this is recommend. Also create a YAML file (`files.yml`) on the same folder as the data:
+Please not that different runs of the same sample should be located in different subdirectories under local-data. If this isn't done and the naming scheme is used that here is documented and more than 1 run belongs to one sample, your data will be incorrect because of the `--dont_overwrite` policy enforced in `fastp.pl`. fastq-files should be named samplename_*adapter used for the run*\_L002\_R*1 or 2 depending on pair*\_*run name*.fastq.gz other naming schemes *might* work out as well but this is recommend. Also create a YAML file (`files.yml`) on the same folder as the data:
 ```bash
 ---
 reference:
@@ -45,26 +45,7 @@ sample:
 and this repeated for every file you have. Note the relativeness of the paths since /var/data/data is where your data is mounted in docker, so every path must start that way. (or you have to mount somewhere different of course)
 For convenience there is a script included to provide mouse data that can directly be used with the fastq pipeline. The script is called `script/mouse2pipeline.sh`. This file will create a directory 'mouse' which could be used as the local-data directory
 
-The docker-image might be invoked using
-```bash
-docker build -t changing-invaders:v1.0 .
-# local-data could of course be changed to every folder that contains your data and the files.yml file
-docker run -v $PWD/local-data:/var/data/data -ti changing-invaders:v1.0 ./fastqTo100SNPs.sh
-```
-optionally one can directly see the results of ggplot (without writing to a file) using this method: first run on the host:
-```
-XSOCK=/tmp/.X11-unix
-XAUTH=/tmp/.docker.xauth
-xauth nlist :0 | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
-```
-and then call docker with these arguments:
-```bash
--v $XSOCK:$XSOCK -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH
-```
-added after $PWD/local-data:/var/data/data
-and within the container execute: `export DISPLAY=:0`
-Of course this will not work on a Windows system or a system that has no X server available.
-
 For how information about telegram in relation to the repo see [the telegram information](README-telegram.md)
+For how information about docker in relation to the repo see [the docker information](README-docker.md)
 For this repo with a lot of things still in Dutch I refer to this commit: https://github.com/naturalis/changing-invaders/commit/184a23c18492c1197a6f8936b0b42a7750dde9e4
 For all scripts before cleanup(and translation) I refer to: https://github.com/naturalis/changing-invaders/tree/922c543dcc55c43b1ed627e0396ae57dc107ad10
