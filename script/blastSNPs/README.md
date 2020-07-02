@@ -12,7 +12,7 @@ See also the flowchart:
   2. number of threads that blast uses __(defaults to 25)__
   3. (fasta) database blasted to __(defaults to the first .cns.(fa|fasta) file in the current directory)__
 - db2FoCaPfasta.R:
-  - the commandline argument is the used database __(defaults to the globbing of /d*/d*/eight.db)__
+  - the commandline argument is the used database __(defaults to the globbing of /d\*/d\*/eight.db)__
   - multiple environment variables are used if available:
     1. COVERAGE_MIN, the minimum value for coverage (defaults __16__)
     2. COVERAGE_MAX, the maximum value for coverage (defaults __110__)
