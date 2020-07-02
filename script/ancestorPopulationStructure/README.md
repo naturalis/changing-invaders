@@ -21,7 +21,7 @@ See also the flowchart:
 - ancestor_map.R:
   - the arguments are the .Q files that describe the admixture proportions (output filename-map.png) __(defaults all *K* that the latest .Q file refers to)__
 - ancestor_barplot.R:
-  - like ancestor_map.R (output {admixture/faststructure}{rest of file name}.png) __(defaults like ancestor _map.R)__
+  - like ancestor_map.R (output {admixture/faststructure}{rest of file name}.png) __(defaults like ancestor\_map.R)__
 - admixture.sh:
   1. the sample file (without extension) __(defaults to merge3)__
   2. number of ancestor populations __(defaults to 4)__
