@@ -5,7 +5,6 @@
 # the istance columns display -1 if the distance can not be determined
 # (no other SNPs on that chromosome)
 import sys
-import gzip
 
 def notperiod(x):
 	if x == ".":

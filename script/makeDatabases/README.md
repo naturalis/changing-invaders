@@ -10,3 +10,8 @@ On the current moment the scripts from `make_snp_db.sh` are the used model.
 `filtered_rows_table.sh` create a table based on filtered criterion, using `make_valid.sql`.
 flowchart (check individual folders for more zoomed in version):
 ![flowchart](../../doc/flowchart/makeDatabases.png?raw=true)
+
+
+# scripts arguments/input
+- filtered_rows_table.sh:
+  - the input argument is the database, that will be changed (by default **eight.db**)

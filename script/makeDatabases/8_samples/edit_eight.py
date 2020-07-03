@@ -5,7 +5,6 @@
 # the distance columns display -1 if distance could not be determined
 # (no other SNP on that chromosome)
 import sys
-import gzip
 
 def notPeriod(x):
 	if x == ".":
