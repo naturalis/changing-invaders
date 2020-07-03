@@ -9,7 +9,7 @@ library(RSQLite)
 library(dplyr, warn.conflicts = FALSE)
 library(ggplot2)
 Sys.time()
-eightnucleotide <- dbConnect(SQLite(), "/data/david.noteborn/acht.db")
+eightnucleotide <- dbConnect(SQLite(), Sys.glob("/d*/d*/eight.db"))
 exulans <- tbl(eightnucleotide, "exulans")
 # coverage, or QUALITY
 # group on SNP, get the averga quality, (rounded on whole numbers) and look how much of a certain qualitly there are

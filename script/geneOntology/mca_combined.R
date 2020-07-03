@@ -10,7 +10,7 @@ library(ggrepel)
 # patchwork so we can + plots together
 library(patchwork)
 if (length(commandArgs(trailingOnly=T))>0) process <- commandArgs(trailingOnly=T) else {
-	mca_files <- list.files(pattern = "*.mca")
+	mca_files <- list.files(pattern = "*.mca$")
 	# give if possible a graphical menu with all .gt files, where the user can choose one or more for the plot
 	process <- select.list(mca_files, multiple = TRUE, title = "Choose a genotype file")
 }

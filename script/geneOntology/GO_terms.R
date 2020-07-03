@@ -4,8 +4,8 @@
 # by david
 # BiocManager::install(c("limma", "GO.db", "clusterProfiler"))
 suppressMessages(library(clusterProfiler))
-suppressMessages(library(limma))
-suppressMessages(library(biomaRt))
+library(limma)
+library(biomaRt)
 suppressMessages(library(GO.db))
 # setwd("~/gene-ontology/")
 if (!is.na(commandArgs(trailingOnly=TRUE)[1])) howManyFile = commandArgs(trailingOnly=TRUE)[1] else howManyFile = "amountGeneWithExon.csv"

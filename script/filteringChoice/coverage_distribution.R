@@ -10,7 +10,7 @@ library(dplyr, warn.conflicts = FALSE)
 library(telegram)
 library(ggplot2)
 Sys.time()
-eightnucleotide <- dbConnect(SQLite(), "/data/david.noteborn/acht.db")
+eightnucleotide <- dbConnect(SQLite(), Sys.glob("/d*/d*/eight.db"))
 exulans <- tbl(eightnucleotide, "EXULANS")
 # coverage, or QUALITY
 if (FALSE)

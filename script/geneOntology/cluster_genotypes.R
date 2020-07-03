@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-# changeing invaders
+# changing invaders
 # by david
 # make MCA for genotypes
 # cut -d, -f7-14 SNP.csv|sed '1s/_[^,]*//g'|tr , \\t|awk '{print $1"\t"$4"\t"$2"\t"$3"\t"$5"\t"$6"\t"$7"\t"$8}'
@@ -8,7 +8,7 @@ library(ggplot2)
 # ggrepel so labels will not overlap and reading of the samplenames becomes impossible
 library(ggrepel)
 if (length(commandArgs(trailingOnly=T))>0) process <- commandArgs(trailingOnly=T) else {
-	gt_files <- list.files(pattern = "*.gt")
+	gt_files <- list.files(pattern = "*.gt$")
 	# give if possible a graphical menu with all .gt files, where the user can choose one or more for the MCA
 	process <- select.list(gt_files, multiple = TRUE, title = "Choose a genotype file")
 }
