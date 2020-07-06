@@ -5,7 +5,7 @@
 # first argument filter over bcf files
 # combine bcf files to one
 [ $# -eq 1 ] && samples=$(ls *.bcf|grep $1) || samples=$(ls *.bcf|grep -v merge)
-[ $# -eq 2 ] && samples=$(ls $1)
+[ $# -eq 2 ] && samples=$(ls $1/*)
 # get from all the samples the sample whose name contains merge (or first argument) extract the number
 # get the number of samples - those that have merge in their name
 # look to both as a big sum and summarize
