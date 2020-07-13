@@ -3,6 +3,7 @@ FROM ubuntu:20.04
 # dependencies
 # last 2 in install are for telegram
 RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get -qq install -y locales wget python3.5 gcc make g++ zlib1g-dev zlib1g libyaml-syck-perl git bzip2 libbz2-dev liblzma-dev ncurses-dev sqlite3 r-base python3-minimal ncbi-blast+ python2 python2-dev libgsl0-dev libssl-dev libcurl4-openssl-dev > /dev/null && rm -rf /var/lib/apt/lists/* && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+# possibly qdbus, kdialog package, xargs package, and ssh
 ENV LANG en_US.utf8
 # install samtools
 ENV SAMTOOLS_INSTALL_DIR=/opt/samtools
@@ -66,7 +67,9 @@ RUN wget "https://netix.dl.sourceforge.net/project/snpeff/snpEff_latest_core.zip
  mv snpEff $HOME/
 
 # install R dependencies
-RUN R -q -e 'install.packages(c("BiocManager", "RSQLite", "dbplyr", "telegram", "ggplot2"), quiet = TRUE);BiocManager::install("Biostrings", quiet = TRUE)'
+RUN R -q -e 'install.packages(c("BiocManager", "RSQLite", "dbplyr", "telegram", "ggplot2", "MASS", "ggrepel", "patchwork"), quiet = TRUE);BiocManager::install("Biostrings", quiet = TRUE)'
+# BiocManager::install(c("limma", "GO.db", "clusterProfiler"), quiet = TRUE) for the deprecated GO-terms
+# install.packages(c("future.batchtools", "future.apply")) and BiocManager::install(c("biomaRt", "org.Rn.eg.db"), quiet = TRUE) for within deprecated scripts
 
 COPY ./ /var/data/
 WORKDIR /var/data/

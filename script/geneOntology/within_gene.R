@@ -6,6 +6,7 @@
 # bcftools view merge8.bcf |Rscript binneneengen.R > merge8_within_gene
 standard_input <- file("stdin")
 open(standard_input, blocking=TRUE)
+library(biomaRt)
 genes <- AnnotationDbi::keys(org.Rn.eg.db::org.Rn.eg.db, "ENSEMBL")
 ensembl <- useMart("ensembl")
 # get the r. norvegicus database

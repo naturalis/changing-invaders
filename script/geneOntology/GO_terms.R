@@ -2,7 +2,6 @@
 # changing invaders
 # execute a GO-term analysis
 # by david
-# BiocManager::install(c("limma", "GO.db", "clusterProfiler"))
 suppressMessages(library(clusterProfiler))
 library(limma)
 library(biomaRt)
