@@ -50,21 +50,23 @@ RUN cd /var/building/ && \
  chmod a+x $HOME/plink
  
 # install fastStructure 
-RUN git clone --depth 1 https://github.com/rajanil/fastStructure  && \
+RUN cd /var/building/ && \
+ git clone --depth 1 https://github.com/rajanil/fastStructure  && \
  cd fastStructure  && \
  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib CFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib"
  
 # install pip for Cython 
 RUN wget -O- https://bootstrap.pypa.io/get-pip.py | python2 - && \
  pip2 install Cython numpy scipy && \
- cd vars && python2 setup.py build_ext --inplace && cd ..
+ cd /var/building/fastStructure/vars && python2 setup.py build_ext --inplace && cd ..
  
 # install fastStructure 
-RUN python2 setup.py build_ext --inplace && \
- ln -s $PWD/structure.py /var/data/structure.py && \
- true 'structure is build and symlinked inside script directory' && \
- true 'download the tar.bzip2 file, and stdout, now -eXtract a bziped(j) tar and only the file bin/admixture to directory (-C) /usr/bin without creating the first directory (bin)'
- wget -O- https://anaconda.org/bioconda/admixture/1.3.0/download/linux-64/admixture-1.3.0-0.tar.bz2 | tar -xj bin/admixture -C /usr/bin --strip-components=1
+RUN cd /var/building/fastStructure/ && \
+ python2 setup.py build_ext --inplace && \
+ ln -s $PWD/structure.py /var/data/structure.py
+# structure is build and symlinked inside script directory
+# download the tar.bzip2 file, and stdout, now -eXtract a bziped(j) tar and only the file bin/admixture to directory (-C) /usr/bin without creating the first directory (bin)
+RUN wget -O- https://anaconda.org/bioconda/admixture/1.3.0/download/linux-64/admixture-1.3.0-0.tar.bz2 | tar -xj bin/admixture -C /usr/bin --strip-components=1
 
 # install all gene ontology dependencies
 RUN wget "https://netix.dl.sourceforge.net/project/snpeff/snpEff_latest_core.zip" && \
