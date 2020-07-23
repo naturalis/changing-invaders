@@ -51,17 +51,17 @@ RUN cd /var/building/ && \
  
 # install fastStructure 
 RUN cd /var/building/ && \
- git clone --depth 1 https://github.com/rajanil/fastStructure  && \
- cd fastStructure  && \
- export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib CFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib"
+ git clone --depth 1 https://github.com/rajanil/fastStructure
  
 # install pip for Cython 
 RUN wget -O- https://bootstrap.pypa.io/get-pip.py | python2 - && \
  pip2 install Cython numpy scipy && \
+ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib CFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib" && \
  cd /var/building/fastStructure/vars && python2 setup.py build_ext --inplace && cd ..
  
 # install fastStructure 
 RUN cd /var/building/fastStructure/ && \
+ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib CFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib" && \
  python2 setup.py build_ext --inplace && \
  ln -s $PWD/structure.py /var/data/structure.py
 # structure is build and symlinked inside script directory
