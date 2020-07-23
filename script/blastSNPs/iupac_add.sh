@@ -36,8 +36,12 @@ iupac() {
  echo 'eval grep -Pq \"$(build_regex '"$nucleotides"')\" <<< "${listofbases//\//}" && [ -z "$iupac" ] && iupac='$2';'
 }
 SILENT=${SILENT:-true} # if silent is not defined turn it off
-fasta="$(cat data/filtered_snps.fasta)"
-sqlite3 data/eight.db 'SELECT CHROMOSOME, POSITION, GENOTYPE_BP, ORGANISM, REFERENCE FROM EXULANS ORDER BY CHROMOSOME, POSITION'| \
+fasta_file="${1:-data/filtered_snps.fasta}"
+db_file="${2:-data/eight.db}"
+[ ! -e "$fasta_file" ] && echo "the fasta file that is given ($fasta_file) does not exist, please set up a (different) path/filename" && exit
+[ ! -e "$db_file" ] && echo "the database file that is given ($db_file) does not exist, please set up a (different) path/filename" && exit
+fasta="$(cat "$fasta_file")"
+sqlite3 "$db_file" 'SELECT CHROMOSOME, POSITION, GENOTYPE_BP, ORGANISM, REFERENCE FROM EXULANS ORDER BY CHROMOSOME, POSITION'| \
  while read line;do
   chromosome_position=$(cut -d'|' -f1,2<<<"$line")
   if test "$chromosome_position_old" != "$chromosome_position" -a -n "$chromosome_position_old";then
@@ -119,4 +123,4 @@ sqlite3 data/eight.db 'SELECT CHROMOSOME, POSITION, GENOTYPE_BP, ORGANISM, REFER
   buffer="$buffer"$'\n'"$line"
   chromosome_position_old=$chromosome_position
  done
-echo "$fasta" >> data/filtered_snps_iupac.fasta
+echo "$fasta" >> "${3:-${fasta_file/%.fasta/_iupac.fasta}}"
