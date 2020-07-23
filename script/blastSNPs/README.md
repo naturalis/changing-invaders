@@ -6,13 +6,13 @@ See also the flowchart:
 
 # scripts arguments/input
 - blast_output.R:
-  - the fasta/json file (without extension). (output will be the modified fasta) __(defaults blast_output/filtered_R6750)__
+  - the fasta/json file (without extension). (output will be the modified fasta) (defaults __blast_output/filtered_R6750__)
 - blast_primers_all_samples.sh/blast_primers.sh:
-  1. query fasta file (with or without extension) __(defaults to filtered_snps.fasta)__
-  2. number of threads that blast uses __(defaults to 25)__
-  3. (fasta) database blasted to __(defaults to the first .cns.(fa|fasta) file in the current directory)__
+  1. query fasta file (with or without extension) (defaults to __filtered_snps.fasta__)
+  2. number of threads that blast uses (defaults to __25__)
+  3. (fasta) database blasted to (defaults to __the first .cns.(fa|fasta) file in the current directory__)
 - db2FoCaPfasta.R:
-  - the commandline argument is the used database __(defaults to the globbing of /d\*/d\*/eight.db)__
+  - the commandline argument is the used database (defaults to the __globbing of /d\*/d\*/eight.db__)
   - multiple environment variables are used if available:
     1. COVERAGE_MIN, the minimum value for coverage (defaults __16__)
     2. COVERAGE_MAX, the maximum value for coverage (defaults __110__)
