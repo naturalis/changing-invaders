@@ -8,23 +8,23 @@ See also the flowchart:
 
 # scripts arguments/input
 - thin_marker.sh:
-  - the (bed) file (without extension) that should be pruned. (output will be filename.pruned.bed) __(defaults merge3)__
+  - the (bed) file (without extension) that should be pruned. (output will be filename.pruned.bed) (defaults __merge3__)
 - faststructure.sh:
-  1. the sample file (without extension) __(defaults to merge3)__
-  2. number of ancestor populations __(defaults to 4)__
-  3. seed (number to feed the random generator, to obtain reproducable results) __(defaults to 469)__
-  4. number of threads to use __(defaults to 1)__
+  1. the sample file (without extension) (defaults to __merge3__)
+  2. number of ancestor populations (defaults to __4__)
+  3. seed (number to feed the random generator, to obtain reproducable results) (defaults to __469__)
+  4. number of threads to use (defaults to __1__)
 - combined2FoCaPSNPs:
   - Input is a combined vcf file from stdin, that is filtered and output on stdout
 - bcf2bed.sh:
-  - the bcf file (without extension) to be converted to a bed file (output will include filename.bed) __(defaults merge3)__
+  - the bcf file (without extension) to be converted to a bed file (output will include filename.bed) (defaults __merge3__)
 - ancestor_map.R:
-  - the arguments are the .Q files that describe the admixture proportions (output filename-map.png) __(defaults all *K* that the latest .Q file refers to)__
+  - the arguments are the .Q files that describe the admixture proportions (output filename-map.png) (defaults __all *K* that the latest .Q file refers to__)
 - ancestor_barplot.R:
-  - like ancestor_map.R (output {admixture/faststructure}{rest of file name}.png) __(defaults like ancestor\_map.R)__
+  - like ancestor_map.R (output {admixture/faststructure}{rest of file name}.png) (defaults __like ancestor\_map.R__)
 - admixture.sh:
-  1. the sample file (without extension) __(defaults to merge3)__
-  2. number of ancestor populations __(defaults to 4)__
-  3. runs (number number of runs of bootstrapping and cross validation) __(defaults to 10)__
-  4. seed (number to feed the random generator, to obtain reproducable results) __(defaults to 469)__
-  5. number of threads to use __(defaults to 1)__
+  1. the sample file (without extension) (defaults to __merge3__)
+  2. number of ancestor populations (defaults to __4__)
+  3. runs (number number of runs of bootstrapping and cross validation) (defaults to __10__)
+  4. seed (number to feed the random generator, to obtain reproducable results) (defaults to __469__)
+  5. number of threads to use (defaults to __1__)
