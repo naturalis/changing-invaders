@@ -16,3 +16,5 @@ flowchart:
     3. depth1.csv coverage depth distribution
 - quality_distribution.R:
   - the input is always the globbing of /d\*/d\*/eight.db (sqlite) database file. (output will be quality.png and quality.csv)
+- quality_distribution.R:
+  - the input is by default __the globbing of /d\*/d\*/eight.db__ (sqlite) database file, but this could be changed by the first argument. (output will be filtered_snps.csv)

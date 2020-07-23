@@ -28,3 +28,6 @@ See also the flowchart:
   3. runs (number number of runs of bootstrapping and cross validation) (defaults to __10__)
   4. seed (number to feed the random generator, to obtain reproducable results) (defaults to __469__)
   5. number of threads to use (defaults to __1__)
+- homozygote.sh:
+  - the merged bcf file is the input argument (defaults to __merge8.bcf__)
+  - the output defaults to a less program, which will generally be fine with output redirection

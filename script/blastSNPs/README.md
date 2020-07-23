@@ -21,4 +21,4 @@ See also the flowchart:
   - output files: data/FOCAP.csv (the filtered positions) data/filtered_snps.csv (filtered sequences) data/filtered_snps.fasta (filtered sequences in fasta)
 - iupac_add.sh:
   - one environment variable is used: SILENT (for outputting more or less)
-  - input fasta is data/filtered_snps.fasta, input SNP database is data/eight.db
+  - input fasta is the first argument (by default __data/filtered_snps.fasta__), input SNP database is the second argument (by default __data/eight.db__) the ouput is the third argument (by default __*input fasta without.fasta*\_iupac.fasta__)

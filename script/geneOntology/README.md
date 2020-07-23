@@ -37,3 +37,7 @@ many (and all back... scripts) require a merge8.ann.vcf file in the working dire
   - the output will be selected_blasted_snps.fasta, a fasta with only blast verified SNPs
 - all_coding_genotypes.sh:
   - this script requires merge8.ann.vcf, as an (SNPEff)annotated vcf file, and outputs coding.gt
+- relevant_format.sh:
+  - this script requires merge8.ann.vcf in a sideways directory, as an (SNPEff)annotated vcf file, and outputs by default __the *inputfile*_ontology.tsv__
+  - the input is however the first argument (by default __complete_ng.tsv__)
+  - this script requires also a file with the biological processes (globbing of _../gen\*-o\*/GO_BIO\*S_ALL.csv_) and one with the go terms (globbing of _../gen\*-o\*/go-term\*.csv_).
