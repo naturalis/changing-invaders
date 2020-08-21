@@ -79,8 +79,8 @@ sqlite3 "$db_file" 'SELECT CHROMOSOME, POSITION, GENOTYPE_BP, ORGANISM, REFERENC
    keep_going=true;declare -i record_number=1
    record_max=$(grep '>' <<< "$fasta"|uniq|wc -l)
    while $keep_going;do
-    # echo "fasta:$(grep '>' <<< "$fasta"|uniq|wc -l), rn:$record_number"
     record=$(grep '>' <<< "$fasta"|uniq|sed -n "$record_number"s/\>//p)
+    echo "record:$record, rn:$record_number"
     # echo -n "$record\___$record_number"
     chromosome_fasta=$(cut -d, -f1 <<< "$record")
     position_fasta=$(cut -d, -f2 <<< "$record"|cut -d- -f1)

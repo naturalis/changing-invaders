@@ -6,12 +6,12 @@ telegram_message.R provides a possibility to allow telegram messages from bash s
 as bash script it modifies the files in the repo in a manner that the secret token and chat id are applied to files that require them.
 These values are inputed by `read` so no argument is required
 SNPextract.R could accept a lot of arguments:
-1. number of required SNPs (defaults 100)
-2. database file (defaults system globbing /d\*/d\*/eight.db)
-3. sample-enum file (defaults system globbing /d\*/d\*/sample-enum.csv)
-4. blast directory (defaults current directory)
-5. SNP directory (defaults SNP-files in HOME directory)
-6. posfix for output names (default to data)
+1. number of required SNPs (defaults __100__)
+2. database file (defaults __system globbing /d\*/d\*/eight.db__)
+3. sample-enum file (defaults __system globbing /d\*/d\*/sample-enum.csv__)
+4. blast directory (defaults __current directory__)
+5. SNP directory (defaults __SNP-files in HOME directory__)
+6. posfix for output names (default to __data__)
 
 ## General information
 

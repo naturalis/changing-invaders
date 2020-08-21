@@ -17,7 +17,7 @@ for (genotypes in process) {
 	# read the gt file
 	ASM <- read.table(genotypes, TRUE, stringsAsFactors = TRUE)
 	# execute the MCA
-	massa <- MASS::mca(as.data.frame(t(ASM)))
+	massa <- MASS::mca(as.data.frame(t(ASM), stringsAsFactors = TRUE))
 	# get the table with the positions
 	dim.2 <- as.data.frame(massa$fs)
 	dim.2$sample <- rownames(dim.2)
