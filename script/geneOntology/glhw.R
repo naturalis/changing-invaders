@@ -14,6 +14,7 @@ if (length(commandArgs(trailingOnly=T))>0) process <- commandArgs(trailingOnly=T
 	if (length(processes)==0) processes = gt_files
 }
 1
+process = processes[1]
 for (process in processes) {
 	process
 	class.ind <- function(cl) {
@@ -41,10 +42,11 @@ for (process in processes) {
 		the.matrix <- class.ind(firstRow)
 		the.next.matrix <- class.ind(secondRow)
 		z <<- x
-		if (is.na(secondRow[1])) {
-			return.rows = the.matrix
+		if (all(is.na(secondRow))) {
+			return.rows = as.data.frame(t(the.matrix))
 		} else {
-			if (ncol(the.matrix) == 1||is.logical(all.equal(the.next.matrix, the.matrix))) {
+			secondRow[is.na(secondRow)] <- firstRow[is.na(secondRow)]
+			if (is.logical(all.equal(the.next.matrix, the.matrix))) {
 				if (ncol(the.next.matrix)<3) {
 					return.rows <- the.next.matrix[,1]
 					# defaults false rows to zero
@@ -76,8 +78,8 @@ for (process in processes) {
 				# if every value is 2 no value will be 1 so is.na on table(1) will be true
 				# if that is the case any base is connected to two others so a loop exist that is not simply simplifiable
 				# if any value is 0 there is no connection between 1 base and it is not simplifiable
-				if ((!any(colSums(the.other.matrix) == 0))||(rowSums(the.other.matrix) == 0)
-					||any(colSums(the.other.matrix) > 2)||rowSums(the.other.matrix) > 2||
+				if ((any(colSums(the.other.matrix) == 0))||(any(rowSums(the.other.matrix) == 0))
+					|| any(colSums(the.other.matrix) > 2)||any(rowSums(the.other.matrix) > 2)||
 					is.na(table(colSums(the.other.matrix))[1])||is.na(table(rowSums(the.other.matrix))[1])) {
 					# apply the complex dataset to the data we have
 					the.other.matrix <- cbind(the.matrix, the.next.matrix)
@@ -108,12 +110,12 @@ for (process in processes) {
 					number <- 0
 					sapply(nucleotidebaselist, function(y) {
 						if (nucleotidebase=="") {
-							genotypelist <<- c(genotypelist, paste0(y, "/", y))
-							names(genotypelist) <<- c(Filter(nchar, names(genotypelist)), number)
+							genotypelist <<- c(genotypelist, paste0(y, "/", y), y)
+							names(genotypelist) <<- c(Filter(nchar, names(genotypelist)), number, number)
 							number <<- number + 0.5
 						} else {
-							genotypelist <<- c(genotypelist, paste0(nucleotidebase, "/", y), paste0(y, "/", nucleotidebase), paste0(y, "/", y))
-							names(genotypelist) <<- c(Filter(nchar, names(genotypelist)), number, number, number + 0.5)
+							genotypelist <<- c(genotypelist, paste0(nucleotidebase, "/", y), paste0(y, "/", nucleotidebase), paste0(y, "/", y), y)
+							names(genotypelist) <<- c(Filter(nchar, names(genotypelist)), number, number, number + 0.5, number + 0.5)
 							number <<- number + 1
 						}
 						nucleotidebase <<- y
@@ -122,7 +124,6 @@ for (process in processes) {
 					return.rows <- merge(data.frame(x = x, sample = names(x)), data.frame(value = names(genotypelist), base = genotypelist), by.x = "x", by.y = "base")
 					rownames(return.rows) <- return.rows$sample
 					return.rows[,c("sample", "x")] <- NULL
-					c(return.rows, use.names = TRUE)
 					return.actual.rows <- return.rows$value
 					names(return.actual.rows) <- rownames(return.rows)
 					return.rows <- as.numeric(return.actual.rows)
@@ -130,10 +131,15 @@ for (process in processes) {
 				}
 			}
 		}
-		tryCatch(resulting <<- rbind(resulting, return.rows), warning = function(e) {print(return.rows);print(x)})
+		print(x)
+		print(return.rows)
+		tryCatch(resulting <<- rbind(resulting, return.rows), warning = function(e) {print(return.rows);print(x)}, error = function(e) {print(return.rows);print(x)})
+		if (ncol(resulting)==1) {print(x);break}
 		NULL
 	}))
 	rownames(resulting) <- NULL
 	resulting
-	write.table(resulting, file = sub("\\.gt$", ".bgt", process), quote = FALSE, row.names = FALSE)
+	write.table(resulting, file = sub("\\.gt$", ".bgt", process), sep = "\t", quote = FALSE, row.names = FALSE)
 }
+
+# write.table(read.table("coding.bgt", header = TRUE), "coding.bgt", sep = "\t", quote = FALSE, row.names = FALSE)
