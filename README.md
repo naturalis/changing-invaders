@@ -1,4 +1,4 @@
-# changing-invaders
+# SNP primer design for genotyping Polynesian rats, _Rattus exulans_
 
 Scripts and config files for assembly and SNP design of genomics of Polynesian rats. This code is tailored to a specific research project and so should not be construed as readily reusable. It is merely made available to document the procedures that were performed in this study.
 
